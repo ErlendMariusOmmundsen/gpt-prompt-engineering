@@ -1,8 +1,11 @@
 import openai
+import configparser
 
+config = configparser.ConfigParser()
+config.read(".env")
 
-openai.api_key = ""
-openai.organization = ""
+openai.api_key = config["keys"]["OPENAI_API_KEY"]
+openai.organization = config["keys"]["OPENAI_ORG_KEY"]
 
 steve_jobs_speech = """
 
@@ -61,8 +64,18 @@ Stay Hungry. Stay Foolish.
 Thank you all very much.
 """
 
-response = openai.Completion.create(model="text-davinci-003", prompt="Text: " + steve_jobs_speech + "\nBullet points:", temperature=0, max_tokens=200)
-response2 = openai.Completion.create(model="text-davinci-003", prompt="Text: " + steve_jobs_speech + "\nHeadline:", temperature=0, max_tokens=15)
+response = openai.Completion.create(
+    model="text-davinci-003",
+    prompt="Text: " + steve_jobs_speech + "\nBullet points:",
+    temperature=0,
+    max_tokens=200,
+)
+response2 = openai.Completion.create(
+    model="text-davinci-003",
+    prompt="Text: " + steve_jobs_speech + "\nHeadline:",
+    temperature=0,
+    max_tokens=15,
+)
 
 
 print(response)
