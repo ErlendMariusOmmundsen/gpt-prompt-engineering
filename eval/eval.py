@@ -1,5 +1,7 @@
 from rouge_score import rouge_scorer
 from pyrouge import Rouge155
+import language_tool_python
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 
 class eval:
@@ -25,3 +27,16 @@ class eval:
         """
         scores = self.scorer.score(candidate, reference)
         return scores
+
+    def error_count_score(self, sent):
+        check = self.langtool.check(sent)
+        numTokens = len(word_tokenize(sent))
+        numErrors = len(check)
+        return 1 - float(numErrors) / float(numTokens)
+
+    def avg_error_count_score(self, text):
+        sentences = sent_tokenize(text)
+        total = 0
+        for sent in sentences:
+            total += self.error_count_score(sent)
+        return total / len(sentences)
