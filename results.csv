@@ -1,0 +1,3 @@
+prompt_template,examples,num_examples,text,prediction,finish_reason,config
+"Input: ${text} 
+Output:","[['As soon as you can.', 'Sorry I messed up.'], ['At you earliest convenience.', 'I apologise for my wrongdoings.']]",2,I can't stand his temper., I find his temper to be extremely off-putting.,stop,"{'model': 'text-davinci-003', 'suffix': '', 'temperature': 1, 'top_p': 1, 'max_tokens': 200, 'n': 1, 'stop': None}"

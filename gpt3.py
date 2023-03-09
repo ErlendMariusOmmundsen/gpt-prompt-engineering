@@ -96,6 +96,7 @@ class gpt3:
         )
         return self.to_df_info(prompt_template, res, examples, text, num_examples)
 
+    # TODO: Add evaluation scores
     def to_df_info(self, prompt_template, response, examples, text, num_examples):
         obj = {}
         obj["prompt_template"] = prompt_template
