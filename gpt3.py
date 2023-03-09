@@ -78,11 +78,9 @@ class gpt3:
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
             prompt_examples += "Input: " + i + "\nOutput: " + o + seperator
-
         prompt_examples += "Input: " + text + "\nOutput:"
 
         temp = Template("Input: ${text} \nOutput:")
-
         prompt = prompt_examples + "Input: " + text + "\nOutput:"
 
         response = self.completion(prompt)
@@ -94,10 +92,10 @@ class gpt3:
         prompt_template, res = self.in_context_prediction(
             examples[0][:num_examples], examples[1][:num_examples], text
         )
-        return self.to_df_info(prompt_template, res, examples, text, num_examples)
+        return self.to_info_dict(prompt_template, res, examples, num_examples, text)
 
     # TODO: Add evaluation scores
-    def to_df_info(self, prompt_template, response, examples, text, num_examples):
+    def to_info_dict(self, prompt_template, response, examples, num_examples, text=""):
         obj = {}
         obj["prompt_template"] = prompt_template
         obj["examples"] = examples
@@ -107,26 +105,42 @@ class gpt3:
         obj["finish_reason"] = response.choices[0].finish_reason
         return obj
 
-    def save_df(self, info_dict):
+    def save_df(self, info_dict, path):
         conf = self.get_config()
         data = []
         df = pd.DataFrame(
-            [
-                [
-                    info_dict["prompt_template"],
-                    info_dict["examples"],
-                    info_dict["num_examples"],
-                    info_dict["text"],
-                    info_dict["prediction"],
-                    info_dict["finish_reason"],
-                    conf,
-                ]
-            ],
+            [[info_dict[key] for key in info_dict.keys()] + [conf]],
             columns=[*list(info_dict.keys()), "config"],
         )
+        df.to_csv(path, mode="a", index=False, header=False)
 
-        df.to_csv("results.csv", mode="a", index=False, header=False)
+    def in_context_pipe(self, examples, text, num_examples):
+        info_dict = self.in_context_predictions(examples, text, num_examples)
+        self.save_df(info_dict, "in-context.csv")
 
-    def save_in_context(self, examples, text, num_examples):
-        df_info = self.in_context_predictions(examples, text, num_examples)
-        self.save_df(df_info)
+    def induce_instruction(self, inputs, outputs, num_examples):
+        prompt = ""
+        context = (
+            "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs:"
+            + seperator
+        )
+        prompt_examples = ""
+        for i, o in zip(inputs, outputs):
+            prompt_examples += "Input: " + i + "\nOutput: " + o + seperator
+        before_pred = "The instruction was"
+
+        prompt += context + prompt_examples + before_pred
+        temp = Template("Context_setter *sep* example_pairs *sep* The instruction was")
+
+        return temp.template, self.completion(prompt)
+
+    def induce_instructions(self, examples, num_examples):
+        # TODO: Select random num of examples?
+        prompt_template, res = self.induce_instruction(
+            examples[0][:num_examples], examples[1][:num_examples], 2
+        )
+        return self.to_info_dict(prompt_template, res, examples, num_examples)
+
+    def induce_pipe(self, examples, num_examples):
+        info_dict = self.induce_instructions(examples, num_examples)
+        self.save_df(info_dict, "instruction-induction.csv")
