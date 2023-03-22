@@ -2,9 +2,11 @@ import openai
 import configparser
 import pandas as pd
 from string import Template
+import tiktoken
 
 # Always use \n###\n as seperator between priming examples
-seperator = "\n###\n"
+separator = "\n###\n"
+max_tokens = 4096
 
 
 class gpt3:
@@ -14,7 +16,7 @@ class gpt3:
         openai.api_key = config["keys"]["OPENAI_API_KEY"]
         openai.organization = config["keys"]["OPENAI_ORG_KEY"]
 
-        self.model = "text-davinci-003"
+        self.model = "gpt-3.5-turbo"
         self.prompt = ""
         self.suffix = ""
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random
@@ -44,6 +46,12 @@ class gpt3:
             "stop": self.stop,
         }
 
+    def num_tokens_from_string(self, string: str) -> int:
+        """Returns the number of tokens in a text string."""
+        encoding = tiktoken.encoding_for_model(self.model)
+        num_tokens = len(encoding.encode(string))
+        return num_tokens
+
     def completion(self, prompt):
         print(self)
         return openai.Completion.create(
@@ -59,8 +67,39 @@ class gpt3:
             stop=self.stop,
         )
 
+    def chat_completion(self, prompt):
+        print(self)
+        return openai.ChatCompletion.create(
+            model=self.model,
+            prompt=prompt,
+            temperature=self.temperature,
+            suffix=self.suffix,
+            top_p=self.top_p,
+            max_tokens=self.max_tokens,
+            n=self.n,
+            stream=self.stream,
+            logprobs=self.log_probs,
+            stop=self.stop,
+        )
+
+    def create_chat_messages(self, prompt, in_context: bool):
+        # message format:  {"role": "system", "content": "You are a helpful assistant."}
+        messages = []
+        if in_context:
+            messages = [
+                {
+                    "role": "user",
+                    "content": "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.",
+                }
+            ]
+            examples = prompt.split(separator)
+            for example in examples:
+                messages.append({"role": "user", "content": separator + example})
+
+        return messages
+
     def current_summarize(self, text):
-        current_strategy = "suggest three insightful concise subheadings which summarize this text, suggest threee bullet points for each subheading:\n"
+        current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
         response = self.completion(current_strategy + text)
         return response
 
@@ -74,16 +113,22 @@ class gpt3:
 
         return heading_response, bullet_response
 
-    def in_context_prediction(self, inputs, outputs, text):
+    def in_context_prediction(self, inputs, outputs, text, useChat: bool):
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: " + i + "\nOutput: " + o + seperator
+            prompt_examples += "Input: " + i + "\nOutput: " + o + separator
         prompt_examples += "Input: " + text + "\nOutput:"
 
         temp = Template("Input: ${text} \nOutput:")
         prompt = prompt_examples + "Input: " + text + "\nOutput:"
 
-        response = self.completion(prompt)
+        response = {}
+
+        if not useChat:
+            response = self.completion(prompt)
+        else:
+            response = self.chat_completion(self.create_chat_messages(prompt, True))
+
         return temp.template, response
 
     # Params: examples = [[input, input, ...], [output, output, ...]], text = to be summarized
@@ -122,11 +167,11 @@ class gpt3:
         prompt = ""
         context = (
             "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs:"
-            + seperator
+            + separator
         )
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: " + i + "\nOutput: " + o + seperator
+            prompt_examples += "Input: " + i + "\nOutput: " + o + separator
         before_pred = "The instruction was"
 
         prompt += context + prompt_examples + before_pred
