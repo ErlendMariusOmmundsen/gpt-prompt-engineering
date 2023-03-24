@@ -9,6 +9,7 @@ import tiktoken
 
 # Always use \n###\n as seperator between priming examples
 separator = "\n###\n"
+csv_msg_seperator = "\n----------\n"
 max_tokens = 4096
 
 @dataclass
@@ -100,6 +101,7 @@ class gpt3:
         # Up to 4 sequences where the API will stop generating further tokens.
         self.stop = None
 
+
     def get_config(self):
         return {
             "model": self.model,
@@ -111,14 +113,15 @@ class gpt3:
             "stop": self.stop,
         }
 
+
     def num_tokens_from_string(self, string: str) -> int:
         """Returns the number of tokens in a text string."""
         encoding = tiktoken.encoding_for_model(self.model)
         num_tokens = len(encoding.encode(string))
         return num_tokens
 
-    def completion(self, prompt):
-        print(self)
+
+    def completion(self, prompt) -> CompletionResponse:
         return openai.Completion.create(
             model=self.model,
             prompt=prompt,
@@ -132,43 +135,76 @@ class gpt3:
             stop=self.stop,
         )
 
-    def chat_completion(self, prompt):
-        print(self)
+
+    def chat_completion(self, messages) -> ChatResponse:
         return openai.ChatCompletion.create(
             model=self.model,
-            prompt=prompt,
+            messages=messages,
             temperature=self.temperature,
-            suffix=self.suffix,
             top_p=self.top_p,
             max_tokens=self.max_tokens,
             n=self.n,
             stream=self.stream,
-            logprobs=self.log_probs,
             stop=self.stop,
         )
 
-    def create_chat_messages(self, prompt, in_context: bool):
-        # message format:  {"role": "system", "content": "You are a helpful assistant."}
-        messages = []
-        if in_context:
-            messages = [
-                {
-                    "role": "user",
-                    "content": "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.",
-                }
-            ]
-            examples = prompt.split(separator)
-            for example in examples:
-                messages.append({"role": "user", "content": separator + example})
 
+    def create_chat_messages(self, prompt: str, text: str, approach: str) -> List[Message]:
+        messages = []
+        match approach:
+            case "in_context":
+                messages = [
+                    Message("user", "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.")
+                ]
+                examples = prompt.split(separator)
+                for example in examples:
+                    messages.append(Message(separator + example, "user"))
+                messages.append(Message("user", "Now summarize the following text: " + text))
+
+            case "follow_up_questions":
+                messages = [
+                    Message("system", "You are an expert at summarizing text."),
+                    Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points."),
+                    Message("user" , "This is the text I want you to summarize: " + text),
+                    Message("assistant", "Before summarizing, I will ask two questions about the text."),
+                    ]
         return messages
 
-    def current_summarize(self, text):
+
+    def follow_up_prediction(self, text:str) -> List[Message]:
+        messages = self.create_chat_messages("", text, "follow_up_questions")
+        final = "Now summarize the text into three subheadings with three corresponding bullet points. Be concise."
+        role = "user"
+        for i in range(3):
+            response = self.chat_completion(serialize_messages(messages)) 
+            message = response.choices[0].message
+            messages.append(Message(role, message.content))
+            role = "user" if role=="assistant" else "assistant" 
+        
+        messages.append(Message("user", final))
+        response = self.chat_completion(serialize_messages(messages))
+        messages.append(Message("assistant", response.choices[0].message.content))
+        return messages[4:]
+
+
+    def follow_up_predictions(self, text) -> DfDict:
+        temp = Template("Chat messages with follow_up_questions")
+        messages = self.follow_up_prediction(text)
+        return self.to_df_dict(temp, messages, "", 0, text)
+
+
+    def follow_up_pipe(self, text):
+        info_dict = self.follow_up_predictions(text)
+        self.save_df(info_dict, "follow-up.csv")
+
+
+    def current_summarize(self, text: str) -> CompletionResponse:
         current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
         response = self.completion(current_strategy + text)
         return response
 
-    def simple_sum(self, text):
+
+    def simple_sum(self, text: str):
         # Bullet points
         bullet_response = self.completion("Text: " + text + "\nBullet points:")
         # Heading
@@ -178,7 +214,10 @@ class gpt3:
 
         return heading_response, bullet_response
 
-    def in_context_prediction(self, inputs, outputs, text, useChat: bool):
+
+    def in_context_prediction(
+        self, inputs: List[str], outputs: List[str], text: str, useChat: bool
+    ) -> tuple[Template, CompletionResponse | ChatResponse] :
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
             prompt_examples += "Input: " + i + "\nOutput: " + o + separator
@@ -192,41 +231,62 @@ class gpt3:
         if not useChat:
             response = self.completion(prompt)
         else:
-            response = self.chat_completion(self.create_chat_messages(prompt, True))
+            response = self.chat_completion(
+                self.create_chat_messages(prompt, text, "in_context")
+            )
 
-        return temp.template, response
+        return temp, response
 
-    # Params: examples = [[input, input, ...], [output, output, ...]], text = to be summarized
-    def in_context_predictions(self, examples, text, num_examples):
+
+    def in_context_predictions(
+        self, examples: List[List[str]], text: str, num_examples: int, useChat=False
+    ) -> DfDict:
         # TODO: Select random num of examples?
         prompt_template, res = self.in_context_prediction(
-            examples[0][:num_examples], examples[1][:num_examples], text
+            examples[0][:num_examples], examples[1][:num_examples], text, useChat
         )
-        return self.to_info_dict(prompt_template, res, examples, num_examples, text)
+        return self.to_df_dict(prompt_template, res, examples, num_examples, text)
+
 
     # TODO: Add evaluation scores
-    def to_info_dict(self, prompt_template, response, examples, num_examples, text=""):
-        obj = {}
-        obj["prompt_template"] = prompt_template
-        obj["examples"] = examples
-        obj["num_examples"] = num_examples
-        obj["text"] = text
-        obj["prediction"] = response.choices[0].text
-        obj["finish_reason"] = response.choices[0].finish_reason
-        return obj
+    def to_df_dict(self, prompt_template:Template, response, examples: List[List[str]], num_examples: int, text="") -> DfDict:
+        if isinstance(response, CompletionResponse):
+            return DfDict(
+                prompt_template.template, 
+                examples, 
+                num_examples, 
+                text, 
+                response.choices[0].text,
+                response.choices[0].finish_reason
+            )
+        msg_text = ""
+        for m in response:
+            msg_text += m.role + ": " + m.content + csv_msg_seperator
 
-    def save_df(self, info_dict, path):
+        return DfDict(
+            prompt_template.template, 
+            examples, 
+            num_examples, 
+            text, 
+            msg_text,
+            ""
+        )
+        
+
+    def save_df(self, info_dict:DfDict, path:str):
         conf = self.get_config()
         data = []
         df = pd.DataFrame(
-            [[info_dict[key] for key in info_dict.keys()] + [conf]],
-            columns=[*list(info_dict.keys()), "config"],
+            [[getattr(info_dict, field.name) for field in fields(info_dict)] + [conf]],
+            columns=[*list(fields(info_dict)), "config"],
         )
         df.to_csv(path, mode="a", index=False, header=False)
 
-    def in_context_pipe(self, examples, text, num_examples):
-        info_dict = self.in_context_predictions(examples, text, num_examples)
+
+    def in_context_pipe(self, examples, text, num_examples, useChat=False):
+        info_dict = self.in_context_predictions(examples, text, num_examples, useChat)
         self.save_df(info_dict, "in-context.csv")
+
 
     def induce_instruction(self, inputs, outputs, num_examples):
         prompt = ""
@@ -242,15 +302,21 @@ class gpt3:
         prompt += context + prompt_examples + before_pred
         temp = Template("Context_setter *sep* example_pairs *sep* The instruction was")
 
-        return temp.template, self.completion(prompt)
+        return temp, self.completion(prompt)
 
-    def induce_instructions(self, examples, num_examples):
+
+    def induce_instructions(self, examples, num_examples)-> DfDict:
         # TODO: Select random num of examples?
         prompt_template, res = self.induce_instruction(
             examples[0][:num_examples], examples[1][:num_examples], 2
         )
-        return self.to_info_dict(prompt_template, res, examples, num_examples)
+        return self.to_df_dict(prompt_template, res, examples, num_examples)
+
 
     def induce_pipe(self, examples, num_examples):
         info_dict = self.induce_instructions(examples, num_examples)
         self.save_df(info_dict, "instruction-induction.csv")
+
+
+
+
