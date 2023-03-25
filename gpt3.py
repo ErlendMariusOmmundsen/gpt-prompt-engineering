@@ -6,70 +6,7 @@ import configparser
 import pandas as pd
 from string import Template
 import tiktoken
-
-# Always use \n###\n as seperator between priming examples
-separator = "\n###\n"
-csv_msg_seperator = "\n----------\n"
-max_tokens = 4096
-
-@dataclass
-class Message:
-    role:str
-    content: str
-
-    @property
-    def __dict__(self):
-        return asdict(self)
-    
-    
-    @property
-    def json(self):
-        return dumps(self.__dict__)
-
-@dataclass
-class ChatChoice:
-    index: int
-    message: Message
-    finish_reason: str
-
-@dataclass
-class CompletionChoice:
-    text: str
-    index: int
-    logprobs: object
-    finish_reason: str
-
-@dataclass
-class Usage:
-    completion_tokens: int
-    prompt_tokens: int
-    total_tokens: int
-
-@dataclass
-class ChatResponse:
-    id: str
-    object: str
-    created: int
-    choices: List[ChatChoice]
-    usage: Usage
-
-@dataclass
-class CompletionResponse:
-    id: str
-    object: str
-    created: int
-    model: str
-    choices: List[CompletionChoice]
-    usage: Usage
-
-@dataclass
-class DfDict:
-    prompt_template: str
-    examples: List[str]
-    num_examples: int
-    text: str
-    prediction: str
-    finish_reason: str
+from constants import SEPARATOR, CSV_MSG_SEPARATOR
 
 
 def serialize_messages(messages):
@@ -156,9 +93,9 @@ class gpt3:
                 messages = [
                     Message("user", "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.")
                 ]
-                examples = prompt.split(separator)
+                examples = prompt.split(SEPARATOR)
                 for example in examples:
-                    messages.append(Message(separator + example, "user"))
+                    messages.append(Message(SEPARATOR + example, "user"))
                 messages.append(Message("user", "Now summarize the following text: " + text))
 
             case "follow_up_questions":
@@ -220,7 +157,7 @@ class gpt3:
     ) -> tuple[Template, CompletionResponse | ChatResponse] :
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: " + i + "\nOutput: " + o + separator
+            prompt_examples += "Input: " + i + "\nOutput: " + o + SEPARATOR
         prompt_examples += "Input: " + text + "\nOutput:"
 
         temp = Template("Input: ${text} \nOutput:")
@@ -261,7 +198,7 @@ class gpt3:
             )
         msg_text = ""
         for m in response:
-            msg_text += m.role + ": " + m.content + csv_msg_seperator
+            msg_text += m.role + ": " + m.content + CSV_MSG_SEPARATOR
 
         return DfDict(
             prompt_template.template, 
@@ -292,11 +229,11 @@ class gpt3:
         prompt = ""
         context = (
             "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs:"
-            + separator
+            + SEPARATOR
         )
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: " + i + "\nOutput: " + o + separator
+            prompt_examples += "Input: " + i + "\nOutput: " + o + SEPARATOR
         before_pred = "The instruction was"
 
         prompt += context + prompt_examples + before_pred
