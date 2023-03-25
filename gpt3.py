@@ -7,6 +7,7 @@ import pandas as pd
 from string import Template
 import tiktoken
 from constants import SEPARATOR, CSV_MSG_SEPARATOR
+from dataclss import ChatResponse, CompletionResponse, DfDict, Message
 
 
 def serialize_messages(messages):
