@@ -1,10 +1,7 @@
-from gpt3 import gpt3
+from gpt import gpt
 import pandas as pd
-from nltk import word_tokenize
-import tiktoken
 
-
-gpt3Controller = gpt3()
+gptController = gpt()
 shots = pd.read_csv("shots.csv", encoding="ISO-8859-1")
 
 
@@ -31,7 +28,7 @@ It's been over 50 years since any human has traveled outside of Earth's orbit. T
 Thank you so much.
 (Applause)"""
 
-gpt3Controller.follow_up_pipe(test)
+gptController.follow_up_pipe(test)
 
 # print(gpt3Controller.current_summarize(test))
 # gpt3Controller.induce_pipe([inputs, outputs], 2)

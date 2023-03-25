@@ -1,15 +1,11 @@
+from dataclasses import dataclass
+from typing import List
+
+
 @dataclass
 class Message:
     role: str
     content: str
-
-    @property
-    def __dict__(self):
-        return asdict(self)
-
-    @property
-    def json(self):
-        return dumps(self.__dict__)
 
 
 @dataclass
@@ -56,7 +52,7 @@ class CompletionResponse:
 @dataclass
 class DfDict:
     prompt_template: str
-    examples: List[str]
+    examples: List[List[str]]
     num_examples: int
     text: str
     prediction: str

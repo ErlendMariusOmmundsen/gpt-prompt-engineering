@@ -1,19 +1,14 @@
+from dataclasses import fields
 from typing import List
-from dataclasses import dataclass, fields, asdict
-from json import dumps
 import openai
 import configparser
 import pandas as pd
 from string import Template
-import tiktoken
-from constants import SEPARATOR, CSV_MSG_SEPARATOR
+from constants import SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
+from utils import msg_to_dicts
 
-
-def serialize_messages(messages):
-    return [asdict(m) for m in messages]
-
-class gpt3:
+class gpt:
     def __init__(self):
         config = configparser.ConfigParser()
         config.read(".env")
@@ -28,7 +23,7 @@ class gpt3:
         # An alternative to sampling with temperature, called nucleus sampling, where the model considers the
         #    results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
         self.top_p = 1
-        self.max_tokens = 200
+        self.max_tokens = MAX_TOKENS_GPT3 if "3" in self.model else MAX_TOKENS_GPT4
         # How many completions to generate for each prompt.
         self.n = 1
         # Whether to stream back partial progress.
@@ -52,13 +47,6 @@ class gpt3:
         }
 
 
-    def num_tokens_from_string(self, string: str) -> int:
-        """Returns the number of tokens in a text string."""
-        encoding = tiktoken.encoding_for_model(self.model)
-        num_tokens = len(encoding.encode(string))
-        return num_tokens
-
-
     def completion(self, prompt) -> CompletionResponse:
         return openai.Completion.create(
             model=self.model,
@@ -71,7 +59,7 @@ class gpt3:
             stream=self.stream,
             logprobs=self.log_probs,
             stop=self.stop,
-        )
+        ) # type: ignore
 
 
     def chat_completion(self, messages) -> ChatResponse:
@@ -84,7 +72,41 @@ class gpt3:
             n=self.n,
             stream=self.stream,
             stop=self.stop,
+        ) # type: ignore
+
+
+    # TODO: Add evaluation scores
+    def to_df_dict(self, prompt_template:Template, response, examples: List[List[str]], num_examples: int, text="") -> DfDict:
+        if isinstance(response, CompletionResponse):
+            return DfDict(
+                prompt_template.template, 
+                examples, 
+                num_examples, 
+                text, 
+                response.choices[0].text,
+                response.choices[0].finish_reason
+            )
+        msg_text = ""
+        for m in response:
+            msg_text += m.role + ": " + m.content + CSV_MSG_SEPARATOR
+
+        return DfDict(
+            prompt_template.template, 
+            examples, 
+            num_examples, 
+            text, 
+            msg_text,
+            ""
         )
+        
+
+    def save_df(self, info_dict:DfDict, path:str):
+        conf = self.get_config()
+        df = pd.DataFrame(
+            [[getattr(info_dict, field.name) for field in fields(info_dict)] + [conf]],
+            columns=[*list(fields(info_dict)), "config"],
+        )
+        df.to_csv(path, mode="a", index=False, header=False)
 
 
     def create_chat_messages(self, prompt: str, text: str, approach: str) -> List[Message]:
@@ -114,13 +136,13 @@ class gpt3:
         final = "Now summarize the text into three subheadings with three corresponding bullet points. Be concise."
         role = "user"
         for i in range(3):
-            response = self.chat_completion(serialize_messages(messages)) 
+            response = self.chat_completion(msg_to_dicts(messages)) 
             message = response.choices[0].message
             messages.append(Message(role, message.content))
             role = "user" if role=="assistant" else "assistant" 
         
         messages.append(Message("user", final))
-        response = self.chat_completion(serialize_messages(messages))
+        response = self.chat_completion(msg_to_dicts(messages))
         messages.append(Message("assistant", response.choices[0].message.content))
         return messages[4:]
 
@@ -128,7 +150,7 @@ class gpt3:
     def follow_up_predictions(self, text) -> DfDict:
         temp = Template("Chat messages with follow_up_questions")
         messages = self.follow_up_prediction(text)
-        return self.to_df_dict(temp, messages, "", 0, text)
+        return self.to_df_dict(temp, messages, [[]], 0, text)
 
 
     def follow_up_pipe(self, text):
@@ -185,40 +207,6 @@ class gpt3:
         )
         return self.to_df_dict(prompt_template, res, examples, num_examples, text)
 
-
-    # TODO: Add evaluation scores
-    def to_df_dict(self, prompt_template:Template, response, examples: List[List[str]], num_examples: int, text="") -> DfDict:
-        if isinstance(response, CompletionResponse):
-            return DfDict(
-                prompt_template.template, 
-                examples, 
-                num_examples, 
-                text, 
-                response.choices[0].text,
-                response.choices[0].finish_reason
-            )
-        msg_text = ""
-        for m in response:
-            msg_text += m.role + ": " + m.content + CSV_MSG_SEPARATOR
-
-        return DfDict(
-            prompt_template.template, 
-            examples, 
-            num_examples, 
-            text, 
-            msg_text,
-            ""
-        )
-        
-
-    def save_df(self, info_dict:DfDict, path:str):
-        conf = self.get_config()
-        data = []
-        df = pd.DataFrame(
-            [[getattr(info_dict, field.name) for field in fields(info_dict)] + [conf]],
-            columns=[*list(fields(info_dict)), "config"],
-        )
-        df.to_csv(path, mode="a", index=False, header=False)
 
 
     def in_context_pipe(self, examples, text, num_examples, useChat=False):
