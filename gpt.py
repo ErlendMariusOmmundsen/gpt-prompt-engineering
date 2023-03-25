@@ -4,7 +4,7 @@ import openai
 import configparser
 import pandas as pd
 from string import Template
-from constants import SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4
+from constants import SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4, IN_CONTEXT_TEMPLATE, FOLLOW_UP_TEMPLATE, INDUCE_TEMPLATE, TOPIC_TEMPLATE
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
 from utils import msg_to_dicts
 
@@ -76,7 +76,7 @@ class gpt:
 
 
     # TODO: Add evaluation scores
-    def to_df_dict(self, prompt_template:Template, response, examples: List[List[str]], num_examples: int, text="") -> DfDict:
+    def to_df_dict(self, prompt_template:Template, response, examples: List[List[str]]=[[]], num_examples: int=0, text="") -> DfDict:
         if isinstance(response, CompletionResponse):
             return DfDict(
                 prompt_template.template, 
@@ -148,7 +148,7 @@ class gpt:
 
 
     def follow_up_predictions(self, text) -> DfDict:
-        temp = Template("Chat messages with follow_up_questions")
+        temp = FOLLOW_UP_TEMPLATE
         messages = self.follow_up_prediction(text)
         return self.to_df_dict(temp, messages, [[]], 0, text)
 
@@ -158,7 +158,7 @@ class gpt:
         self.save_df(info_dict, "follow-up.csv")
 
 
-    def current_summarize(self, text: str) -> CompletionResponse:
+    def current_sum(self, text: str) -> CompletionResponse:
         current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
         response = self.completion(current_strategy + text)
         return response
@@ -174,16 +174,29 @@ class gpt:
 
         return heading_response, bullet_response
 
+    
+    def topic_sum(self, text: str, topic:str) -> CompletionResponse:
+        prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise."
+        prompt += SEPARATOR + "Topic: " + topic + "\n"
+        prompt += "Text: " + text + '\n'
+        prompt += "Summary:"
+
+        return self.completion(prompt)
+
+
+    def topic_pipe(self, text, topic):
+        info_dict = self.to_df_dict(TOPIC_TEMPLATE, self.topic_sum(text, topic), text=text)
+        self.save_df(info_dict, "in-context.csv")
+        
 
     def in_context_prediction(
         self, inputs: List[str], outputs: List[str], text: str, useChat: bool
-    ) -> tuple[Template, CompletionResponse | ChatResponse] :
+    ) ->  CompletionResponse | ChatResponse :
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
             prompt_examples += "Input: " + i + "\nOutput: " + o + SEPARATOR
         prompt_examples += "Input: " + text + "\nOutput:"
 
-        temp = Template("Input: ${text} \nOutput:")
         prompt = prompt_examples + "Input: " + text + "\nOutput:"
 
         response = {}
@@ -195,17 +208,17 @@ class gpt:
                 self.create_chat_messages(prompt, text, "in_context")
             )
 
-        return temp, response
+        return response
 
 
     def in_context_predictions(
         self, examples: List[List[str]], text: str, num_examples: int, useChat=False
     ) -> DfDict:
         # TODO: Select random num of examples?
-        prompt_template, res = self.in_context_prediction(
+        res = self.in_context_prediction(
             examples[0][:num_examples], examples[1][:num_examples], text, useChat
         )
-        return self.to_df_dict(prompt_template, res, examples, num_examples, text)
+        return self.to_df_dict(IN_CONTEXT_TEMPLATE, res, examples, num_examples, text)
 
 
 
@@ -226,23 +239,21 @@ class gpt:
         before_pred = "The instruction was"
 
         prompt += context + prompt_examples + before_pred
-        temp = Template("Context_setter *sep* example_pairs *sep* The instruction was")
 
-        return temp, self.completion(prompt)
+        return self.completion(prompt)
 
 
     def induce_instructions(self, examples, num_examples)-> DfDict:
         # TODO: Select random num of examples?
-        prompt_template, res = self.induce_instruction(
+        res = self.induce_instruction(
             examples[0][:num_examples], examples[1][:num_examples], 2
         )
-        return self.to_df_dict(prompt_template, res, examples, num_examples)
+        return self.to_df_dict(INDUCE_TEMPLATE, res, examples, num_examples)
 
 
     def induce_pipe(self, examples, num_examples):
         info_dict = self.induce_instructions(examples, num_examples)
         self.save_df(info_dict, "instruction-induction.csv")
-
 
 
 
