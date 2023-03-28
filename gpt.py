@@ -4,9 +4,9 @@ import openai
 import configparser
 import pandas as pd
 from string import Template
-from constants import SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4, IN_CONTEXT_TEMPLATE, FOLLOW_UP_TEMPLATE, INDUCE_TEMPLATE, TOPIC_TEMPLATE
+from constants import PERSONA_TEMPLATE, SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4, IN_CONTEXT_TEMPLATE, FOLLOW_UP_TEMPLATE, INDUCE_TEMPLATE, TOPIC_TEMPLATE
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
-from utils import msg_to_dicts
+from utils import msg_to_dicts, num_tokens_from_string
 
 class gpt:
     def __init__(self):
@@ -47,7 +47,7 @@ class gpt:
         }
 
 
-    def completion(self, prompt) -> CompletionResponse:
+    def completion(self, prompt: str) -> CompletionResponse:
         return openai.Completion.create(
             model=self.model,
             prompt=prompt,
@@ -63,12 +63,16 @@ class gpt:
 
 
     def chat_completion(self, messages) -> ChatResponse:
+        msg_dicts = msg_to_dicts(messages)
+        a = 40
+        for msg in messages:
+            a += num_tokens_from_string(msg.content, self.model)
         return openai.ChatCompletion.create(
             model=self.model,
-            messages=messages,
+            messages=msg_dicts,
             temperature=self.temperature,
             top_p=self.top_p,
-            max_tokens=self.max_tokens,
+            max_tokens=self.max_tokens - a,
             n=self.n,
             stream=self.stream,
             stop=self.stop,
@@ -99,13 +103,16 @@ class gpt:
             ""
         )
         
-
-    def save_df(self, info_dict:DfDict, path:str):
+    def dict_to_df(self, info_dict:DfDict):
         conf = self.get_config()
         df = pd.DataFrame(
             [[getattr(info_dict, field.name) for field in fields(info_dict)] + [conf]],
             columns=[*list(fields(info_dict)), "config"],
         )
+        return df
+
+    def save_df(self, info_dict:DfDict, path:str):
+        df = self.dict_to_df(info_dict)
         df.to_csv(path, mode="a", index=False, header=False)
 
 
@@ -115,7 +122,7 @@ class gpt:
             case "in_context":
                 messages = [
                     Message("user", "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.")
-                ]
+                    ]
                 examples = prompt.split(SEPARATOR)
                 for example in examples:
                     messages.append(Message(SEPARATOR + example, "user"))
@@ -123,11 +130,30 @@ class gpt:
 
             case "follow_up_questions":
                 messages = [
-                    Message("system", "You are an expert at summarizing text."),
-                    Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points."),
-                    Message("user" , "This is the text I want you to summarize: " + text),
+                    Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
+                    Message("user" , "Text: " + text),
                     Message("assistant", "Before summarizing, I will ask two questions about the text."),
                     ]
+
+            case "persona":
+                messages = [
+                    Message("system", prompt),
+                    Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
+                    Message("user" , "Text: " + text),
+                    ]
+
+            case "kitchen-sink":
+                messages = [
+                    Message("system", prompt),
+                    Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points."),
+                    # Message("user" , "Text: " + text),
+                    Message("user", "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.")
+                ]
+                examples = prompt.split(SEPARATOR)
+                for example in examples:
+                    messages.append(Message(SEPARATOR + example, "user"))
+                messages.append(Message("assistant", "Before summarizing, I will ask two questions about the text."))
+                    
         return messages
 
 
@@ -135,7 +161,7 @@ class gpt:
         messages = self.create_chat_messages("", text, "follow_up_questions")
         final = "Now summarize the text into three subheadings with three corresponding bullet points. Be concise."
         role = "user"
-        for i in range(3):
+        for _ in range(3):
             response = self.chat_completion(msg_to_dicts(messages)) 
             message = response.choices[0].message
             messages.append(Message(role, message.content))
@@ -221,13 +247,12 @@ class gpt:
         return self.to_df_dict(IN_CONTEXT_TEMPLATE, res, examples, num_examples, text)
 
 
-
-    def in_context_pipe(self, examples, text, num_examples, useChat=False):
+    def in_context_pipe(self, examples: List[List[str]], text: str, num_examples: int, useChat=False):
         info_dict = self.in_context_predictions(examples, text, num_examples, useChat)
         self.save_df(info_dict, "in-context.csv")
 
 
-    def induce_instruction(self, inputs, outputs, num_examples):
+    def induce_instruction(self, inputs: List[str], outputs: List[str]):
         prompt = ""
         context = (
             "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs:"
@@ -243,17 +268,61 @@ class gpt:
         return self.completion(prompt)
 
 
-    def induce_instructions(self, examples, num_examples)-> DfDict:
+    def induce_instructions(self, examples: List[List[str]], num_examples: int)-> DfDict:
         # TODO: Select random num of examples?
-        res = self.induce_instruction(
-            examples[0][:num_examples], examples[1][:num_examples], 2
-        )
+        res = self.induce_instruction(examples[0][:num_examples], examples[1][:num_examples])
         return self.to_df_dict(INDUCE_TEMPLATE, res, examples, num_examples)
 
 
-    def induce_pipe(self, examples, num_examples):
+    def induce_pipe(self, examples: List[List[str]], num_examples: int):
         info_dict = self.induce_instructions(examples, num_examples)
         self.save_df(info_dict, "instruction-induction.csv")
 
+    # TODO: Map topics to experts or professions
+    def generate_persona_context(self, topic):
+        return "You are Elon Musk."
+
+    def persona_summarize(self, text:str, persona_context_setter: str, useChat: bool):
+        strings = [persona_context_setter, 
+                   "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.",
+                   "Text: " + text + '\n',
+                   "Summary:"]
+
+        if not useChat:
+            prompt = "" 
+            for s in strings:
+                prompt += s
+
+            return self.completion(prompt)
+
+        else:
+            messages = self.create_chat_messages(persona_context_setter, text, "persona")
+            response = self.chat_completion(messages)
+            messages[-1].content = "This is the text I want you to summarize: *text*"
+            messages.append(response.choices[0].message)
+
+            
+            return messages
 
 
+    def persona_summarizations(self, text: str, persona_context: str, useChat:bool = False, num_predictions: int = 1):
+        info_dict = self.to_df_dict(PERSONA_TEMPLATE, self.persona_summarize(text, persona_context, useChat), text=text)
+        df = self.dict_to_df(info_dict)
+        
+        for _ in range(num_predictions-1):
+            info_dict = self.to_df_dict(PERSONA_TEMPLATE, self.persona_summarize(text, persona_context, useChat))
+            df = pd.concat([df, self.dict_to_df(info_dict)])
+        return info_dict
+
+
+    def persona_pipe(self, text: str, topic: str, useChat: bool=True):
+        if not useChat:
+            self.model = "text-davinci-003"
+        persona_context = self.generate_persona_context(topic)
+        info_dict = self.persona_summarizations(text, persona_context, useChat)
+        self.save_df(info_dict, "persona.csv")
+
+
+
+
+       
