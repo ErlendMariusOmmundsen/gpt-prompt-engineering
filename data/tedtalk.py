@@ -111,6 +111,9 @@ def extract_transcript(pg_url):
     try:
         # text = soup.find(id='__NEXT_DATA__').contents[0]
         text = soup.find(type="application/ld+json").contents[0]
+
+        topics_list = soup.find("aside").find("ul").getText(",")
+        # print(text)
         transcript = json.loads(text)["transcript"]
         transcript = html.unescape(transcript)
 
@@ -132,6 +135,7 @@ def extract_transcript(pg_url):
         transcript = np.nan
         duration = np.nan
         upload_date = np.nan
+        topics_list = np.nan
 
     title_str = str(soup.find("title"))
     try:
@@ -139,15 +143,7 @@ def extract_transcript(pg_url):
     except:
         speaker = np.nan
 
-    return (
-        title,
-        topic_tags[0],
-        speaker,
-        description,
-        transcript,
-        duration,
-        upload_date,
-    )
+    return (title, topics_list, speaker, description, transcript, duration, upload_date)
 
 
 def make_transcript_dataframe(url_list):
@@ -174,7 +170,7 @@ def make_transcript_dataframe(url_list):
 
         (
             title,
-            topic,
+            topics_list,
             speaker,
             description,
             transcript,
@@ -183,7 +179,7 @@ def make_transcript_dataframe(url_list):
         ) = extract_transcript(url)
 
         titles.append(title)
-        topics.append(topic)
+        topics.append(topics_list)
         speakers.append(speaker)
         descriptions.append(description)
         transcripts.append(transcript)
@@ -198,7 +194,7 @@ def make_transcript_dataframe(url_list):
     df = pd.DataFrame(
         {
             "title": titles,
-            "topic": topics,
+            "topics": topics,
             "speaker": speakers,
             "description": descriptions,
             "transcript": transcripts,
