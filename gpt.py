@@ -162,13 +162,13 @@ class gpt:
         final = "Now summarize the text into three subheadings with three corresponding bullet points. Be concise."
         role = "user"
         for _ in range(3):
-            response = self.chat_completion(msg_to_dicts(messages)) 
+            response = self.chat_completion(messages) 
             message = response.choices[0].message
             messages.append(Message(role, message.content))
             role = "user" if role=="assistant" else "assistant" 
         
         messages.append(Message("user", final))
-        response = self.chat_completion(msg_to_dicts(messages))
+        response = self.chat_completion(messages)
         messages.append(Message("assistant", response.choices[0].message.content))
         return messages[4:]
 
