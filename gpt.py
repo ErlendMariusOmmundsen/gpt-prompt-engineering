@@ -279,8 +279,12 @@ class gpt:
         self.save_df(info_dict, "instruction-induction.csv")
 
     # TODO: Map topics to experts or professions
-    def generate_persona_context(self, topic):
-        return "You are Elon Musk."
+    def generate_persona_context(self, topics):
+        topic_list = topics.split(",")
+        topic_str = ""
+        for t in topic_list:
+            topic_str += t + ", "
+        return "You are an expert in the following topics: " + topic_str + "."
 
     def persona_summarize(self, text:str, persona_context_setter: str, useChat: bool):
         strings = [persona_context_setter, 
