@@ -131,7 +131,7 @@ class gpt:
             case "follow_up_questions":
                 messages = [
                     Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
-                    Message("user" , "Text: " + text),
+                    Message("user" , "Text:###\n" + text + "\n###"),
                     Message("assistant", "Before summarizing, I will ask two questions about the text."),
                     ]
 
@@ -139,7 +139,7 @@ class gpt:
                 messages = [
                     Message("system", prompt),
                     Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
-                    Message("user" , "Text: " + text),
+                    Message("user" , "Text:###\n" + text + "\n###"),
                     ]
 
             case "kitchen-sink":
@@ -192,19 +192,19 @@ class gpt:
 
     def simple_sum(self, text: str):
         # Bullet points
-        bullet_response = self.completion("Text: " + text + "\nBullet points:")
+        bullet_response = self.completion("Text: ###\n" + text + SEPARATOR + "Bullet points:")
         # Heading
         heading_response = self.completion(
-            "Text: " + text + "\nHeading:",
+            "Text: ###\n" + text + SEPARATOR + "Heading:",
         )
 
         return heading_response, bullet_response
 
     
     def topic_sum(self, text: str, topic:str) -> CompletionResponse:
-        prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise."
-        prompt += SEPARATOR + "Topic: " + topic + "\n"
-        prompt += "Text: " + text + '\n'
+        prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.\n"
+        prompt += "Topic: ###\n" + topic + SEPARATOR
+        prompt += "Text: ###\n" + text + SEPARATOR
         prompt += "Summary:"
 
         return self.completion(prompt)
@@ -218,12 +218,10 @@ class gpt:
     def in_context_prediction(
         self, inputs: List[str], outputs: List[str], text: str, useChat: bool
     ) ->  CompletionResponse | ChatResponse :
-        prompt_examples = ""
+        prompt = ""
         for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: " + i + "\nOutput: " + o + SEPARATOR
-        prompt_examples += "Input: " + text + "\nOutput:"
-
-        prompt = prompt_examples + "Input: " + text + "\nOutput:"
+            prompt += "Input: ###\n" + i + SEPARATOR + "Output: ###\n" + o + SEPARATOR
+        prompt += "Input: ###\n" + text + SEPARATOR + "Output:"
 
         response = {}
 
@@ -255,12 +253,11 @@ class gpt:
     def induce_instruction(self, inputs: List[str], outputs: List[str]):
         prompt = ""
         context = (
-            "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs:"
-            + SEPARATOR
+            "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
         )
         prompt_examples = ""
         for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: " + i + "\nOutput: " + o + SEPARATOR
+            prompt_examples += "Input: ###\n" + i + SEPARATOR + "Output: ###\n" + o + SEPARATOR
         before_pred = "The instruction was"
 
         prompt += context + prompt_examples + before_pred
@@ -278,18 +275,17 @@ class gpt:
         info_dict = self.induce_instructions(examples, num_examples)
         self.save_df(info_dict, "instruction-induction.csv")
 
-    # TODO: Map topics to experts or professions
     def generate_persona_context(self, topics):
         topic_list = topics.split(",")
         topic_str = ""
         for t in topic_list:
             topic_str += t + ", "
-        return "You are an expert in the following topics: " + topic_str + "."
+        return "You are an expert in the following topics: ###\n" + topic_str + ".\n###"
 
     def persona_summarize(self, text:str, persona_context_setter: str, useChat: bool):
         strings = [persona_context_setter, 
                    "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.",
-                   "Text: " + text + '\n',
+                   "Text: ###\n" + text + '\n###',
                    "Summary:"]
 
         if not useChat:
