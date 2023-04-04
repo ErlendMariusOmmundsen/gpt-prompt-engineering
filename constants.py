@@ -2,7 +2,8 @@
 from string import Template
 
 
-SEPARATOR = "\n###\n"
+SEPARATOR = "\n###"
+PRIMING_SEPARATOR = "\n###\n"
 CSV_MSG_SEPARATOR = "\n----------\n"
 MAX_TOKENS_GPT3 = 4096
 MAX_TOKENS_GPT4 = 8192

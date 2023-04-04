@@ -4,11 +4,11 @@ import openai
 import configparser
 import pandas as pd
 from string import Template
-from constants import IMPROVE_TEMPLATE, PERSONA_TEMPLATE, SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4, IN_CONTEXT_TEMPLATE, FOLLOW_UP_TEMPLATE, INDUCE_TEMPLATE, TOPIC_TEMPLATE
+from constants import IMPROVE_TEMPLATE, PERSONA_TEMPLATE, SEPARATOR, PRIMING_SEPARATOR, CSV_MSG_SEPARATOR, MAX_TOKENS_GPT3, MAX_TOKENS_GPT4, IN_CONTEXT_TEMPLATE, FOLLOW_UP_TEMPLATE, INDUCE_TEMPLATE, TOPIC_TEMPLATE
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
-from utils import msg_to_dicts, num_tokens_from_string
+from utils import msg_to_dicts, num_tokens_from_messages
 
-class gpt:
+class Gpt:
     def __init__(self):
         config = configparser.ConfigParser()
         config.read(".env")
@@ -65,15 +65,13 @@ class gpt:
 
     def chat_completion(self, messages) -> ChatResponse:
         msg_dicts = msg_to_dicts(messages)
-        a = 40
-        for msg in messages:
-            a += num_tokens_from_string(msg.content, self.model)
+        num_tokens = num_tokens_from_messages(messages, self.model)
         return openai.ChatCompletion.create(
             model=self.chat_model,
             messages=msg_dicts,
             temperature=self.temperature,
             top_p=self.top_p,
-            max_tokens=self.max_tokens - a,
+            max_tokens=self.max_tokens - num_tokens,
             n=self.n,
             stream=self.stream,
             stop=self.stop,
@@ -117,22 +115,23 @@ class gpt:
         df.to_csv(path, mode="a", index=False, header=False)
 
 
+    # TODO: Add "example_user" and "example_assistant" to the prompts with examples
     def create_chat_messages(self, prompt: str, text: str, approach: str) -> List[Message]:
         messages = []
         match approach:
             case "in_context":
                 messages = [
-                    Message("user", "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.")
+                    Message("user", "I want you to summarize a text. Here are some representative examples of how to summarize a text.")
                     ]
-                examples = prompt.split(SEPARATOR)
+                examples = prompt.split(PRIMING_SEPARATOR)
                 for example in examples:
-                    messages.append(Message(SEPARATOR + example, "user"))
-                messages.append(Message("user", "Now summarize the following text: " + text))
+                    messages.append(Message(example, "user"))
+                messages.append(Message("user", "Now summarize the following text:" + SEPARATOR + text + SEPARATOR))
 
             case "follow_up_questions":
                 messages = [
                     Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
-                    Message("user" , "Text:###\n" + text + "\n###"),
+                    Message("user" , "Text:" + SEPARATOR + text + SEPARATOR),
                     Message("assistant", "Before summarizing, I will ask two questions about the text."),
                     ]
 
@@ -140,15 +139,34 @@ class gpt:
                 messages = [
                     Message("system", prompt),
                     Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
-                    Message("user" , "Text:###\n" + text + "\n###"),
+                    Message("user" , "Text:" + SEPARATOR + text + SEPARATOR),
                     ]
             
             case "improve":
                 messages = [
                     Message("user", "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise."),
-                    Message("user" , "Text:###\n" + text + "\n###"),
+                    Message("user" , "Text:" + SEPARATOR + text + SEPARATOR),
                 ]
 
+            case "important_parts":
+                messages = [
+                    Message("user", "Find all important parts of the following text."),
+                    Message("user" , "Text:" + SEPARATOR + text + SEPARATOR),
+                ]
+            
+            case "summarize_important_parts":
+                messages = [
+                    Message("user", "Here is a text and its important parts. Summarize the text into three subheadings with three corresponding bullet points."),
+                    Message("user" , "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user" , "Important parts:" + SEPARATOR + prompt + SEPARATOR),
+                ]
+            
+            case "induce":
+                messages = [
+                    Message("user", prompt),
+                ]
+
+            # TODO: Update this
             case "kitchen-sink":
                 messages = [
                     Message("system", prompt),
@@ -158,13 +176,13 @@ class gpt:
                 ]
                 examples = prompt.split(SEPARATOR)
                 for example in examples:
-                    messages.append(Message(SEPARATOR + example, "user"))
+                    messages.append(Message(SEPARATOR + example + SEPARATOR, "user"))
                 messages.append(Message("assistant", "Before summarizing, I will ask two questions about the text."))
                     
         return messages
 
 
-    def follow_up_call(self, text:str) -> List[Message]:
+    def follow_up_completion(self, text:str) -> List[Message]:
         messages = self.create_chat_messages("", text, "follow_up_questions")
         final = "Now summarize the text into three subheadings with three corresponding bullet points. Be concise."
         role = "user"
@@ -181,13 +199,8 @@ class gpt:
 
 
     def follow_up_summarization(self, text) -> DfDict:
-        messages = self.follow_up_call(text)
+        messages = self.follow_up_completion(text)
         return self.to_df_dict(FOLLOW_UP_TEMPLATE, messages, [[]], 0, text)
-
-
-    def follow_up_pipe(self, text):
-        info_dict = self.follow_up_summarization(text)
-        self.save_df(info_dict, "follow-up.csv")
 
 
     def current_sum(self, text: str) -> CompletionResponse:
@@ -197,40 +210,41 @@ class gpt:
 
 
     def zero_shot_completion(self, text: str):
-        # Bullet points
-        bullet_response = self.completion("Text: ###\n" + text + SEPARATOR + "Bullet points:")
         # Heading
         heading_response = self.completion(
-            "Text: ###\n" + text + SEPARATOR + "Heading:",
+            "Text:" + SEPARATOR + text + SEPARATOR + 
+            "\n\nThree subheadings:",
         )
-
+        # Bullet points
+        bullet_response = self.completion(
+            "Text:" + SEPARATOR + text + SEPARATOR + 
+            "\n\nSubheadings:" + SEPARATOR + heading_response.choices[0].text + SEPARATOR + 
+            "\n\nBullet points:"
+        )
         return heading_response, bullet_response
 
     
     def topic_completion(self, text: str, topic:str) -> CompletionResponse:
-        prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.\n"
-        prompt += "Topic: ###\n" + topic + SEPARATOR
-        prompt += "Text: ###\n" + text + SEPARATOR
-        prompt += "Summary:"
+        prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise."
+        prompt += "\n\nTopic:" + SEPARATOR + topic + SEPARATOR
+        prompt += "\n\nText:" + SEPARATOR + text + SEPARATOR
+        prompt += "\n\nSummary:"
 
         return self.completion(prompt)
 
-
-    def topic_pipe(self, text, topic):
-        info_dict = self.to_df_dict(TOPIC_TEMPLATE, self.topic_completion(text, topic), text=text)
-        self.save_df(info_dict, "in-context.csv")
-        
 
     def in_context_completion(
         self, inputs: List[str], outputs: List[str], text: str, useChat: bool
     ) ->  CompletionResponse | ChatResponse :
         prompt = ""
         for i, o in zip(inputs, outputs):
-            prompt += "Input: ###\n" + i + SEPARATOR + "Output: ###\n" + o + SEPARATOR
-        prompt += "Input: ###\n" + text + SEPARATOR + "Output:"
+            prompt += (
+                "Input: " + i +  
+                "\nOutput:" + o + PRIMING_SEPARATOR
+            )
+        prompt += "Input:" + text + "\n" + "Output:"
 
         response = {}
-
         if not useChat:
             response = self.completion(prompt)
         else:
@@ -250,34 +264,34 @@ class gpt:
         return self.to_df_dict(IN_CONTEXT_TEMPLATE, res, examples, num_examples, text)
 
 
-    def in_context_pipe(self, examples: List[List[str]], text: str, num_examples: int, useChat=False):
-        info_dict = self.in_context_prediction(examples, text, num_examples, useChat)
-        self.save_df(info_dict, "in-context.csv")
-
-
-    def induce_completion(self, inputs: List[str], outputs: List[str]):
-        prompt = ""
+    def induce_completion(self, inputs: List[str], outputs: List[str], useChat=False):
         context = (
             "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
         )
-        prompt_examples = ""
-        for i, o in zip(inputs, outputs):
-            prompt_examples += "Input: ###\n" + i + SEPARATOR + "Output: ###\n" + o + SEPARATOR
-        before_pred = "The instruction was"
+        if not useChat:
+            prompt = ""
+            prompt_examples = ""
+            for i, o in zip(inputs, outputs):
+                prompt_examples += "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR
+            before_pred = "The instruction was"
 
-        prompt += context + prompt_examples + before_pred
+            prompt += context + prompt_examples + before_pred
 
-        return self.completion(prompt)
+            return self.completion(prompt)
+        
+        else:
+            messages = self.create_chat_messages(context, "", "induce") 
+            for i, o in zip(inputs, outputs):
+                messages.append(Message("user", "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR))
+            messages.append(Message("user", "What was the instruction?"))
+            
+            return self.chat_completion(messages)
 
 
     def induce_instruction(self, examples: List[List[str]], num_examples: int)-> DfDict:
         res = self.induce_completion(examples[0][:num_examples], examples[1][:num_examples])
         return self.to_df_dict(INDUCE_TEMPLATE, res, examples, num_examples)
 
-
-    def induce_pipe(self, examples: List[List[str]], num_examples: int):
-        info_dict = self.induce_instruction(examples, num_examples)
-        self.save_df(info_dict, "instruction-induction.csv")
 
     def generate_persona_context(self, topics):
         topic_list = topics.split(",")
@@ -305,7 +319,6 @@ class gpt:
             messages[-1].content = "This is the text I want you to summarize: *text*"
             messages.append(response.choices[0].message)
 
-            
             return messages
 
 
@@ -314,12 +327,6 @@ class gpt:
         return info_dict
 
 
-    def persona_pipe(self, text: str, topics: List[str], useChat: bool=True):
-        persona_context = self.generate_persona_context(topics)
-        info_dict = self.persona_summarization(text, persona_context, useChat)
-        self.save_df(info_dict, "persona.csv")
-    
-    
     def improve_completion(self, text: str, useChat: bool=True):
         prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.\n"
         prompt += "Text: ###\n" + text + SEPARATOR
@@ -337,7 +344,7 @@ class gpt:
             messages = self.create_chat_messages(prompt, text, "improve")
             response_msg = self.chat_completion(messages).choices[0].message
             messages.append(Message(response_msg.role, response_msg.content))
-            messages.append(Message("user" , "I am not satisfied with the summary. Please improve it using three subheadings and three bullet points for each subheading. Be concise."))
+            messages.append(Message("user" , "I am not satisfied with the summary. Please improve it using three subheadings with three corresponding bullet points. Be concise."))
             response_msg = self.chat_completion(messages).choices[0].message
             messages.append(Message(response_msg.role, response_msg.content))
             
@@ -347,10 +354,34 @@ class gpt:
         info_dict = self.to_df_dict(IMPROVE_TEMPLATE, self.improve_completion(text, useChat), text=text)
         return info_dict
 
+    def important_parts_completion(self, text: str, useChat:bool = False):
+        if not useChat:
+            prompt = "Find all important parts of the following text.\n"
+            prompt += "Text: ###\n" + text + SEPARATOR
+            prompt += "Important parts:"
+            important_parts = self.completion(prompt).choices[0].text
+            
+            prompt = "Here is a text and its important parts. Please improve the important parts.\n"
+            prompt += "Text:" + SEPARATOR + text + SEPARATOR + "\n\n"
+            prompt += "Important parts:" + SEPARATOR + important_parts + SEPARATOR
+            important_parts = self.completion(prompt).choices[0].text
 
-    def improve_pipe(self, text: str, useChat: bool=True):
-        info_dict = self.improve_summarization(text, useChat)
-        self.save_df(info_dict, "improve.csv")
+            prompt = "Here is a text and its important parts. Summarize the content into a three subheadings with three corresponding bullet points.\n"
+            prompt += "Text:" + SEPARATOR + text + SEPARATOR + "\n\n"
+            prompt += "Important parts:" + SEPARATOR + important_parts + SEPARATOR
+            response = self.completion(prompt).choices[0].text
+
+            return response
+        
+        else:
+            messages = self.create_chat_messages("", text, "important_parts")
+            messages.append(self.chat_completion(messages).choices[0].message)
+            messages.append(Message("user", "I am not satisfied with the important parts. Please improve them."))
+            important_parts = self.chat_completion(messages).choices[0].message
+
+            final_messages = self.create_chat_messages(important_parts.content, text, "summarize_important_parts")
+
+            return self.chat_completion(final_messages).choices[0].message
 
 
        
