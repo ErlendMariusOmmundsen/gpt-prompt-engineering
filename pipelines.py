@@ -71,3 +71,27 @@ def improve_pipe(
     info_dict = evaluator.evaluate_dict(info_dict, reference)
     gpt.save_df(info_dict, "improve.csv")
 
+
+def briefness_pipe(
+    gpt: Gpt,
+    evaluator: Evaluator,
+    text: str,
+    reference: str = "",
+):
+    bullet_max_length = 100  # TODO: change this
+    subheading_max_length = 100  # TODO: change this
+    # Without words that are potentially rude
+    length_modifiers = [
+        "brief",
+        "short",
+        "shortened",
+        "abbreviated",
+        "abridged",
+        "curtailed",
+        "less than " + str(bullet_max_length) + " characters long",
+    ]
+    for modifier in length_modifiers:
+        for _ in range(10):
+            info_dict = gpt.briefness_summarize(text, modifier)
+            info_dict = evaluator.evaluate_dict(info_dict, reference)
+            gpt.save_df(info_dict, "briefness.csv")
