@@ -95,3 +95,48 @@ def briefness_pipe(
             info_dict = gpt.briefness_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
             gpt.save_df(info_dict, "briefness.csv")
+
+quality_modifiers = [
+    "articulate",
+    "eloquent",
+    "well-written",
+    "well-put",
+    "well-expressed",
+    "well-stated",
+]
+
+flow_modifier = []
+
+structure_modifiers = [
+    "well-constructed",
+    "well-organized",
+    "well-arranged",
+    "well-ordered",
+    "well-structured",
+    "well-phrased",
+    "well-worded",
+    "well-composed",
+]
+
+# Words contained: marked by the use of few words to convey much information or meaning
+dense_modifiers = [
+    "compendious",
+    "concise",
+    "succinct",
+    "pithy",
+    "terse",
+    "epigrammatic",
+    "telegraphic",
+    "condensed",
+    "crisp",
+    "aphoristic",
+    "compact",
+    "monosyllabic",
+    "laconic",
+    "sententious",
+    "elliptical",
+    "elliptic",
+    "apothegmatic",
+    "significant",
+    "well-turned",
+]

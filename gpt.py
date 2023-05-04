@@ -567,5 +567,3 @@ class Gpt:
             text=text,
         )
         return info_dict
-
-
