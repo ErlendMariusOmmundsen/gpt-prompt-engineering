@@ -78,8 +78,8 @@ def briefness_pipe(
     text: str,
     reference: str = "",
 ):
-    bullet_max_length = 100  # TODO: change this
-    subheading_max_length = 100  # TODO: change this
+    bullet_max_length = 45
+    subheading_max_length = 40
     # Without words that are potentially rude
     length_modifiers = [
         "brief",
@@ -95,6 +95,7 @@ def briefness_pipe(
             info_dict = gpt.briefness_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
             gpt.save_df(info_dict, "briefness.csv")
+
 
 quality_modifiers = [
     "articulate",
