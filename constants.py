@@ -18,3 +18,4 @@ INDUCE_TEMPLATE = Template(
 )
 TOPIC_TEMPLATE = Template("${Context_setter} Topic: ${topic} Text: ${text} \nSummary:")
 PERSONA_TEMPLATE = Template("${Context_setter} ${prompt} Text: ${text}\n")
+REPEAT_TEMPLATE = Template("${Prompt} Text: ${text} ${Prompt}")
