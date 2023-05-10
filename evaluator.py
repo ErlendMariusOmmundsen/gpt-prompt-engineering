@@ -2,6 +2,7 @@ import language_tool_python
 from nltk import word_tokenize, sent_tokenize
 import matplotlib.pyplot as plt
 from rouge_score import rouge_scorer, scoring
+from allennlp.predictors.predictor import Predictor
 
 # import rouge_scorer
 import bert_score
@@ -62,9 +63,21 @@ class Evaluator:
 
         return p, r, f1, mean
 
-    def textual_entailment(self):
-        pass
-
+    def textual_entailment(self, text: str, summary: str):
+        predictor = Predictor.from_path(
+            "https://storage.googleapis.com/allennlp-public-models/mnli-roberta-large-2020.05.13.tar.gz",
+            predictor_name="textual-entailment",
+        )
+        splits = summary.split("\n")
+        splits.remove(splits[0])
+        splits.remove(splits[4])
+        splits.remove(splits[8])
+        premise = "It's a cat."
+        hypothesis = "It's Monday."
+        preds = predictor.predict_json({"premise": premise, "hypothesis": hypothesis})
+        # TODO: return category ratio after testing
+        print(preds)
+        return 0.0
 
     def evaluate_dict(self, info_dict: DfDict, reference: str = ""):
         if reference != "":
@@ -74,7 +87,12 @@ class Evaluator:
             info_dict.rogue_L = rogue_scores["rougeLsum"].fmeasure
             p, r, f1, mean = self.bert_score(reference, info_dict.prediction)
             info_dict.bert_score = float(mean)
-        
-        info_dict.avg_error_count_score = self.avg_error_count_score(info_dict.prediction)
+            info_dict.entailment_ratio = self.textual_entailment(
+                info_dict.prediction, reference
+            )
+
+        info_dict.avg_error_count_score = self.avg_error_count_score(
+            info_dict.prediction
+        )
 
         return info_dict

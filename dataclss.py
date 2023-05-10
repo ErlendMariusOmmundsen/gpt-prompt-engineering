@@ -62,3 +62,4 @@ class DfDict:
     rogue_2: float = 0.0
     rogue_L: float = 0.0
     avg_error_count_score: float = 0.0
+    entailment_ratio: float = 0.0
