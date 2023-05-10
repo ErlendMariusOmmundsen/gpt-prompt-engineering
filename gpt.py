@@ -260,7 +260,7 @@ class Gpt:
                     ),
                 ]
 
-            case "briefness_test":
+            case "briefness":
                 messages = [
                     Message(
                         "user",
@@ -273,6 +273,19 @@ class Gpt:
                     ),
                 ]
 
+            case "shorten_as_possible":
+                shorten_modifier = "Shorten the answer as possible."
+                messages = [
+                    Message(
+                        "user",
+                        "Summarize the following text into three subheadings with three corresponding bullet points."
+                        + SEPARATOR
+                        + text
+                        + SEPARATOR
+                        + "\n"
+                        + shorten_modifier,
+                    )
+                ]
             # TODO: Update this
             case "kitchen-sink":
                 messages = [
@@ -555,15 +568,15 @@ class Gpt:
     def repeat_completion(self, text: str, useChat: bool = False):
         pass
 
-    def briefness_test_completion(self, text: str, modifier: str):
-        messages = self.create_chat_messages(modifier, text, "briefness_test")
+    def briefness_completion(self, text: str, modifier: str):
+        messages = self.create_chat_messages(modifier, text, "briefness")
 
         return self.chat_completion(messages).choices[0].message
 
     def briefness_summarize(self, text: str, modifier: str):
         info_dict = self.to_df_dict(
             Template(modifier),
-            self.briefness_test_completion(text, modifier),
+            self.briefness_completion(text, modifier),
             text=text,
         )
         return info_dict

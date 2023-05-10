@@ -3,10 +3,16 @@ from constants import TOPIC_TEMPLATE
 from gpt import Gpt
 from evaluator import Evaluator
 from bert_score import BERTScorer
+from dataclss import Message
+from string import Template
 
 
 summarizer = Gpt()
 evaluator = Evaluator()
+
+num_examples = 10
+bullet_max_length = 45
+subheading_max_length = 40
 
 bert_scorer = BERTScorer(lang="en", rescale_with_baseline=True)
 print(bert_scorer.score("As soon as you can.", "As soon as you can."))
@@ -72,29 +78,42 @@ def improve_pipe(
     gpt.save_df(info_dict, "improve.csv")
 
 
+# Without words that are potentially rude
+length_modifiers = [
+    "brief",
+    "short",
+    "shortened",
+    "abbreviated",
+    "abridged",
+    "curtailed",
+    "less than " + str(bullet_max_length) + " characters long",
+]
+
+
 def briefness_pipe(
     gpt: Gpt,
     evaluator: Evaluator,
     text: str,
     reference: str = "",
 ):
-    bullet_max_length = 45
-    subheading_max_length = 40
-    # Without words that are potentially rude
-    length_modifiers = [
-        "brief",
-        "short",
-        "shortened",
-        "abbreviated",
-        "abridged",
-        "curtailed",
-        "less than " + str(bullet_max_length) + " characters long",
-    ]
     for modifier in length_modifiers:
-        for _ in range(10):
+        for _ in range(num_examples):
             info_dict = gpt.briefness_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
             gpt.save_df(info_dict, "briefness.csv")
+
+    messages = gpt.create_chat_messages("", text, "shorten_as_possible")
+
+    # Shorten as possible
+    for _ in range(num_examples):
+        result = gpt.chat_completion(messages).choices[0].message
+        info_dict = gpt.to_df_dict(
+            Template("shorten_as_possible"),
+            result,
+            text=text,
+        )
+        info_dict = evaluator.evaluate_dict(info_dict, reference)
+        gpt.save_df(info_dict, "briefness.csv")
 
 
 quality_modifiers = [
