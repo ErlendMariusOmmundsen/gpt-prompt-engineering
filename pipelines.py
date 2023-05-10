@@ -78,6 +78,14 @@ def improve_pipe(
     gpt.save_df(info_dict, "improve.csv")
 
 
+def repeat_pipe(
+    gpt: Gpt, evaluator: Evaluator, text: str, useChat: bool = True, reference: str = ""
+):
+    info_dict = gpt.repeat_summarization(text, useChat)
+    info_dict = evaluator.evaluate_dict(info_dict, reference)
+    gpt.save_df(info_dict, "repeat.csv")
+
+
 # Without words that are potentially rude
 length_modifiers = [
     "brief",

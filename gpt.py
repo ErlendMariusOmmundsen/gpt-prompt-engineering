@@ -7,6 +7,7 @@ from string import Template
 from constants import (
     IMPROVE_TEMPLATE,
     PERSONA_TEMPLATE,
+    REPEAT_TEMPLATE,
     SEPARATOR,
     PRIMING_SEPARATOR,
     CSV_MSG_SEPARATOR,
@@ -286,6 +287,20 @@ class Gpt:
                         + shorten_modifier,
                     )
                 ]
+
+            case "repeat":
+                messages = [
+                    Message(
+                        "user",
+                        "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.",
+                    ),
+                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message(
+                        "user",
+                        "Summarize the text into three subheadings with three corresponding bullet points. Be concise.",
+                    ),
+                ]
+
             # TODO: Update this
             case "kitchen-sink":
                 messages = [
@@ -566,7 +581,17 @@ class Gpt:
             return self.chat_completion(messages).choices[0].message
 
     def repeat_completion(self, text: str, useChat: bool = False):
-        pass
+        messages = self.create_chat_messages("", text, "repeat")
+
+        return self.chat_completion(messages).choices[0].message
+
+    def repeat_summarization(self, text: str, useChat: bool = False):
+        info_dict = self.to_df_dict(
+            REPEAT_TEMPLATE,
+            self.repeat_completion(text, useChat),
+            text=text,
+        )
+        return info_dict
 
     def briefness_completion(self, text: str, modifier: str):
         messages = self.create_chat_messages(modifier, text, "briefness")
