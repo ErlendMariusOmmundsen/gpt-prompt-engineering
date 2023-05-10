@@ -269,7 +269,7 @@ class Gpt:
                         + SEPARATOR
                         + text
                         + SEPARATOR
-                        + "\nThe bullet points and subheadings should be"
+                        + "\nThe bullet points and subheadings should be "
                         + prompt,
                     ),
                 ]
@@ -285,6 +285,19 @@ class Gpt:
                         + SEPARATOR
                         + "\n"
                         + shorten_modifier,
+                    )
+                ]
+
+            case "quality":
+                messages = [
+                    Message(
+                        "user",
+                        "Summarize the following text into three subheadings with three corresponding bullet points."
+                        + SEPARATOR
+                        + text
+                        + SEPARATOR
+                        + "\nThe bullet points and subheadings should be "
+                        + prompt,
                     )
                 ]
 
@@ -602,6 +615,19 @@ class Gpt:
         info_dict = self.to_df_dict(
             Template(modifier),
             self.briefness_completion(text, modifier),
+            text=text,
+        )
+        return info_dict
+
+    def quality_completion(self, text: str, modifier: str):
+        messages = self.create_chat_messages(modifier, text, "quality")
+
+        return self.chat_completion(messages).choices[0].message
+
+    def quality_summarize(self, text: str, modifier: str):
+        info_dict = self.to_df_dict(
+            Template(modifier),
+            self.quality_completion(text, modifier),
             text=text,
         )
         return info_dict

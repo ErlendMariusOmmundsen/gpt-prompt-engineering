@@ -97,6 +97,29 @@ length_modifiers = [
     "less than " + str(bullet_max_length) + " characters long",
 ]
 
+# Words contained: marked by the use of few words to convey much information or meaning
+dense_modifiers = [
+    "compendious",
+    "concise",
+    "succinct",
+    "pithy",
+    "terse",
+    "epigrammatic",
+    "telegraphic",
+    "condensed",
+    "crisp",
+    "aphoristic",
+    "compact",
+    "monosyllabic",
+    "laconic",
+    "sententious",
+    "elliptical",
+    "elliptic",
+    "apothegmatic",
+    "significant",
+    "well-turned",
+]
+
 
 def briefness_pipe(
     gpt: Gpt,
@@ -123,6 +146,12 @@ def briefness_pipe(
         info_dict = evaluator.evaluate_dict(info_dict, reference)
         gpt.save_df(info_dict, "briefness.csv")
 
+    for modifier in dense_modifiers:
+        for _ in range(num_examples):
+            info_dict = gpt.briefness_summarize(text, modifier)
+            info_dict = evaluator.evaluate_dict(info_dict, reference)
+            gpt.save_df(info_dict, "dense.csv")
+
 
 quality_modifiers = [
     "articulate",
@@ -132,8 +161,6 @@ quality_modifiers = [
     "well-expressed",
     "well-stated",
 ]
-
-flow_modifier = []
 
 structure_modifiers = [
     "well-constructed",
@@ -146,25 +173,21 @@ structure_modifiers = [
     "well-composed",
 ]
 
-# Words contained: marked by the use of few words to convey much information or meaning
-dense_modifiers = [
-    "compendious",
-    "concise",
-    "succinct",
-    "pithy",
-    "terse",
-    "epigrammatic",
-    "telegraphic",
-    "condensed",
-    "crisp",
-    "aphoristic",
-    "compact",
-    "monosyllabic",
-    "laconic",
-    "sententious",
-    "elliptical",
-    "elliptic",
-    "apothegmatic",
-    "significant",
-    "well-turned",
-]
+
+def quality_pipe(
+    gpt: Gpt,
+    evaluator: Evaluator,
+    text: str,
+    reference: str = "",
+):
+    for modifier in quality_modifiers:
+        for _ in range(num_examples):
+            info_dict = gpt.quality_summarize(text, modifier)
+            info_dict = evaluator.evaluate_dict(info_dict, reference)
+            gpt.save_df(info_dict, "quality.csv")
+
+    for modifier in structure_modifiers:
+        for _ in range(num_examples):
+            info_dict = gpt.quality_summarize(text, modifier)
+            info_dict = evaluator.evaluate_dict(info_dict, reference)
+            gpt.save_df(info_dict, "structure.csv")
