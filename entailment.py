@@ -1,155 +1,258 @@
-from huggingface_hub import login
-from datasets import load_dataset, ClassLabel
+# https://github.com/dh1105/Sentence-Entailment/blob/main/Sentence_Entailment_BERT.ipynb
+
+
 import torch
-from torch.nn.utils.rnn import pad_sequence
-from torch.utils.data import Dataset, TensorDataset, DataLoader
-from transformers import AutoTokenizer
-import evaluate
-import numpy as np
-from transformers import (
-    AutoModelForSequenceClassification,
-    TrainingArguments,
-    Trainer,
-    pipeline,
-    DataCollatorWithPadding,
+from torch.utils.data import DataLoader
+from transformers import BertForSequenceClassification, BertTokenizer, AdamW, Trainer
+from sklearn.metrics import classification_report
+from datasets import load_dataset, ClassLabel
+
+import pandas as pd
+import re
+import torch
+
+# import torch_xla
+# import torch_xla.core.xla_model as xm
+from torch.utils.data import (
+    Dataset,
+    TensorDataset,
+    DataLoader,
+    SequentialSampler,
+    RandomSampler,
 )
+from torch.nn.utils.rnn import pad_sequence
 
-from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobServiceClient
+# from keras.preprocessing.sequence import pad_sequences
+import pickle
+import os
+import numpy as np
+import configparser
+from huggingface_hub import login
 
 
-# login(token="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")
-rte = imdb = load_dataset("EndMO/rte")
+config = configparser.ConfigParser()
+config.read(".env")
+huggingface_token = config["keys"]["HUGGINGFACE_KEY"]
+login(token=huggingface_token)
+rte = load_dataset("EndMO/rte")
 
-print(rte["train"][0])
 
-dicts = [{key: value[i] for key, value in rte.items()} for i in range(len(rte))]
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
 
-tokenizer = AutoTokenizer.from_pretrained("allenai/longformer-base-4096")
+
 id2label = {0: "not_entailment", 1: "entailment"}
 label2id = {"not_entailment": 0, "entailment": 1}
 
-rte.cast_column(
-    "label", ClassLabel(num_classes=2, names=["not_entailment", "entailment"])
-)
 
-print(rte["train"][0])
-
-
-def preprocess(split):
-    MAX_LEN = 4096
-    token_ids = []
-    mask_ids = []
-    seg_ids = []
-    y = []
-    premise_list = [
-        value.get("premise") for value in rte[split].select_columns("premise")
-    ]
-    hypothesis_list = [
+def get_splits(split):
+    premises = [value.get("premise") for value in rte[split].select_columns("premise")]
+    hypotheses = [
         value.get("hypothesis") for value in rte[split].select_columns("hypothesis")
     ]
-    label_list = [value.get("label") for value in rte[split].select_columns("label")]
+    labels = [value.get("label") for value in rte[split].select_columns("label")]
+    return premises, hypotheses, labels
 
-    for premise, hypothesis, label in zip(premise_list, hypothesis_list, label_list):
-        premise_id = tokenizer.encode(premise, add_special_tokens=False)
-        hypothesis_id = tokenizer.encode(hypothesis, add_special_tokens=False)
-        pair_token_ids = (
-            [tokenizer.cls_token_id]
-            + premise_id
-            + [tokenizer.sep_token_id]
-            + hypothesis_id
-            + [tokenizer.sep_token_id]
+
+class EntailmentData(Dataset):
+    def __init__(self):
+        self.label_dict = {"not_entailment": 0, "entailment": 1}
+
+        self.base_path = "/content/"
+        self.tokenizer = BertTokenizer.from_pretrained(
+            "bert-base-uncased", do_lower_case=True
         )
-        premise_len = len(premise_id)
-        hypothesis_len = len(hypothesis_id)
+        self.train_data = None
+        self.val_data = None
+        self.init_data()
 
-        segment_ids = torch.tensor(
-            [0] * (premise_len + 2) + [1] * (hypothesis_len + 1)
-        )  # sentence 0 and sentence 1
-        attention_mask_ids = torch.tensor(
-            [1] * (premise_len + hypothesis_len + 3)
-        )  # mask padded values
+    def init_data(self):
+        self.train_data = self.load_data("train")
+        self.val_data = self.load_data("validation")
 
-        token_ids.append(torch.tensor(pair_token_ids))
-        seg_ids.append(segment_ids)
-        mask_ids.append(attention_mask_ids)
-        y.append(label2id[label])
+    def load_data(self, split):
+        MAX_LEN = 512
+        token_ids = []
+        mask_ids = []
+        seg_ids = []
+        y = []
 
-    token_ids = pad_sequence(token_ids, batch_first=True)
-    mask_ids = pad_sequence(mask_ids, batch_first=True)
-    seg_ids = pad_sequence(seg_ids, batch_first=True)
-    y = torch.tensor(y)
-    dataset = TensorDataset(token_ids, mask_ids, seg_ids, y)
-    print(len(dataset))
-    return dataset
+        premises, hypotheses, labels = get_splits(split)
+
+        for premise, hypothesis, label in zip(premises, hypotheses, labels):
+            premise_id = self.tokenizer.encode(premise, add_special_tokens=False)
+            hypothesis_id = self.tokenizer.encode(hypothesis, add_special_tokens=False)
+            pair_token_ids = (
+                [self.tokenizer.cls_token_id]
+                + premise_id
+                + [self.tokenizer.sep_token_id]
+                + hypothesis_id
+                + [self.tokenizer.sep_token_id]
+            )
+            premise_len = len(premise_id)
+            hypothesis_len = len(hypothesis_id)
+
+            segment_ids = torch.tensor(
+                [0] * (premise_len + 2) + [1] * (hypothesis_len + 1)
+            )  # sentence 0 and sentence 1
+            attention_mask_ids = torch.tensor(
+                [1] * (premise_len + hypothesis_len + 3)
+            )  # mask padded values
+
+            token_ids.append(torch.tensor(pair_token_ids))
+            seg_ids.append(segment_ids)
+            mask_ids.append(attention_mask_ids)
+            y.append(self.label_dict[label])
+
+        token_ids = pad_sequence(token_ids, batch_first=True)
+        mask_ids = pad_sequence(mask_ids, batch_first=True)
+        seg_ids = pad_sequence(seg_ids, batch_first=True)
+        y = torch.tensor(y)
+        dataset = TensorDataset(token_ids, mask_ids, seg_ids, y)
+        print(len(dataset))
+        return dataset
+
+    def get_data_loaders(self, batch_size=32, shuffle=True):
+        train_loader = DataLoader(
+            self.train_data, shuffle=shuffle, batch_size=batch_size
+        )
+
+        val_loader = DataLoader(self.val_data, shuffle=shuffle, batch_size=batch_size)
+
+        return train_loader, val_loader
 
 
-# tokenized_rte_train = preprocess("train")
-# tokenized_rte_validate = preprocess("validation")
+entailmentdata = EntailmentData()
 
+train_loader, val_loader = entailmentdata.get_data_loaders(batch_size=16)
 
-def tokenize_function(examples):
-    return tokenizer(
-        examples["premise"],
-        examples["hypothesis"],
-        padding="max_length",
-        truncation=True,
-        max_length=4096,
-    )
-
-
-tokenized_dataset = rte.map(tokenize_function, batched=True)
-
-
-data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
-
-accuracy = evaluate.load("accuracy")
-
-# print(tokenized_dataset.__getitem__(1))
-
-
-def compute_metrics(eval_pred):
-    predictions, labels = eval_pred
-    predictions = np.argmax(predictions, axis=1)
-    return accuracy.compute(predictions=predictions, references=labels)
-
-
-model = AutoModelForSequenceClassification.from_pretrained(
-    "allenai/longformer-base-4096", num_labels=2, id2label=id2label, label2id=label2id
+model = BertForSequenceClassification.from_pretrained(
+    "bert-base-uncased",
+    num_labels=2,
+    id2label=id2label,
+    label2id=label2id,
 )
-
-training_args = TrainingArguments(
-    output_dir="my_awesome_model",
-    learning_rate=2e-5,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=16,
-    num_train_epochs=2,
-    weight_decay=0.01,
-    evaluation_strategy="epoch",
-    save_strategy="epoch",
-    load_best_model_at_end=True,
-    push_to_hub=True,
-)
-
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_dataset["train"],
-    eval_dataset=tokenized_dataset["validation"],
-    tokenizer=tokenizer,
-    data_collator=data_collator,
-    compute_metrics=compute_metrics,
-)
-
-trainer.train()
-trainer.push_to_hub()
+model.to(device)
 
 
-# text = "This was a masterpiece. Not completely faithful to the books, but enthralling from beginning to end. Might be my favorite of the three."
+param_optimizer = list(model.named_parameters())
+no_decay = ["bias", "gamma", "beta"]
+optimizer_grouped_parameters = [
+    {
+        "params": [
+            p for n, p in param_optimizer if not any(nd in n for nd in no_decay)
+        ],
+        "weight_decay_rate": 0.01,
+    },
+    {
+        "params": [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
+        "weight_decay_rate": 0.0,
+    },
+]
+
+# This variable contains all of the hyperparemeter information our training loop needs
+optimizer = AdamW(optimizer_grouped_parameters, lr=2e-5, correct_bias=False)
 
 
-# classifier = pipeline("sentiment-analysis", model="stevhliu/my_awesome_model")
-# classifier(text)
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-# classifier = pipeline("sentiment-analysis", model="stevhliu/my_awesome_model")
-# classifier(text)
+
+print(f"The model has {count_parameters(model):,} trainable parameters")
+
+
+def multi_acc(y_pred, y_test):
+    acc = (
+        torch.log_softmax(y_pred, dim=1).argmax(dim=1) == y_test
+    ).sum().float() / float(y_test.size(0))
+    return acc
+
+
+import time
+
+EPOCHS = 5
+
+
+def train(model, train_loader, val_loader, optimizer):
+    total_step = len(train_loader)
+
+    for epoch in range(EPOCHS):
+        start = time.time()
+        model.train()
+        total_train_loss = 0
+        total_train_acc = 0
+        for batch_idx, (pair_token_ids, mask_ids, seg_ids, y) in enumerate(
+            train_loader
+        ):
+            optimizer.zero_grad()
+            pair_token_ids = pair_token_ids.to(device)
+            mask_ids = mask_ids.to(device)
+            seg_ids = seg_ids.to(device)
+            labels = y.to(device)
+            # prediction = model(pair_token_ids, mask_ids, seg_ids)
+            loss, prediction = model(
+                pair_token_ids,
+                token_type_ids=seg_ids,
+                attention_mask=mask_ids,
+                labels=labels,
+            ).values()
+
+            # loss = criterion(prediction, labels)
+            acc = multi_acc(prediction, labels)
+
+            loss.backward()
+            optimizer.step()
+
+            total_train_loss += loss.item()
+            total_train_acc += acc.item()
+
+        train_acc = total_train_acc / len(train_loader)
+        train_loss = total_train_loss / len(train_loader)
+        model.eval()
+        total_val_acc = 0
+        total_val_loss = 0
+        with torch.no_grad():
+            for batch_idx, (pair_token_ids, mask_ids, seg_ids, y) in enumerate(
+                val_loader
+            ):
+                optimizer.zero_grad()
+                pair_token_ids = pair_token_ids.to(device)
+                mask_ids = mask_ids.to(device)
+                seg_ids = seg_ids.to(device)
+                labels = y.to(device)
+
+                # prediction = model(pair_token_ids, mask_ids, seg_ids)
+                loss, prediction = model(
+                    pair_token_ids,
+                    token_type_ids=seg_ids,
+                    attention_mask=mask_ids,
+                    labels=labels,
+                ).values()
+
+                # loss = criterion(prediction, labels)
+                acc = multi_acc(prediction, labels)
+
+                total_val_loss += loss.item()
+                total_val_acc += acc.item()
+
+        val_acc = total_val_acc / len(val_loader)
+        val_loss = total_val_loss / len(val_loader)
+        end = time.time()
+        hours, rem = divmod(end - start, 3600)
+        minutes, seconds = divmod(rem, 60)
+
+        print(
+            f"Epoch {epoch+1}: train_loss: {train_loss:.4f} train_acc: {train_acc:.4f} | val_loss: {val_loss:.4f} val_acc: {val_acc:.4f}"
+        )
+        print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds))
+
+    return model
+
+
+model = train(model, train_loader, val_loader, optimizer)
+
+# Save the model
+model.save_pretrained("model")
+
+trainer = Trainer(model=model, tokenizer=entailmentdata.tokenizer)
+trainer.push_to_hub("text-entailment-bert")
