@@ -51,16 +51,17 @@ class CompletionResponse:
 
 @dataclass
 class DfDict:
-    prompt_template: str
-    examples: List[List[str]]
-    num_examples: int
-    text: str
-    prediction: str
-    finish_reason: str
+    prompt_template: str = ""
+    examples: List[List[str]] = None
+    num_examples: int = 0
+    text: str = ""
+    prediction: str = ""
+    finish_reason: str = ""
     bert_score: float = 0.0
     rogue_1: float = 0.0
     rogue_2: float = 0.0
     rogue_L: float = 0.0
     slor: float = 0.0
     avg_error_count_score: float = 0.0
-    entailment_ratio: float = 0.0
+    contradiction_ratio: float = 0.0
+    neutral_contradiction_ratio: float = 0.0
