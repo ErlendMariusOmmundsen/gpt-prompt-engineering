@@ -1,15 +1,20 @@
-from gpt import gpt
+from gpt import Gpt
+from evaluator import Evaluator
 import pandas as pd
+from dataclss import DfDict
+from unicodedata import normalize
 
-gptController = gpt()
-shots = pd.read_csv("shots.csv", encoding="ISO-8859-1")
+gptController = Gpt()
+# shots = pd.read_csv("shots.csv", encoding="ISO-8859-1")
+
+evaluator = Evaluator()
 
 
 inputs = ["As soon as you can.", "Sorry I messed up."]
 outputs = ["At you earliest convenience.", "I apologize for my wrongdoings."]
 
-inputs = shots["transcript"]
-outputs = shots["summary"]
+# inputs = shots["transcript"]
+# outputs = shots["summary"]
 
 test = """Let's imagine together we've gone on an eight-month journey and arrived to the planet Mars. Yes, Mars. Somehow we'll have to figure out how to build protective and durable structures to shield us against solar radiation, galactic cosmic rays and extreme temperatures swings. On a Mars mission, there's only so much that we can bring with us from Earth. And it's prohibitively expensive to launch tons and tons of construction materials into space.
 So to realize a pioneering habitat that progressively grows, adapts and expands into a permanent outpost, we have to think differently about how we build. These habitats and the robots that build them will enable humanity to thrive off-world.
@@ -28,7 +33,40 @@ It's been over 50 years since any human has traveled outside of Earth's orbit. T
 Thank you so much.
 (Applause)"""
 
-gptController.follow_up_pipe(test)
+# gptController.follow_up_pipe(test)
+
+summary_df = pd.read_csv("data/manual_summaries.csv")
+transcript = summary_df.iloc[1]["transcript"]
+transcript = transcript.replace("\n\n", " ")
+golden_summary = normalize("NFKD", summary_df.iloc[1]["summary"])
+golden_summary = golden_summary.replace("\n\n", " ")
+golden_summary = golden_summary.replace("\n", ". ")
+
+d = DfDict()
+d.text = normalize("NFKD", transcript)
+
+
+my_summary = """Buildings from the perspective of energy
+Commonly built without considering design, comfort and energy usage
+Responsible for 1/3 of total energy consumption
+90% of todays buildings will still be in use by 2050
+Efficient, electrified, prosumer buildings
+Efficiency through better materials, design and appliances
+Replace fossil fuel dependence with electricity from renewable sources
+Prosumer buildings operating with at least net zero of energy
+Reaching climate targets with smarter buildings and grids
+Smart grids handles decentralized energy generation with distributed storage and building communication
+Virtual power plants optimize electricity consumption and production
+The already existing technology calls for new policies and investments"""
+
+
+my_summary = my_summary.replace("\n", ". ")
+d.prediction = my_summary
+
+
+evaluation = evaluator.evaluate_dict(d, golden_summary)
+
+print(evaluation)
 
 # print(gpt3Controller.current_summarize(test))
 # gpt3Controller.induce_pipe([inputs, outputs], 2)
