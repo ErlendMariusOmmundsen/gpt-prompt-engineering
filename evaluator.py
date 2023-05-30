@@ -3,10 +3,11 @@ from nltk import word_tokenize, sent_tokenize
 import matplotlib.pyplot as plt
 from rouge_score import rouge_scorer, scoring
 from allennlp.predictors.predictor import Predictor
-
-# import rouge_scorer
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from tqdm import tqdm
+import torch
+import rouge_scorer
 import bert_score
-
 from dataclss import DfDict
 
 
@@ -19,6 +20,14 @@ class Evaluator:
             "en-US"
         )  # use a remote server (automatically set up), language English
         self.b_scorer = bert_score.BERTScorer(lang="en", rescale_with_baseline=True)
+        self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        self.tokenizer = AutoTokenizer.from_pretrained("bigscience/bloom")
+        self.model = AutoModelForCausalLM.from_pretrained(
+            "bigscience/bloom",
+            device_map="auto",
+            torch_dtype="auto",
+            output_hidden_states=True,
+        ).to(self.device)
 
     def rogue(self, reference, candidate):
         """
@@ -79,6 +88,52 @@ class Evaluator:
         print(preds)
         return 0.0
 
+    # Changed from perplexity calculation: https://huggingface.co/docs/transformers/perplexity
+
+    def sentProb(self, sent):
+        encodings = self.tokenizer(sent, return_tensors="pt")
+        max_length = model.config.max_position_embeddings
+        stride = 512
+
+        seq_len = encodings.input_ids.size(1)
+
+        nlls = []
+        prev_end_loc = 0
+        sentProb = 0
+        for begin_loc in tqdm(range(0, seq_len, stride)):
+            end_loc = min(begin_loc + max_length, seq_len)
+            trg_len = (
+                end_loc - prev_end_loc
+            )  # may be different from stride on last loop
+            input_ids = encodings.input_ids[:, begin_loc:end_loc].to(device)
+            target_ids = input_ids.clone()
+            target_ids[:, :-trg_len] = -100
+
+            with torch.no_grad():
+                outputs = model(input_ids)
+                # https://stackoverflow.com/a/64796860/15557377
+                action_logits = outputs.logits
+                probs = torch.softmax(outputs.logits, dim=-1)
+                for tensor in probs[0]:
+                    prob = torch.max(tensor)
+                    sentProb += prob
+
+                # Sum of all actions will equal the length of input as all distributions for each word prediction sum to 1
+                # == print(len(torch.softmax(outputs.logits, dim = -1)[0])))
+                # print(torch.softmax(outputs.logits, dim = -1))
+        sentLen = len(sent)
+        sentProb = sentProb / sentLen
+        return sentProb
+
+    def slor(self, sent):
+        sentP = self.sentProb(sent)
+        sumWordProb = 1
+        ids = self.tokenizer.encode(sent.lower())
+        tokens = self.tokenizer.convert_ids_to_tokens(ids)
+        for token in tokens:
+            sumWordProb = sumWordProb * self.sentProb(token)
+        return 1 / len(tokens) * (torch.log(sentP) - torch.log(sumWordProb))
+
     def evaluate_dict(self, info_dict: DfDict, reference: str = ""):
         if reference != "":
             rogue_scores = self.rogue(reference, info_dict.prediction)
@@ -90,6 +145,7 @@ class Evaluator:
             info_dict.entailment_ratio = self.textual_entailment(
                 info_dict.prediction, reference
             )
+            info_dict.slor = self.slor(info_dict.prediction)
 
         info_dict.avg_error_count_score = self.avg_error_count_score(
             info_dict.prediction
