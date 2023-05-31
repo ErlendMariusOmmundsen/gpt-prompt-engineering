@@ -14,14 +14,11 @@ num_examples = 10
 bullet_max_length = 45
 subheading_max_length = 40
 
-bert_scorer = BERTScorer(lang="en", rescale_with_baseline=True)
-print(bert_scorer.score("As soon as you can.", "As soon as you can."))
-
 
 def follow_up_pipe(gpt: Gpt, evaluator: Evaluator, text: str, reference: str = ""):
     info_dict = gpt.follow_up_summarization(text)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "follow-up.csv")
+    gpt.save_df(info_dict, "results/follow-up.csv")
 
 
 def topic_pipe(
@@ -32,7 +29,7 @@ def topic_pipe(
     )
     info_dict = evaluator.evaluate_dict(info_dict, reference)
 
-    gpt.save_df(info_dict, "in-context.csv")
+    gpt.save_df(info_dict, "results/in-context.csv")
 
 
 def in_context_pipe(
@@ -46,14 +43,14 @@ def in_context_pipe(
 ):
     info_dict = gpt.in_context_prediction(examples, text, num_examples, useChat)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "in-context.csv")
+    gpt.save_df(info_dict, "results/in-context.csv")
 
 
 def induce_pipe(
     gpt: Gpt, evaluator: Evaluator, examples: List[List[str]], num_examples: int
 ):
     info_dict = gpt.induce_instruction(examples, num_examples)
-    gpt.save_df(info_dict, "instruction-induction.csv")
+    gpt.save_df(info_dict, "results/instruction-induction.csv")
 
 
 def persona_pipe(
@@ -67,7 +64,7 @@ def persona_pipe(
     persona_context = gpt.generate_persona_context(topics)
     info_dict = gpt.persona_summarization(text, persona_context, useChat)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "persona.csv")
+    gpt.save_df(info_dict, "results/persona.csv")
 
 
 def improve_pipe(
@@ -75,7 +72,7 @@ def improve_pipe(
 ):
     info_dict = gpt.improve_summarization(text, useChat)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "improve.csv")
+    gpt.save_df(info_dict, "results/improve.csv")
 
 
 def repeat_pipe(
@@ -83,7 +80,7 @@ def repeat_pipe(
 ):
     info_dict = gpt.repeat_summarization(text, useChat)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "repeat.csv")
+    gpt.save_df(info_dict, "results/repeat.csv")
 
 
 # Without words that are potentially rude
@@ -131,7 +128,7 @@ def briefness_pipe(
         for _ in range(num_examples):
             info_dict = gpt.briefness_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
-            gpt.save_df(info_dict, "briefness.csv")
+            gpt.save_df(info_dict, "results/briefness.csv")
 
     messages = gpt.create_chat_messages("", text, "shorten_as_possible")
 
@@ -144,13 +141,13 @@ def briefness_pipe(
             text=text,
         )
         info_dict = evaluator.evaluate_dict(info_dict, reference)
-        gpt.save_df(info_dict, "briefness.csv")
+        gpt.save_df(info_dict, "results/briefness.csv")
 
     for modifier in dense_modifiers:
         for _ in range(num_examples):
             info_dict = gpt.briefness_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
-            gpt.save_df(info_dict, "dense.csv")
+            gpt.save_df(info_dict, "results/dense.csv")
 
 
 quality_modifiers = [
@@ -184,10 +181,10 @@ def quality_pipe(
         for _ in range(num_examples):
             info_dict = gpt.quality_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
-            gpt.save_df(info_dict, "quality.csv")
+            gpt.save_df(info_dict, "results/quality.csv")
 
     for modifier in structure_modifiers:
         for _ in range(num_examples):
             info_dict = gpt.quality_summarize(text, modifier)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
-            gpt.save_df(info_dict, "structure.csv")
+            gpt.save_df(info_dict, "results/structure.csv")
