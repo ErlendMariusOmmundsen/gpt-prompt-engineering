@@ -112,14 +112,23 @@ class SLORer:
         sentProb = sentProb / sentLen
         return sentProb
 
-    def slor(self, sent):
+    def sent_slor(self, sent):
         sentP = self.sentProb(sent)
         sumWordProb = 1
         ids = self.tokenizer.encode(sent.lower())
         tokens = self.tokenizer.convert_ids_to_tokens(ids)
         for token in tokens:
             sumWordProb = sumWordProb * self.sentProb(token)
-        return 1 / len(tokens) * (torch.log(sentP) - torch.log(sumWordProb))
+        return (1 / len(tokens) * (torch.log(sentP) - torch.log(sumWordProb))).item()
+
+    def slor(self, text):
+        sent_tokens = sent_tokenize(text)
+        slors = []
+        for sent in sent_tokens:
+            processed_sent = sent.replace("\n", "")
+            processed_sent = processed_sent.replace("- ", "")
+            slors.append(self.sent_slor(sent))
+        return sum(slors) / len(slors)
 
 
 class Evaluator:
