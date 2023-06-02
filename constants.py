@@ -7,6 +7,7 @@ PRIMING_SEPARATOR = "\n###\n"
 CSV_MSG_SEPARATOR = "\n----------\n"
 MAX_TOKENS_GPT3 = 4096
 MAX_TOKENS_GPT4 = 8192
+# MAX_TOKENS_GPT4 = 32768 When the GPT-4-32K model is released
 
 
 # TEMPLATES #

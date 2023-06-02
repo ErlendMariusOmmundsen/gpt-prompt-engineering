@@ -1,8 +1,15 @@
 from dataclasses import asdict
 from typing import List
 import tiktoken
+import pandas as pd
 
 from dataclss import Message
+
+
+def get_examples():
+    # use pandas to read in examples from data/manual_summaries.csv and return them as a list containing two lists of strings, one for each column
+    df = pd.read_csv("data/manual_summaries.csv")
+    return [df["transcript"].tolist(), df["summary"].tolist()]
 
 
 def msg_to_dicts(messages: List[Message]):
@@ -17,7 +24,7 @@ def num_tokens_from_string(string: str, model: str) -> int:
 
 
 # From https://github.com/openai/openai-cookbook/blob/main/examples/How_to_format_inputs_to_ChatGPT_models.ipynb
-def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0301"):
+def num_tokens_from_messages(messages, model="gpt-4"):
     """Returns the number of tokens used by a list of messages."""
     try:
         encoding = tiktoken.encoding_for_model(model)
@@ -36,8 +43,8 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0301"):
         return num_tokens_from_messages(messages, model="gpt-4-0314")
     elif model == "gpt-3.5-turbo-0301":
         tokens_per_message = (
-            4
-        )  # every message follows <|start|>{role/name}\n{content}<|end|>\n
+            4  # every message follows <|start|>{role/name}\n{content}<|end|>\n
+        )
         tokens_per_name = -1  # if there's a name, the role is omitted
     elif model == "gpt-4-0314":
         tokens_per_message = 3
