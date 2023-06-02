@@ -3,11 +3,8 @@ from evaluator import Evaluator
 import pandas as pd
 from dataclss import DfDict
 from unicodedata import normalize
-
-gptController = Gpt()
-# shots = pd.read_csv("shots.csv", encoding="ISO-8859-1")
-
-evaluator = Evaluator()
+import pipelines as pipes
+from utils import get_examples, num_tokens_from_string
 
 
 inputs = ["As soon as you can.", "Sorry I messed up."]
@@ -64,9 +61,24 @@ my_summary = my_summary.replace("\n", ". ")
 d.prediction = my_summary
 
 
-evaluation = evaluator.evaluate_dict(d, golden_summary)
+# evaluation = evaluator.evaluate_dict(d, golden_summary)
+# print(evaluation)
 
-print(evaluation)
 
 # print(gpt3Controller.current_summarize(test))
 # gpt3Controller.induce_pipe([inputs, outputs], 2)
+
+examples = get_examples()
+# for input in examples[0]:
+#     print(
+#         num_tokens_from_string(input, "text-davinci-003"),
+#     )
+#     print()
+
+
+gptController = Gpt()
+# shots = pd.read_csv("shots.csv", encoding="ISO-8859-1")
+evaluator = Evaluator()
+
+examples = [[examples[0][-2]], [examples[1][-2]]]
+pipes.induce_pipe(gptController, evaluator, examples, 2)
