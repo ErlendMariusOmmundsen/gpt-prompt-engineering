@@ -19,7 +19,7 @@ from constants import (
     TOPIC_TEMPLATE,
 )
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
-from utils import msg_to_dicts, num_tokens_from_messages
+from utils import msg_to_dicts, num_tokens_from_messages, num_tokens_from_string
 
 
 class Gpt:
@@ -30,7 +30,7 @@ class Gpt:
         openai.organization = config["keys"]["OPENAI_ORG_KEY"]
 
         self.model = "text-davinci-003"
-        self.chat_model = "gpt-3.5-turbo"
+        self.chat_model = "gpt-4"
         self.prompt = ""
         self.suffix = ""
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random
@@ -61,13 +61,15 @@ class Gpt:
         }
 
     def completion(self, prompt: str) -> CompletionResponse:
+        num_tokens = num_tokens_from_string(prompt, "text-davinci-003")
+        print("number of tokens in prompt:", num_tokens)
         return openai.Completion.create(
             model=self.model,
             prompt=prompt,
             temperature=self.temperature,
             suffix=self.suffix,
             top_p=self.top_p,
-            max_tokens=self.max_tokens,
+            max_tokens=self.max_tokens - num_tokens - 3,  # magic number?
             n=self.n,
             stream=self.stream,
             logprobs=self.log_probs,
@@ -76,7 +78,7 @@ class Gpt:
 
     def chat_completion(self, messages) -> ChatResponse:
         msg_dicts = msg_to_dicts(messages)
-        num_tokens = num_tokens_from_messages(messages, self.model)
+        num_tokens = num_tokens_from_messages(msg_dicts, self.chat_model)
         return openai.ChatCompletion.create(
             model=self.chat_model,
             messages=msg_dicts,
@@ -97,7 +99,7 @@ class Gpt:
         num_examples: int = 0,
         text="",
     ) -> DfDict:
-        if isinstance(response, CompletionResponse):
+        if response.object == "text_completion":
             return DfDict(
                 prompt_template.template,
                 examples,
@@ -106,9 +108,9 @@ class Gpt:
                 response.choices[0].text,
                 response.choices[0].finish_reason,
             )
-        msg_text = ""
-        for m in response:
-            msg_text += m.role + ": " + m.content + CSV_MSG_SEPARATOR
+
+        message = response.choices[0].message
+        msg_text = message.role + ": " + message.content + CSV_MSG_SEPARATOR
 
         return DfDict(
             prompt_template.template, examples, num_examples, text, msg_text, ""
@@ -436,7 +438,7 @@ class Gpt:
                 messages.append(
                     Message("user", "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR)
                 )
-            messages.append(Message("user", "What was the instruction?"))
+            messages.append(Message("user", "The instruction was"))
 
             return self.chat_completion(messages)
 
