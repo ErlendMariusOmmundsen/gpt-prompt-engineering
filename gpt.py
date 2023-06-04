@@ -17,6 +17,7 @@ from constants import (
     FOLLOW_UP_TEMPLATE,
     INDUCE_TEMPLATE,
     TOPIC_TEMPLATE,
+    ZERO_SHOT_TEMPLATE,
 )
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
 from utils import msg_to_dicts, num_tokens_from_messages, num_tokens_from_string
@@ -38,7 +39,6 @@ class Gpt:
         # An alternative to sampling with temperature, called nucleus sampling, where the model considers the
         #    results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
         self.top_p = 1
-        self.max_tokens = MAX_TOKENS_GPT3 if "3" in self.model else MAX_TOKENS_GPT4
         # How many completions to generate for each prompt.
         self.n = 1
         # Whether to stream back partial progress.
@@ -55,7 +55,6 @@ class Gpt:
             "suffix": self.suffix,
             "temperature": self.temperature,
             "top_p": self.top_p,
-            "max_tokens": self.max_tokens,
             "n": self.n,
             "stop": self.stop,
         }
@@ -69,7 +68,7 @@ class Gpt:
             temperature=self.temperature,
             suffix=self.suffix,
             top_p=self.top_p,
-            max_tokens=self.max_tokens - num_tokens - 3,  # magic number?
+            max_tokens=MAX_TOKENS_GPT3 - num_tokens - 3,  # magic number?
             n=self.n,
             stream=self.stream,
             logprobs=self.log_probs,
@@ -79,12 +78,17 @@ class Gpt:
     def chat_completion(self, messages) -> ChatResponse:
         msg_dicts = msg_to_dicts(messages)
         num_tokens = num_tokens_from_messages(msg_dicts, self.chat_model)
+        print("number of tokens in prompt:", num_tokens)
+        if num_tokens > MAX_TOKENS_GPT4:
+            raise ValueError(
+                f"Too many tokens in prompt: {num_tokens} > {MAX_TOKENS_GPT4}"
+            )
         return openai.ChatCompletion.create(
             model=self.chat_model,
             messages=msg_dicts,
             temperature=self.temperature,
             top_p=self.top_p,
-            max_tokens=self.max_tokens - num_tokens,
+            max_tokens=MAX_TOKENS_GPT4 - num_tokens - 3,
             n=self.n,
             stream=self.stream,
             stop=self.stop,
@@ -95,6 +99,7 @@ class Gpt:
         self,
         prompt_template: Template,
         response,
+        prompt: str = "",
         examples: List[List[str]] = [[]],
         num_examples: int = 0,
         text="",
@@ -102,30 +107,36 @@ class Gpt:
         if response.object == "text_completion":
             return DfDict(
                 prompt_template.template,
+                prompt,
                 examples,
                 num_examples,
                 text,
                 response.choices[0].text,
                 response.choices[0].finish_reason,
             )
+        else:
+            message = response.choices[0].message
+            msg_text = message.role + ": " + message.content + CSV_MSG_SEPARATOR
+            return DfDict(
+                prompt_template.template,
+                prompt,
+                examples,
+                num_examples,
+                text,
+                msg_text,
+                "",
+            )
 
-        message = response.choices[0].message
-        msg_text = message.role + ": " + message.content + CSV_MSG_SEPARATOR
-
-        return DfDict(
-            prompt_template.template, examples, num_examples, text, msg_text, ""
-        )
-
-    def dict_to_df(self, info_dict: DfDict):
-        conf = self.get_config()
+    def dict_to_df(self, info_dict: DfDict, use_chat_model: bool = True):
+        conf = self.get_config(use_chat_model)
         df = pd.DataFrame(
             [[getattr(info_dict, field.name) for field in fields(info_dict)] + [conf]],
             columns=[*list(fields(info_dict)), "config"],
         )
         return df
 
-    def save_df(self, info_dict: DfDict, path: str):
-        df = self.dict_to_df(info_dict)
+    def save_df(self, info_dict: DfDict, path: str, use_chat_model: bool = True):
+        df = self.dict_to_df(info_dict, use_chat_model)
         df.to_csv(path, mode="a", index=False, header=False)
 
     # TODO: Add "example_user" and "example_assistant" to the prompts with examples
@@ -420,34 +431,42 @@ class Gpt:
         return self.to_df_dict(IN_CONTEXT_TEMPLATE, res, examples, num_examples, text)
 
     def induce_completion(self, inputs: List[str], outputs: List[str], useChat=False):
-        context = "I gave a friend an instruction and five inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
+        context = "I gave a friend an instruction and some inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
+        # context = "I gave a friend an instruction and some texts. The friend read the instruction and wrote an output for every one of the texts. Here are the outputs.\n"
         if not useChat:
             prompt = ""
             prompt_examples = ""
             for i, o in zip(inputs, outputs):
                 prompt_examples += "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR
-            before_pred = "The instruction was"
+                # prompt_examples += "Output:" + o + PRIMING_SEPARATOR
 
+            before_pred = "The instruction was:"
             prompt += context + prompt_examples + before_pred
 
             return self.completion(prompt)
 
         else:
             messages = self.create_chat_messages(context, "", "induce")
+            # for i, o in zip(inputs, outputs):
+            #     messages.append(
+            #         # Message("user", "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR)
+            #         Message("user", "Output:" + o + PRIMING_SEPARATOR)
+            #     )
+
+            prompt_examples = ""
             for i, o in zip(inputs, outputs):
-                messages.append(
-                    Message("user", "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR)
-                )
-            messages.append(Message("user", "The instruction was"))
+                prompt_examples += "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR
+                # prompt_examples += "Output:" + o + PRIMING_SEPARATOR
+            messages.append(Message("user", prompt_examples))
+
+            messages.append(Message("user", "The instruction was:"))
 
             return self.chat_completion(messages)
 
     def induce_instruction(
-        self, examples: List[List[str]], num_examples: int
+        self, examples: List[List[str]], num_examples: int, useChat=False
     ) -> DfDict:
-        res = self.induce_completion(
-            examples[0][:num_examples], examples[1][:num_examples]
-        )
+        res = self.induce_completion(examples[0], examples[1], useChat)
         return self.to_df_dict(INDUCE_TEMPLATE, res, examples, num_examples)
 
     def generate_persona_context(self, topics):
