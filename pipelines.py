@@ -46,11 +46,13 @@ def in_context_pipe(
     gpt.save_df(info_dict, "results/in-context.csv")
 
 
-def induce_pipe(
-    gpt: Gpt, evaluator: Evaluator, examples: List[List[str]], num_examples: int
-):
-    info_dict = gpt.induce_instruction(examples, num_examples)
-    gpt.save_df(info_dict, "results/instruction-induction.csv")
+def induce_pipe(gpt: Gpt, examples: List[List[str]], num_examples: int, useChat=False):
+    info_dict = gpt.induce_instruction(examples, num_examples, useChat)
+    if not useChat:
+        gpt.save_df(info_dict, "results/gpt3/instruction-induction.csv", useChat)
+    else:
+        print("Saving to results/gpt4/instruction-induction.csv")
+        gpt.save_df(info_dict, "results/gpt4/instruction-induction.csv", useChat)
 
 
 def persona_pipe(
