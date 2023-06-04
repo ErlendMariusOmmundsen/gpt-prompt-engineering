@@ -1,0 +1,1 @@
+prompt_template,examples,num_examples,text,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,contradiction_ratio,neutral_contradiction_ratio,config
