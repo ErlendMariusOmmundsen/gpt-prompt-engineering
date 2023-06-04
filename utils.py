@@ -23,6 +23,14 @@ def num_tokens_from_string(string: str, model: str) -> int:
     return num_tokens
 
 
+def num_tokens_from_examples(examples, model="gpt-4"):
+    num_tokens = 0
+    for example_list in examples:
+        for example in example_list:
+            num_tokens += num_tokens_from_string(example, model) + 4
+    return num_tokens
+
+
 # From https://github.com/openai/openai-cookbook/blob/main/examples/How_to_format_inputs_to_ChatGPT_models.ipynb
 def num_tokens_from_messages(messages, model="gpt-4"):
     """Returns the number of tokens used by a list of messages."""
