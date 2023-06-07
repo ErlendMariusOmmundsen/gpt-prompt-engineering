@@ -11,6 +11,9 @@ MAX_TOKENS_GPT4 = 8192
 
 
 # TEMPLATES #
+BASELINE_TEMPLATE = Template(
+    "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n ${text}"
+)
 FOLLOW_UP_TEMPLATE = Template("Chat messages with follow_up_questions")
 IMPROVE_TEMPLATE = Template("Chat messages, ask to improve the output")
 IN_CONTEXT_TEMPLATE = Template("Input: ${text} \nOutput:")
