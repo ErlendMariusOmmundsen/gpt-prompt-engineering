@@ -5,14 +5,13 @@ from evaluator import Evaluator
 from bert_score import BERTScorer
 from dataclss import Message
 from string import Template
+from constants import BULLET_MAX_LENGTH
 
 
 summarizer = Gpt()
 evaluator = Evaluator()
 
 num_examples = 10
-bullet_max_length = 45
-subheading_max_length = 40
 
 
 def follow_up_pipe(gpt: Gpt, evaluator: Evaluator, text: str, reference: str = ""):
@@ -93,7 +92,7 @@ length_modifiers = [
     "abbreviated",
     "abridged",
     "curtailed",
-    "less than " + str(bullet_max_length) + " characters long",
+    "less than " + str(BULLET_MAX_LENGTH) + " characters long",
 ]
 
 # Words contained: marked by the use of few words to convey much information or meaning

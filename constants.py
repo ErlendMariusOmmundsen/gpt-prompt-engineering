@@ -21,3 +21,7 @@ TOPIC_TEMPLATE = Template("${Context_setter} Topic: ${topic} Text: ${text} \nSum
 PERSONA_TEMPLATE = Template("${Context_setter} ${prompt} Text: ${text}\n")
 REPEAT_TEMPLATE = Template("${Prompt} Text: ${text} ${Prompt}")
 ZERO_SHOT_TEMPLATE = Template("${Prompt} Text: ${text} ")
+
+# MAX LENGTHS #
+BULLET_MAX_LENGTH = 45
+SUBHEADING_MAX_LENGTH = 40
