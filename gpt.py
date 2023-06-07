@@ -107,24 +107,24 @@ class Gpt:
         if response.object == "text_completion":
             return DfDict(
                 prompt_template.template,
-                prompt,
                 examples,
                 num_examples,
                 text,
+                prompt,
                 response.choices[0].text,
                 response.choices[0].finish_reason,
             )
         else:
             message = response.choices[0].message
-            msg_text = message.role + ": " + message.content + CSV_MSG_SEPARATOR
+            msg_text = clean_prediction(message.content)
             return DfDict(
                 prompt_template.template,
-                prompt,
                 examples,
                 num_examples,
                 text,
+                prompt,
                 msg_text,
-                "",
+                response.choices[0].finish_reason,
             )
 
     def dict_to_df(self, info_dict: DfDict, use_chat_model: bool = True):

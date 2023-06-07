@@ -55,6 +55,7 @@ class DfDict:
     examples: List[List[str]] = None
     num_examples: int = 0
     text: str = ""
+    prompt: str = ""
     prediction: str = ""
     finish_reason: str = ""
     bert_score: float = 0.0
