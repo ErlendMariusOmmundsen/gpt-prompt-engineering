@@ -6,6 +6,7 @@ import configparser
 import pandas as pd
 from string import Template
 from constants import (
+    BASELINE_TEMPLATE,
     IMPROVE_TEMPLATE,
     PERSONA_TEMPLATE,
     REPEAT_TEMPLATE,
@@ -382,10 +383,11 @@ class Gpt:
         messages = self.follow_up_completion(text)
         return self.to_df_dict(FOLLOW_UP_TEMPLATE, messages, [[]], 0, text)
 
-    def current_sum(self, text: str) -> CompletionResponse:
+    def baseline_summarization(self, text: str) -> CompletionResponse:
         current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
-        response = self.completion(current_strategy + text)
-        return response
+        messages = Message("user", current_strategy + text)
+        response = self.chat_completion([messages])
+        return self.to_df_dict(BASELINE_TEMPLATE, response, messages, [[]], 0, text)
 
     def zero_shot_completion(self, text: str):
         # Heading

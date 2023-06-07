@@ -8,10 +8,13 @@ from string import Template
 from constants import BULLET_MAX_LENGTH
 
 
-summarizer = Gpt()
-evaluator = Evaluator()
-
 num_examples = 10
+
+
+def baseline_pipe(gpt: Gpt, evaluator: Evaluator, text: str, reference: str = ""):
+    info_dict = gpt.baseline_summarization(text)
+    info_dict = evaluator.evaluate_dict(info_dict, reference)
+    gpt.save_df(info_dict, "results/gpt4/baseline.csv")
 
 
 def follow_up_pipe(gpt: Gpt, evaluator: Evaluator, text: str, reference: str = ""):
