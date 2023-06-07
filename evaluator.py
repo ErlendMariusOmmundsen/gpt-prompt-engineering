@@ -1,3 +1,5 @@
+import re
+from constants import BULLET_MAX_LENGTH, SUBHEADING_MAX_LENGTH
 import language_tool_python
 from nltk import word_tokenize, sent_tokenize
 import matplotlib.pyplot as plt
@@ -174,6 +176,39 @@ class Evaluator:
             total += self.error_count_score(sent)
         return total / len(sentences)
 
+    def number_hallucinations(self, reference, candidate):
+        ref_numbers = re.findall(r"\d+", reference)
+        cand_numbers = re.findall(r"\d+", candidate)
+
+        number_hallucinations = 0
+        for num in cand_numbers:
+            if num not in ref_numbers:
+                number_hallucinations += 1
+
+        return number_hallucinations
+
+    def check_format(self, text):
+        period_split = text.split(".")
+        newline_split = text.split("\n")
+        split = period_split if len(period_split) == 12 else newline_split
+
+        if len(split) != 12:
+            return 0, 0, 0
+
+        long_subheadings = 0
+        subheadings = split[::4]
+        for subheading in subheadings:
+            if len(subheading) > SUBHEADING_MAX_LENGTH:
+                long_subheadings += 1
+
+        long_bullets = 0
+        bullets = [bullet for bullet in split if bullet not in subheadings]
+        for bullet in bullets:
+            if len(bullet) > BULLET_MAX_LENGTH:
+                long_bullets += 1
+
+        return 1, long_subheadings, long_bullets
+
     def bert_score(self, reference, candidate):
         # score inputs: list of candidate sentences, list of reference sentences
         # score outputs: precision, recall, f1 tensors. Same number of elements as input
@@ -198,6 +233,9 @@ class Evaluator:
             info_dict.rogue_L = rogue_scores["rougeLsum"].fmeasure
             p, r, f1, mean = self.bert_score(reference, info_dict.prediction)
             info_dict.bert_score = float(mean)
+            info_dict.number_hallucinations = self.number_hallucinations(
+                reference, info_dict.prediction
+            )
         (
             info_dict.contradiction_ratio,
             info_dict.neutral_contradiction_ratio,
@@ -207,5 +245,10 @@ class Evaluator:
         info_dict.avg_error_count_score = self.avg_error_count_score(
             info_dict.prediction
         )
+        (
+            info_dict.three_by_three,
+            info_dict.long_subheadings,
+            info_dict.long_bullets,
+        ) = self.check_format(info_dict.prediction)
 
         return info_dict

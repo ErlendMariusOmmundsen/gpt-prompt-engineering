@@ -65,3 +65,7 @@ class DfDict:
     avg_error_count_score: float = 0.0
     contradiction_ratio: float = 0.0
     neutral_contradiction_ratio: float = 0.0
+    number_hallucinations: int = 0
+    three_by_three: int = 0
+    long_subheadings: int = 0
+    long_bullets: int = 0
