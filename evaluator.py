@@ -56,7 +56,7 @@ class Entailor:
         return neutral_contradications / len(classifications)
 
     def classify_text(self, text, prediction):
-        split_predictions = prediction.split(". ")
+        split_predictions = prediction.split("\n")
         classifications = []
         for line in split_predictions:
             classifications.append(self.classify_bullet(text, line))
@@ -89,7 +89,7 @@ class SLORer:
         nlls = []
         prev_end_loc = 0
         sentProb = 0
-        for begin_loc in tqdm(range(0, seq_len, stride)):
+        for begin_loc in tqdm(range(0, seq_len, stride), leave=False):
             end_loc = min(begin_loc + max_length, seq_len)
             trg_len = (
                 end_loc - prev_end_loc
@@ -124,11 +124,11 @@ class SLORer:
         return (1 / len(tokens) * (torch.log(sentP) - torch.log(sumWordProb))).item()
 
     def slor(self, text):
-        sent_tokens = sent_tokenize(text)
+        sent_tokens = text.split("\n")
         slors = []
         for sent in sent_tokens:
             processed_sent = sent.replace("\n", "")
-            processed_sent = processed_sent.replace("- ", "")
+            # processed_sent = processed_sent.replace("- ", "")
             slors.append(self.sent_slor(sent))
         return sum(slors) / len(slors)
 
@@ -170,7 +170,7 @@ class Evaluator:
         return 1 - float(numErrors) / float(numTokens)
 
     def avg_error_count_score(self, text):
-        sentences = sent_tokenize(text)
+        sentences = text.split("\n")
         total = 0
         for sent in sentences:
             total += self.error_count_score(sent)
@@ -213,10 +213,8 @@ class Evaluator:
         # score inputs: list of candidate sentences, list of reference sentences
         # score outputs: precision, recall, f1 tensors. Same number of elements as input
 
-        ref_sents = sent_tokenize(reference)
-        cand_sents = sent_tokenize(candidate)
-        print(ref_sents)
-        print(cand_sents)
+        ref_sents = reference.split("\n")
+        cand_sents = candidate.split("\n")
 
         p, r, f1 = self.b_scorer.score(cand_sents, ref_sents, verbose=True)
 
