@@ -1,1 +1,2 @@
-prompt_template,examples,num_examples,text,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,contradiction_ratio,neutral_contradiction_ratio,config
+prompt_template,examples,num_examples,text,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,contradiction_ratio,neutral_contradiction_ratio,number_hallucinations,three_by_three,long_subheadings,long_bullets,config
+
