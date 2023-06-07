@@ -1,4 +1,5 @@
 from dataclasses import fields
+import os
 from typing import List
 import openai
 import configparser
@@ -20,7 +21,12 @@ from constants import (
     ZERO_SHOT_TEMPLATE,
 )
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
-from utils import msg_to_dicts, num_tokens_from_messages, num_tokens_from_string
+from utils import (
+    msg_to_dicts,
+    num_tokens_from_messages,
+    num_tokens_from_string,
+    clean_prediction,
+)
 
 
 class Gpt:
@@ -129,15 +135,19 @@ class Gpt:
 
     def dict_to_df(self, info_dict: DfDict, use_chat_model: bool = True):
         conf = self.get_config(use_chat_model)
+        field_objects = fields(info_dict)
         df = pd.DataFrame(
-            [[getattr(info_dict, field.name) for field in fields(info_dict)] + [conf]],
-            columns=[*list(fields(info_dict)), "config"],
+            [[getattr(info_dict, field.name) for field in field_objects] + [conf]],
+            columns=[[field.name for field in field_objects] + ["config"]],
         )
         return df
 
     def save_df(self, info_dict: DfDict, path: str, use_chat_model: bool = True):
         df = self.dict_to_df(info_dict, use_chat_model)
-        df.to_csv(path, mode="a", index=False, header=False)
+        if not os.path.isfile(path):
+            df.to_csv(path, index=False)
+        else:
+            df.to_csv(path, index=False, mode="a", header=False)
 
     # TODO: Add "example_user" and "example_assistant" to the prompts with examples
     def create_chat_messages(
