@@ -16,6 +16,42 @@ def msg_to_dicts(messages: List[Message]):
     return [asdict(m) for m in messages]
 
 
+def remove_prefix_str(string: str) -> str:
+    if string.startswith("Subheading"):
+        return string[string.find(":") + 2 :]
+    elif string[0].isdigit() and string[1] == ".":
+        return string[string.find(".") + 2 :]
+    elif string.startswith("- "):
+        return string[2:]
+    elif string.startswith(" - "):
+        return string[3:]
+    else:
+        return string
+
+
+def remove_suffix_str(string: str) -> str:
+    if string.endswith(": "):
+        return string[:-2]
+    elif string.endswith(":"):
+        return string[:-1]
+    else:
+        return string
+
+
+def empty_lines(string: str) -> str:
+    return string.replace("\n\n", "\n")
+
+
+def clean_prediction(prediction: str) -> str:
+    prediction = empty_lines(prediction)
+    prediction_splits = prediction.split("\n")
+    for i in range(len(prediction_splits)):
+        prediction_splits[i] = remove_prefix_str(prediction_splits[i])
+        prediction_splits[i] = remove_suffix_str(prediction_splits[i])
+    prediction = "\n".join(prediction_splits)
+    return prediction
+
+
 def num_tokens_from_string(string: str, model: str) -> int:
     """Returns the number of tokens in a text string."""
     encoding = tiktoken.encoding_for_model(model)
