@@ -1,4 +1,5 @@
 from dataclasses import asdict
+import re
 from typing import List
 import tiktoken
 import pandas as pd
@@ -17,14 +18,11 @@ def msg_to_dicts(messages: List[Message]):
 
 
 def remove_prefix_str(string: str) -> str:
+    string = string.strip("- .*:")
     if string.startswith("Subheading"):
         return string[string.find(":") + 2 :]
     elif string[0].isdigit() and string[1] == ".":
         return string[string.find(".") + 2 :]
-    elif string.startswith("- "):
-        return string[2:]
-    elif string.startswith(" - "):
-        return string[3:]
     else:
         return string
 
@@ -38,12 +36,12 @@ def remove_suffix_str(string: str) -> str:
         return string
 
 
-def empty_lines(string: str) -> str:
-    return string.replace("\n\n", "\n")
+def remove_empty_lines(string: str) -> str:
+    return re.sub(r"\n\s*\n", "\n", string)
 
 
 def clean_prediction(prediction: str) -> str:
-    prediction = empty_lines(prediction)
+    prediction = remove_empty_lines(prediction)
     prediction_splits = prediction.split("\n")
     for i in range(len(prediction_splits)):
         prediction_splits[i] = remove_prefix_str(prediction_splits[i])
