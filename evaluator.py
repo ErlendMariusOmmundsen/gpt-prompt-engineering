@@ -167,14 +167,17 @@ class Evaluator:
             print(check)
         numTokens = len(word_tokenize(sent))
         numErrors = len(check)
-        return 1 - float(numErrors) / float(numTokens)
+        return 1 - float(numErrors) / float(numTokens), numErrors
 
     def avg_error_count_score(self, text):
         sentences = text.split("\n")
-        total = 0
+        sum = 0
+        total_errors = 0
         for sent in sentences:
-            total += self.error_count_score(sent)
-        return total / len(sentences)
+            score, num_errors = self.error_count_score(sent)
+            sum += score
+            total_errors += num_errors
+        return sum / len(sentences), total_errors
 
     def number_hallucinations(self, reference, candidate):
         ref_numbers = re.findall(r"\d+", reference)
@@ -216,10 +219,19 @@ class Evaluator:
         ref_sents = reference.split("\n")
         cand_sents = candidate.split("\n")
 
-        p, r, f1 = self.b_scorer.score(cand_sents, ref_sents, verbose=True)
+        p, r, f1, mean = 0.0, 0.0, 0.0, 0.0
+
+        if len(ref_sents) != len(cand_sents):
+            try:
+                p, r, f1 = self.b_scorer.score(candidate, reference, verbose=True)
+                mean = f1.mean()
+            except:
+                print("BERT score failed")
+        else:
+            p, r, f1 = self.b_scorer.score(cand_sents, ref_sents, verbose=True)
+            mean = f1.mean()
 
         # get mean:
-        mean = f1.mean()
 
         return p, r, f1, mean
 
@@ -229,6 +241,7 @@ class Evaluator:
             info_dict.rogue_1 = rogue_scores["rouge1"].fmeasure
             info_dict.rogue_2 = rogue_scores["rouge2"].fmeasure
             info_dict.rogue_L = rogue_scores["rougeLsum"].fmeasure
+            print(info_dict.prediction)
             p, r, f1, mean = self.bert_score(reference, info_dict.prediction)
             info_dict.bert_score = float(mean)
             info_dict.number_hallucinations = self.number_hallucinations(
@@ -240,7 +253,7 @@ class Evaluator:
         ) = self.entailor.classify_text(info_dict.text, info_dict.prediction)
         info_dict.slor = self.slorer.slor(info_dict.prediction)
 
-        info_dict.avg_error_count_score = self.avg_error_count_score(
+        info_dict.avg_error_count_score, info_dict.errors = self.avg_error_count_score(
             info_dict.prediction
         )
         (

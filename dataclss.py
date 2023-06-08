@@ -64,6 +64,7 @@ class DfDict:
     rogue_L: float = 0.0
     slor: float = 0.0
     avg_error_count_score: float = 0.0
+    errors: int = 0
     contradiction_ratio: float = 0.0
     neutral_contradiction_ratio: float = 0.0
     number_hallucinations: int = 0
