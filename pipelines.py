@@ -11,27 +11,36 @@ from constants import BULLET_MAX_LENGTH
 num_examples = 10
 
 
-def baseline_pipe(gpt: Gpt, evaluator: Evaluator, text: str, reference: str = ""):
-    info_dict = gpt.baseline_summarization(text)
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "results/gpt4/baseline.csv")
-
-
-def follow_up_pipe(gpt: Gpt, evaluator: Evaluator, text: str, reference: str = ""):
-    info_dict = gpt.follow_up_summarization(text)
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "results/follow-up.csv")
-
-
-def topic_pipe(
-    gpt: Gpt, evaluator: Evaluator, text: str, topic: str, reference: str = ""
+def pipe(
+    gpt: Gpt,
+    evaluator: Evaluator,
+    text: str,
+    reference: str = "",
+    topic="",
+    name="",
+    use_chat=True,
 ):
-    info_dict = gpt.to_df_dict(
-        TOPIC_TEMPLATE, gpt.topic_completion(text, topic), text=text
-    )
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
+    path = "results/"
+    path += "gpt4/" if use_chat else "gpt3/"
 
-    gpt.save_df(info_dict, "results/in-context.csv")
+    name_to_function = {
+        "baseline": gpt.baseline_summarization,
+        "follow_up": gpt.follow_up_summarization,
+        "topic": gpt.topic_summarization,
+        "persona": gpt.persona_summarization,
+        "improve": gpt.improve_summarization,
+        "repeat": gpt.repeat_summarization,
+        "important_parts": gpt.important_parts_summarization,
+    }
+
+    info_dict = {}
+    if name == "topic" or name == "persona":
+        info_dict = name_to_function[name](text=text, topic=topic, use_chat=use_chat)
+    else:
+        info_dict = name_to_function[name](text=text, use_chat=use_chat)
+
+    info_dict = evaluator.evaluate_dict(info_dict, reference)
+    gpt.save_df(info_dict, path + name + ".csv", use_chat)
 
 
 def in_context_pipe(
@@ -40,51 +49,21 @@ def in_context_pipe(
     examples: List[List[str]],
     text: str,
     num_examples: int,
-    useChat=False,
+    use_chat=False,
     reference: str = "",
 ):
-    info_dict = gpt.in_context_prediction(examples, text, num_examples, useChat)
+    info_dict = gpt.in_context_prediction(examples, text, num_examples, use_chat)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
     gpt.save_df(info_dict, "results/in-context.csv")
 
 
-def induce_pipe(gpt: Gpt, examples: List[List[str]], num_examples: int, useChat=False):
-    info_dict = gpt.induce_instruction(examples, num_examples, useChat)
-    if not useChat:
-        gpt.save_df(info_dict, "results/gpt3/instruction-induction.csv", useChat)
+def induce_pipe(gpt: Gpt, examples: List[List[str]], num_examples: int, use_chat=False):
+    info_dict = gpt.induce_instruction(examples, num_examples, use_chat)
+    if not use_chat:
+        gpt.save_df(info_dict, "results/gpt3/instruction-induction.csv", use_chat)
     else:
         print("Saving to results/gpt4/instruction-induction.csv")
-        gpt.save_df(info_dict, "results/gpt4/instruction-induction.csv", useChat)
-
-
-def persona_pipe(
-    gpt: Gpt,
-    evaluator: Evaluator,
-    text: str,
-    topics: List[str],
-    useChat: bool = True,
-    reference: str = "",
-):
-    persona_context = gpt.generate_persona_context(topics)
-    info_dict = gpt.persona_summarization(text, persona_context, useChat)
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "results/persona.csv")
-
-
-def improve_pipe(
-    gpt: Gpt, evaluator: Evaluator, text: str, useChat: bool = True, reference: str = ""
-):
-    info_dict = gpt.improve_summarization(text, useChat)
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "results/improve.csv")
-
-
-def repeat_pipe(
-    gpt: Gpt, evaluator: Evaluator, text: str, useChat: bool = True, reference: str = ""
-):
-    info_dict = gpt.repeat_summarization(text, useChat)
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "results/repeat.csv")
+        gpt.save_df(info_dict, "results/gpt4/instruction-induction.csv", use_chat)
 
 
 # Without words that are potentially rude
