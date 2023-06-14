@@ -446,7 +446,7 @@ class Gpt:
 
         return response
 
-    def in_context_prediction(
+    def in_context_summarization(
         self, examples: List[List[str]], text: str, num_examples: int, use_chat=False
     ) -> DfDict:
         res = self.in_context_completion(

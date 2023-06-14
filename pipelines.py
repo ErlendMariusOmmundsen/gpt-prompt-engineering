@@ -17,6 +17,8 @@ def pipe(
     text: str,
     reference: str = "",
     topic="",
+    examples: List[List[str]] = [[]],
+    num_examples: int = 0,
     name="",
     use_chat=True,
 ):
@@ -31,11 +33,21 @@ def pipe(
         "improve": gpt.improve_summarization,
         "repeat": gpt.repeat_summarization,
         "important_parts": gpt.important_parts_summarization,
+        "in-context": gpt.in_context_summarization,
+        "induce": gpt.induce_instruction,
     }
 
     info_dict = {}
     if name == "topic" or name == "persona":
         info_dict = name_to_function[name](text=text, topic=topic, use_chat=use_chat)
+    elif name == "in-context":
+        info_dict = name_to_function[name](
+            text=text, examples=examples, num_examples=num_examples, use_chat=use_chat
+        )
+    elif name == "induce":
+        info_dict = name_to_function[name](
+            examples=examples, num_examples=num_examples, use_chat=use_chat
+        )
     else:
         info_dict = name_to_function[name](text=text, use_chat=use_chat)
 
@@ -46,15 +58,16 @@ def pipe(
 def in_context_pipe(
     gpt: Gpt,
     evaluator: Evaluator,
-    examples: List[List[str]],
     text: str,
-    num_examples: int,
-    use_chat=False,
     reference: str = "",
+    examples: List[List[str]] = [[]],
+    num_examples: int = 0,
+    use_chat=False,
 ):
-    info_dict = gpt.in_context_prediction(examples, text, num_examples, use_chat)
+    info_dict = gpt.in_context_summarization(examples, text, num_examples, use_chat)
     info_dict = evaluator.evaluate_dict(info_dict, reference)
-    gpt.save_df(info_dict, "results/in-context.csv")
+    folder = "results/gpt-4/" if use_chat else "results/gpt-3/"
+    gpt.save_df(info_dict, folder + "in-context.csv")
 
 
 def induce_pipe(gpt: Gpt, examples: List[List[str]], num_examples: int, use_chat=False):

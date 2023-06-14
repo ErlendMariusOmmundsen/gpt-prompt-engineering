@@ -39,6 +39,8 @@ def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
 
     topics = row["topic"].replace(",", ", ") + "."
 
+    example_row = [examples[example_index + 1][0], examples[0][example_index + 1]]
+
     print("Running", pipe_name, "on example", example_index)
     pipes.pipe(
         gpt=gpt,
@@ -46,6 +48,8 @@ def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
         text=transcript,
         reference=golden_summary,
         topic=topics,
+        examples=example_row,
+        num_examples=1,
         name=pipe_name,
         use_chat=use_chat,
     )
@@ -55,5 +59,5 @@ def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
 g = Gpt()
 e = Evaluator()
 
-for i in range(3):
+for i in range(1):
     run_pipeline(g, e, "in-context", 0, True)
