@@ -17,6 +17,13 @@ def msg_to_dicts(messages: List[Message]):
     return [asdict(m) for m in messages]
 
 
+def messages_to_string(messages: List[Message]) -> str:
+    result = ""
+    for message in messages:
+        result += message.role + ": " + message.content + "\n\n"
+    return result
+
+
 def remove_prefix_str(string: str) -> str:
     string = string.strip("- .*:")
     if string.startswith("Subheading"):
