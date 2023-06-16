@@ -52,9 +52,10 @@ class CompletionResponse:
 @dataclass
 class DfDict:
     prompt_template: str = ""
-    examples: List[List[str]] = None
+    examples: List[List[str]] = [[]]
     num_examples: int = 0
     text: str = ""
+    title: str = ""
     prompt: str = ""
     prediction: str = ""
     finish_reason: str = ""

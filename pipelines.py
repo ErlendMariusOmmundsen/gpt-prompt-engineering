@@ -15,6 +15,7 @@ def pipe(
     gpt: Gpt,
     evaluator: Evaluator,
     text: str,
+    title: str,
     reference: str = "",
     topic="",
     examples: List[List[str]] = [[]],
@@ -50,6 +51,8 @@ def pipe(
         )
     else:
         info_dict = name_to_function[name](text=text, use_chat=use_chat)
+
+    info_dict.update({"title": title})
 
     info_dict = evaluator.evaluate_dict(info_dict, reference)
     gpt.save_df(info_dict, path + name + ".csv", use_chat)
