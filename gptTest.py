@@ -1,10 +1,13 @@
+import time
+
+from constants import MAX_TOKENS_GPT4
 from gpt import Gpt
 from evaluator import Evaluator
 import pandas as pd
 from dataclss import DfDict
 from unicodedata import normalize
 import pipelines as pipes
-from utils import get_examples, num_tokens_from_string
+from utils import get_examples, num_tokens_from_string, num_tokens_from_examples
 
 
 inputs = ["As soon as you can.", "Sorry I messed up."]
@@ -78,7 +81,29 @@ examples = get_examples()
 
 gptController = Gpt()
 # shots = pd.read_csv("shots.csv", encoding="ISO-8859-1")
-evaluator = Evaluator()
+# evaluator = Evaluator()
 
-examples = [[examples[0][-2]], [examples[1][-2]]]
-pipes.induce_pipe(gptController, evaluator, examples, 2)
+
+current_token_count = 0
+for i in range(len(examples[0])):
+    for j in range(len(examples[0])):
+        chosen_examples = [
+            examples[0][i:j],
+            examples[1][i:j],
+        ]
+        try:
+            if len(chosen_examples[0]) > 0:
+                pipes.induce_pipe(
+                    gptController, chosen_examples, len(chosen_examples[0]), True
+                )
+                # print(len(chosen_examples[0]))
+                current_token_count += (
+                    num_tokens_from_examples(chosen_examples, "gpt-4") + 400
+                )
+                if current_token_count + MAX_TOKENS_GPT4 >= 40000:
+                    current_token_count = 0
+                    time.sleep(60)
+                    print("sleeping")
+
+        except Exception as e:
+            print(e)
