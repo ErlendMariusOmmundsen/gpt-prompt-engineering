@@ -164,24 +164,11 @@ class Gpt:
         messages = []
         match approach:
             case "in_context":
-                messages = [
-                    Message(
-                        "user",
-                        "I want you to summarize a text. Here are some representative examples of how to summarize a text.",
-                    )
-                ]
+                messages = []
                 examples = prompt.split(PRIMING_SEPARATOR)
                 for example in examples:
-                    messages.append(Message(example, "user"))
-                messages.append(
-                    Message(
-                        "user",
-                        "Now summarize the following text:"
-                        + SEPARATOR
-                        + text
-                        + SEPARATOR,
-                    )
-                )
+                    messages.append(Message("user", example))
+                messages.append(Message("user", "Input:" + text))
 
             case "follow_up_questions":
                 messages = [
@@ -431,12 +418,20 @@ class Gpt:
         return self.to_df_dict(TOPIC_TEMPLATE, response, prompt, [[]], 0, text)
 
     def in_context_completion(
-        self, inputs: List[str], outputs: List[str], text: str, use_chat: bool
+        self,
+        inputs: List[str],
+        outputs: List[str],
+        text: str,
+        only_outputs: bool,
+        use_chat: bool,
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
         prompt = ""
         for i, o in zip(inputs, outputs):
-            prompt += "Input: " + i + "\nOutput:" + o + PRIMING_SEPARATOR
-        prompt += "Input:" + text + "\n" + "Output:"
+            if only_outputs:
+                prompt += "Input: [Text]" + "\nOutput: " + o + PRIMING_SEPARATOR
+            else:
+                prompt += "Input: " + i + "\nOutput: " + o + PRIMING_SEPARATOR
+        prompt += "Input: " + text + "\n" + "Output:"
 
         response = {}
         if not use_chat:
@@ -449,16 +444,32 @@ class Gpt:
         return response, prompt
 
     def in_context_summarization(
-        self, examples: List[List[str]], text: str, num_examples: int, use_chat=False
+        self,
+        text: str,
+        examples: List[List[str]],
+        num_examples: int,
+        only_outputs=False,
+        use_chat=True,
     ) -> DfDict:
         res, prompt = self.in_context_completion(
-            examples[0][:num_examples], examples[1][:num_examples], text, use_chat
+            examples[0][:num_examples],
+            examples[1][:num_examples],
+            text,
+            only_outputs,
+            use_chat,
         )
         return self.to_df_dict(
-            IN_CONTEXT_TEMPLATE, res, prompt, examples, num_examples, text
+            prompt_template=IN_CONTEXT_TEMPLATE,
+            response=res,
+            prompt=prompt,
+            examples=examples,
+            num_examples=num_examples,
+            text=text,
         )
 
-    def induce_completion(self, inputs: List[str], outputs: List[str], use_chat=False) -> Tuple[ChatResponse | CompletionResponse, str]:
+    def induce_completion(
+        self, inputs: List[str], outputs: List[str], use_chat=False
+    ) -> Tuple[ChatResponse | CompletionResponse, str]:
         context = "I gave a friend an instruction and some inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
         # context = "I gave a friend an instruction and some texts. The friend read the instruction and wrote an output for every one of the texts. Here are the outputs.\n"
         if not use_chat:
@@ -546,7 +557,9 @@ class Gpt:
         )
         return info_dict
 
-    def improve_completion(self, text: str, use_chat: bool = True) -> Tuple[CompletionResponse| ChatResponse, str]:
+    def improve_completion(
+        self, text: str, use_chat: bool = True
+    ) -> Tuple[CompletionResponse | ChatResponse, str]:
         prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.\n"
         prompt += "Text: ###\n" + text + SEPARATOR
         prompt += "Summary:"
@@ -580,7 +593,9 @@ class Gpt:
         info_dict = self.to_df_dict(IMPROVE_TEMPLATE, response, prompt, text=text)
         return info_dict
 
-    def important_parts_completion(self, text: str, use_chat: bool = True) -> Tuple[CompletionResponse | ChatResponse, str]:
+    def important_parts_completion(
+        self, text: str, use_chat: bool = True
+    ) -> Tuple[CompletionResponse | ChatResponse, str]:
         if not use_chat:
             prompt = "Find all important parts of the following text.\n"
             prompt += "Text: ###\n" + text + SEPARATOR
@@ -618,7 +633,9 @@ class Gpt:
             response = self.chat_completion(final_messages)
             return response, messages_to_string(messages + final_messages)
 
-    def important_parts_summarization(self, text: str, use_chat: bool = False) -> DfDict:
+    def important_parts_summarization(
+        self, text: str, use_chat: bool = False
+    ) -> DfDict:
         response, prompt = self.important_parts_completion(text, use_chat)
         info_dict = self.to_df_dict(
             IMPORTANT_PARTS_TEMPLATE, response, prompt, text=text
@@ -652,7 +669,9 @@ class Gpt:
             messages = self.create_chat_messages(template, text, "template")
             return self.chat_completion(messages), messages_to_string(messages)
 
-    def repeat_completion(self, text: str, use_chat: bool = False) -> Tuple[ChatResponse, str]:
+    def repeat_completion(
+        self, text: str, use_chat: bool = False
+    ) -> Tuple[ChatResponse, str]:
         messages = self.create_chat_messages("", text, "repeat")
         return self.chat_completion(messages), messages_to_string(messages)
 
@@ -666,7 +685,9 @@ class Gpt:
         )
         return info_dict
 
-    def briefness_completion(self, text: str, modifier: str) -> Tuple[ChatResponse, str]:
+    def briefness_completion(
+        self, text: str, modifier: str
+    ) -> Tuple[ChatResponse, str]:
         messages = self.create_chat_messages(modifier, text, "briefness")
         response = self.chat_completion(messages)
 

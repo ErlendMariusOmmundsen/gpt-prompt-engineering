@@ -22,6 +22,7 @@ def pipe(
     num_examples: int = 0,
     name="",
     use_chat=True,
+    only_outputs=False,
 ):
     path = "results/"
     path += "gpt4/" if use_chat else "gpt3/"
@@ -43,7 +44,11 @@ def pipe(
         info_dict = name_to_function[name](text=text, topic=topic, use_chat=use_chat)
     elif name == "in-context":
         info_dict = name_to_function[name](
-            text=text, examples=examples, num_examples=num_examples, use_chat=use_chat
+            text=text,
+            examples=examples,
+            num_examples=num_examples,
+            use_chat=use_chat,
+            only_outputs=only_outputs,
         )
     elif name == "induce":
         info_dict = name_to_function[name](
