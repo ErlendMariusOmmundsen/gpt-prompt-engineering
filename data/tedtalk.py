@@ -15,7 +15,12 @@ import warnings
 warnings.filterwarnings("ignore")
 
 base_url = "https://www.ted.com/talks"
-topic_tags = ["Technology"]
+topic_tags = [
+    "Climate Change",
+    "Technology",
+    "Design",
+    "Future",
+]
 
 
 def get_page_urls(page_num, topics=topic_tags, base_url=base_url):
@@ -162,7 +167,6 @@ def make_transcript_dataframe(url_list):
     ctr = 1
 
     for url in url_list:
-
         # get the transcript page
         url = url.replace("?language=en", "") + "/transcript"
 
@@ -221,4 +225,10 @@ urls = open("Talk_URLs.txt").read().splitlines()[:10]
 df = make_transcript_dataframe(urls)
 
 # store data as .csv
-df.to_csv("transcript_data.csv", index=False, encoding="utf-8-sig")
+df.to_csv(
+    "data/transcript_data.csv",
+    index=False,
+    encoding="utf-8-sig",
+    mode="a",
+    header=False,
+)
