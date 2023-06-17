@@ -1,5 +1,4 @@
 from unicodedata import normalize
-from dataclss import DfDict
 import pandas as pd
 from gpt import Gpt
 from evaluator import Evaluator
@@ -26,9 +25,17 @@ Thank you so much.
 examples = get_examples()
 gold_df = pd.read_csv("data/manual_summaries.csv")
 example_index = 0
+num_examples = 9
 
 
-def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
+def run_pipeline(
+    gpt,
+    evaluator,
+    pipe_name,
+    example_index,
+    only_outputs=False,
+    use_chat=True,
+):
     row = gold_df.iloc[example_index]
     transcript = row["transcript"]
     transcript = transcript.replace("\n\n", " ")
@@ -39,7 +46,8 @@ def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
 
     topics = row["topic"].replace(",", ", ") + "."
 
-    example_row = [examples[example_index + 1][0], examples[0][example_index + 1]]
+    examples[0].remove(transcript)
+    examples[1].remove(golden_summary)
 
     print("Running", pipe_name, "on example", example_index)
     pipes.pipe(
@@ -48,9 +56,10 @@ def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
         text=transcript,
         reference=golden_summary,
         topic=topics,
-        examples=example_row,
-        num_examples=1,
+        examples=examples,
+        num_examples=num_examples,
         name=pipe_name,
+        only_outputs=only_outputs,
         use_chat=use_chat,
     )
     print("Done")
@@ -59,5 +68,5 @@ def run_pipeline(gpt, evaluator, pipe_name, example_index, use_chat=True):
 g = Gpt()
 e = Evaluator()
 
-for i in range(1):
-    run_pipeline(g, e, "in-context", 0, True)
+for i in range(3):
+    run_pipeline(g, e, "in-context", example_index, True, True)
