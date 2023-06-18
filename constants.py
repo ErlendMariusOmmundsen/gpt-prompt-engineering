@@ -41,3 +41,65 @@ HEADINGS_FIRST_TEMPLATE = Template(
 # MAX LENGTHS #
 BULLET_MAX_LENGTH = 60
 SUBHEADING_MAX_LENGTH = 40
+
+
+# MODIFIERS #
+QUALITY_MODIFIERS = [
+    "articulate",
+    "eloquent",
+    "well-written",
+    "well-put",
+    "well-expressed",
+    "well-stated",
+]
+
+STRUCTURE_MODIFIERS = [
+    "well-constructed",
+    "well-organized",
+    "well-arranged",
+    "well-ordered",
+    "well-structured",
+    "well-phrased",
+    "well-worded",
+    "well-composed",
+]
+
+FORMAT_MODIFIERS = [
+    "3 subheadings, each with 3 bullet points",
+    "three subheadings, each with three bullet points",
+    "3 x 3 headings and bullet points",
+]
+
+# Without words that are potentially rude
+LENGTH_MODIFIERS = [
+    "brief",
+    "short",
+    "shortened",
+    "abbreviated",
+    "abridged",
+    "curtailed",
+    "less than " + str(BULLET_MAX_LENGTH) + " characters long",
+]
+
+# Words contained: marked by the use of few words to convey much information or meaning
+DENSENESS_MODIFIERS = [
+    "compendious",
+    "concise",
+    "succinct",
+    "pithy",
+    "terse",
+    "epigrammatic",
+    "telegraphic",
+    "condensed",
+    "crisp",
+    "aphoristic",
+    "compact",
+    "monosyllabic",
+    "laconic",
+    "sententious",
+    "elliptical",
+    "elliptic",
+    "apothegmatic",
+    "significant",
+    "well-turned",
+]
