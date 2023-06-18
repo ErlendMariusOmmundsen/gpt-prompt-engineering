@@ -288,7 +288,7 @@ class Gpt:
                     )
                 ]
 
-            case "briefness":
+            case "length":
                 messages = [
                     Message(
                         "user",
@@ -722,31 +722,11 @@ class Gpt:
         )
         return info_dict
 
-    def briefness_completion(
-        self, text: str, modifier: str
-    ) -> Tuple[ChatResponse, str]:
-        messages = self.create_chat_messages(modifier, text, "briefness")
+    def modifier_summarize(self, text: str, modifier: str, modifies: str) -> DfDict:
+        messages = self.create_chat_messages(modifier, text, modifies)
         response = self.chat_completion(messages)
+        prompt = messages_to_string(messages)
 
-        return response, messages_to_string(messages)
-
-    def briefness_summarize(self, text: str, modifier: str) -> DfDict:
-        response, prompt = self.briefness_completion(text, modifier)
-        info_dict = self.to_df_dict(
-            Template(modifier),
-            response,
-            prompt,
-            text=text,
-        )
-        return info_dict
-
-    def quality_completion(self, text: str, modifier: str) -> Tuple[ChatResponse, str]:
-        messages = self.create_chat_messages(modifier, text, "quality")
-        response = self.chat_completion(messages)
-        return response, messages_to_string(messages)
-
-    def quality_summarize(self, text: str, modifier: str) -> DfDict:
-        response, prompt = self.quality_completion(text, modifier)
         info_dict = self.to_df_dict(
             Template(modifier),
             response,
