@@ -37,6 +37,8 @@ def pipe(
         "important_parts": gpt.important_parts_summarization,
         "in-context": gpt.in_context_summarization,
         "induce": gpt.induce_instruction,
+        "headings_first": gpt.headings_first_summarization,
+        "template": gpt.template_summarization,
     }
 
     info_dict = {}

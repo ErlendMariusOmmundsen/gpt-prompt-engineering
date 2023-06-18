@@ -7,6 +7,7 @@ import pandas as pd
 from string import Template
 from constants import (
     BASELINE_TEMPLATE,
+    HEADINGS_FIRST_TEMPLATE,
     IMPORTANT_PARTS_TEMPLATE,
     IMPROVE_TEMPLATE,
     PERSONA_TEMPLATE,
@@ -19,6 +20,7 @@ from constants import (
     IN_CONTEXT_TEMPLATE,
     FOLLOW_UP_TEMPLATE,
     INDUCE_TEMPLATE,
+    TEMPLATE_TEMPLATE,
     TOPIC_TEMPLATE,
     ZERO_SHOT_TEMPLATE,
 )
@@ -174,7 +176,7 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise.",
+                        "I want you to summarize a text into three subheadings with three corresponding bullet points.",
                     ),
                     Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
                     Message(
@@ -188,7 +190,7 @@ class Gpt:
                     Message("system", prompt),
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise.",
+                        "I want you to summarize a text into three subheadings with three corresponding bullet points.",
                     ),
                     Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
                 ]
@@ -197,7 +199,7 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise.",
+                        "I want you to summarize a text into three subheadings with three corresponding bullet points.",
                     ),
                     Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
                 ]
@@ -206,7 +208,7 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points. Be concise. "
+                        "I want you to summarize a text into three subheadings with three corresponding bullet points. "
                         + "The text is on the following topic(s): "
                         + prompt,
                     ),
@@ -240,18 +242,12 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "I am going to provide you a template for your output. Everything in all caps is a placeholder. The prompts must result in output summaries that follow the template format. Template:"
-                        + SEPARATOR
-                        + prompt
-                        + SEPARATOR,
+                        "I am going to provide you a template for your output. Everything in all caps is a placeholder. Please preserve the formatting and overall template that I provide. Template:"
+                        + prompt,
                     ),
                     Message(
                         "user",
-                        "Summarize the following text:"
-                        + SEPARATOR
-                        + text
-                        + SEPARATOR
-                        + "Be concise.",
+                        "Summarize the following text:" + SEPARATOR + text + SEPARATOR,
                     ),
                 ]
 
@@ -271,7 +267,7 @@ class Gpt:
                         + "\nSummarize the text into three subheadings with three corresponding bullet points. Be concise."
                         + "\nText: "
                         + reference_text
-                        + "\nOutput: "
+                        + "\nChatGPT: "
                         + reference_summary
                         + SEPARATOR,
                     ),
@@ -283,6 +279,13 @@ class Gpt:
                         + SEPARATOR
                         + "Be concise.",
                     ),
+                ]
+
+            case "headings_first":
+                messages = [
+                    Message(
+                        "user", "Summarize the following text into three subheadings."
+                    )
                 ]
 
             case "briefness":
@@ -610,7 +613,7 @@ class Gpt:
             prompt = "Here is a text and its important parts. Summarize the content into a three subheadings with three corresponding bullet points.\n"
             prompt += "Text:" + SEPARATOR + text + SEPARATOR + "\n\n"
             prompt += "Important parts:" + SEPARATOR + important_parts_msg + SEPARATOR
-            response = self.completion(prompt).choices[0].text
+            response = self.completion(prompt)
 
             return response, prompt
 
@@ -660,25 +663,59 @@ class Gpt:
                 + "User: Summarize the text into three subheadings with three corresponding bullet points. Be concise."
             )
             prompt += "\nText: " + reference_text
-            prompt += "\nOutput: " + reference_summary + SEPARATOR
-            prompt += "\n\nNow, please summarize the following text into three subheadings with three corresponding bullet points. Be concise."
-            prompt += "\nText: " + SEPARATOR + text + SEPARATOR
+            prompt += "\nChatGPT: " + reference_summary + SEPARATOR
+            prompt += "\n\nPlease summarize the following text."
+            prompt += "\nText: " + text
             return self.completion(prompt), prompt
 
         else:
-            messages = self.create_chat_messages(template, text, "template")
-            return self.chat_completion(messages), messages_to_string(messages)
+            if reference_text:
+                messages = self.create_chat_messages(
+                    template, text, "template", reference_text, reference_summary
+                )
+                return self.chat_completion(messages), messages_to_string(messages)
+            else:
+                messages = self.create_chat_messages(template, text, "template")
+                return self.chat_completion(messages), messages_to_string(messages)
 
-    def repeat_completion(
-        self, text: str, use_chat: bool = False
-    ) -> Tuple[ChatResponse, str]:
-        messages = self.create_chat_messages("", text, "repeat")
-        return self.chat_completion(messages), messages_to_string(messages)
+    def template_summarization(
+        self,
+        template: str,
+        text: str,
+        reference_text: str = "",
+        reference_summary: str = "",
+        use_chat: bool = True,
+    ) -> DfDict:
+        response, prompt = self.template_completion(
+            template, text, reference_text, reference_summary, use_chat
+        )
+        info_dict = self.to_df_dict(TEMPLATE_TEMPLATE, response, prompt, text=text)
+        return info_dict
 
     def repeat_summarization(self, text: str, use_chat: bool = False) -> DfDict:
-        response, prompt = self.repeat_completion(text, use_chat)
+        messages = self.create_chat_messages("", text, "repeat")
+        response = self.chat_completion(messages)
+        prompt = messages_to_string(messages)
+
         info_dict = self.to_df_dict(
             REPEAT_TEMPLATE,
+            response,
+            prompt,
+            text=text,
+        )
+        return info_dict
+
+    def headings_first_summarization(self, text: str, use_chat: bool = True) -> DfDict:
+        messages = self.create_chat_messages("", text, "headings_first")
+        response_content = self.chat_completion(messages).choices[0].message
+        messages.append(Message(response_content.role, response_content.content))
+
+        messages.append(Message("user", "Add three bullet points to each subheading."))
+        response = self.chat_completion(messages)
+        prompt = messages_to_string(messages)
+
+        info_dict = self.to_df_dict(
+            HEADINGS_FIRST_TEMPLATE,
             response,
             prompt,
             text=text,

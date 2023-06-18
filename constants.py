@@ -31,6 +31,12 @@ TOPIC_TEMPLATE = Template(
 PERSONA_TEMPLATE = Template("${Context_setter} ${prompt} Text: ${text}\n")
 REPEAT_TEMPLATE = Template("${Prompt} Text: ${text} ${Prompt}")
 ZERO_SHOT_TEMPLATE = Template("${Prompt} Text: ${text} ")
+TEMPLATE_TEMPLATE = Template(
+    "I will provide a template. All caps is placeholder. Preserve formatting. Template: ${template}. Summarize the text: ${text}"
+)
+HEADINGS_FIRST_TEMPLATE = Template(
+    "Summarize the text into three subheadings. Text: ${text}. Add three bullet points to each subheading."
+)
 
 # MAX LENGTHS #
 BULLET_MAX_LENGTH = 60
