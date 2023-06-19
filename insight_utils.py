@@ -46,6 +46,8 @@ def bar_groups_chart(
     calculations: List[str] = calculations,
     row_range_start: int = 0,
     row_range_end: int = -1,
+    y_start: int = 0,
+    y_end: int = 1,
 ):
     for i, df in enumerate(dataframes):
         df["approach"] = [dataframe_names[i] for j in range(len(df))]
@@ -81,6 +83,6 @@ def bar_groups_chart(
     ax.set_title(f"{metric.capitalize()} Aggregate Comparison")
     ax.set_xticks(x + width, calculations)
     ax.legend(loc="upper left", ncols=1)
-    ax.set_ylim(0, 1)
+    ax.set_ylim(y_start, y_end)
 
     plt.show()
