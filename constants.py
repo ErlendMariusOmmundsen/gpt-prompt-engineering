@@ -1,6 +1,7 @@
 # Always use \n###\n as separator between priming examples
 from string import Template
 
+BASE_PROMPT = "Summarize the text."
 BEGIN_SEPARATOR = "###\n"
 END_SEPARATOR = "\n###"
 PRIMING_SEPARATOR = "\n###\n"
@@ -51,6 +52,7 @@ QUALITY_MODIFIERS = [
     "well-put",
     "well-expressed",
     "well-stated",
+    "well-worded",
 ]
 
 STRUCTURE_MODIFIERS = [
@@ -60,14 +62,15 @@ STRUCTURE_MODIFIERS = [
     "well-ordered",
     "well-structured",
     "well-phrased",
-    "well-worded",
     "well-composed",
 ]
 
 FORMAT_MODIFIERS = [
     "3 subheadings, each with 3 bullet points",
-    "three subheadings, each with three bullet points",
-    "3 x 3 headings and bullet points",
+    "Three subheadings, each with three bullet points",
+    "3 x 3 subheadings and bullet points",
+    "3 by 3 subheadings with bullet points",
+    "Three subheadings with three corresponding bullet points",
 ]
 
 # Without words that are potentially rude
@@ -78,13 +81,16 @@ LENGTH_MODIFIERS = [
     "abbreviated",
     "abridged",
     "curtailed",
+    "trimmed",
     "less than " + str(BULLET_MAX_LENGTH) + " characters long",
 ]
 
 # Words contained: marked by the use of few words to convey much information or meaning
 DENSENESS_MODIFIERS = [
     "compendious",
+    "comprehensive",
     "concise",
+    "compressed",
     "succinct",
     "pithy",
     "terse",

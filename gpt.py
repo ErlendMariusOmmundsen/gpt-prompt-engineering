@@ -6,6 +6,7 @@ import configparser
 import pandas as pd
 from string import Template
 from constants import (
+    BASE_PROMPT,
     BASELINE_TEMPLATE,
     END_SEPARATOR,
     HEADINGS_FIRST_TEMPLATE,
@@ -43,7 +44,7 @@ class Gpt:
         openai.organization = config["keys"]["OPENAI_ORG_KEY"]
 
         self.model = "text-davinci-003"
-        self.chat_model = "gpt-4"
+        self.chat_model = "gpt-3.5-turbo-16k"
         self.prompt = ""
         self.suffix = ""
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random
@@ -109,21 +110,22 @@ class Gpt:
     def to_df_dict(
         self,
         prompt_template: Template,
-        response: CompletionResponse | ChatResponse,
+        response,
         prompt: str = "",
         examples: List[List[str]] = [[]],
         num_examples: int = 0,
         text="",
     ) -> DfDict:
+        print("\tResponse type:", type(response))
         if response.object == "text_completion":
             return DfDict(
                 prompt_template.template,
                 examples,
                 num_examples,
                 text,
-                prompt,
-                response.choices[0].text,
-                response.choices[0].finish_reason,
+                prompt=prompt,
+                prediction=response.choices[0].text,
+                finish_reason=response.choices[0].finish_reason,
             )
         else:
             message = response.choices[0].message
@@ -134,9 +136,9 @@ class Gpt:
                 examples,
                 num_examples,
                 text,
-                prompt,
-                msg_text,
-                response.choices[0].finish_reason,
+                prompt=prompt,
+                prediction=msg_text,
+                finish_reason=response.choices[0].finish_reason,
             )
 
     def dict_to_df(self, info_dict: DfDict, use_chat_model: bool = True):
@@ -705,14 +707,13 @@ class Gpt:
 
     def template_summarization(
         self,
-        template: str,
         text: str,
         reference_text: str = "",
         reference_summary: str = "",
         use_chat: bool = True,
     ) -> DfDict:
         response, prompt = self.template_completion(
-            template, text, reference_text, reference_summary, use_chat
+            text, reference_text, reference_summary, use_chat
         )
         info_dict = self.to_df_dict(TEMPLATE_TEMPLATE, response, prompt, text=text)
         return info_dict
