@@ -7,12 +7,13 @@ import pandas as pd
 from string import Template
 from constants import (
     BASELINE_TEMPLATE,
+    END_SEPARATOR,
     HEADINGS_FIRST_TEMPLATE,
     IMPORTANT_PARTS_TEMPLATE,
     IMPROVE_TEMPLATE,
     PERSONA_TEMPLATE,
     REPEAT_TEMPLATE,
-    SEPARATOR,
+    BEGIN_SEPARATOR,
     PRIMING_SEPARATOR,
     CSV_MSG_SEPARATOR,
     MAX_TOKENS_GPT3,
@@ -178,7 +179,7 @@ class Gpt:
                         "user",
                         "I want you to summarize a text into three subheadings with three corresponding bullet points.",
                     ),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                     Message(
                         "assistant",
                         "Before summarizing, I will ask two questions about the text.",
@@ -192,7 +193,7 @@ class Gpt:
                         "user",
                         "I want you to summarize a text into three subheadings with three corresponding bullet points.",
                     ),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "improve":
@@ -201,7 +202,7 @@ class Gpt:
                         "user",
                         "I want you to summarize a text into three subheadings with three corresponding bullet points.",
                     ),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "topic":
@@ -212,13 +213,13 @@ class Gpt:
                         + "The text is on the following topic(s): "
                         + prompt,
                     ),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "important_parts":
                 messages = [
                     Message("user", "Find all important parts of the following text."),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "summarize_important_parts":
@@ -227,9 +228,10 @@ class Gpt:
                         "user",
                         "Here is a text and its important parts. Summarize the text into three subheadings with three corresponding bullet points.",
                     ),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
+                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                     Message(
-                        "user", "Important parts:" + SEPARATOR + prompt + SEPARATOR
+                        "user",
+                        "Important parts: " + BEGIN_SEPARATOR + prompt + END_SEPARATOR,
                     ),
                 ]
 
@@ -242,12 +244,13 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "I am going to provide you a template for your output. Everything in all caps is a placeholder. Please preserve the formatting and overall template that I provide. Template:"
-                        + prompt,
-                    ),
-                    Message(
-                        "user",
-                        "Summarize the following text:" + SEPARATOR + text + SEPARATOR,
+                        # "I am going to provide you a template for your output. Everything in all caps is a placeholder. Please preserve the formatting and overall template that I provide. Template: "
+                        "I am going to provide you a summary template. Everything in all caps is a placeholder. Please preserve the format, and number of subheadings and bullet points. Template: "
+                        + prompt
+                        + "\nSummarize the following text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     ),
                 ]
 
@@ -255,43 +258,71 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "I am going to provide you a template for your output. Everything in all caps is a placeholder. The prompts must result in output summaries that follow the template format. Template:"
-                        + SEPARATOR
+                        "I am going to provide you a template for your output. Everything in all caps is a placeholder. The prompts must result in output summaries that adhere to the template format. Template: "
                         + prompt
-                        + SEPARATOR,
-                    ),
-                    Message(
-                        "user",
-                        "A sample interaction after the prompt was provided is shown below.\n"
-                        + SEPARATOR
-                        + "\nSummarize the text into three subheadings with three corresponding bullet points."
-                        + "\nText: "
+                        + "Here is a sample interaction after the prompt was provided: "
+                        + BEGIN_SEPARATOR
+                        + "\nSummarize the text. Text: "
                         + reference_text
                         + "\nChatGPT: "
                         + reference_summary
-                        + SEPARATOR,
+                        + END_SEPARATOR,
                     ),
                     Message(
                         "user",
-                        "Summarize the following text:" + SEPARATOR + text + SEPARATOR,
+                        "Summarize the text: Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     ),
                 ]
 
             case "headings_first":
                 messages = [
                     Message(
-                        "user", "Summarize the following text into three subheadings."
+                        "user",
+                        "Summarize the following text into three subheadings. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     )
                 ]
 
-            case "length":
+            case "repeat":
                 messages = [
                     Message(
                         "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points."
-                        + SEPARATOR
+                        "Summarize the text into three subheadings with three corresponding bullet points."
+                        + "\nText: "
+                        + BEGIN_SEPARATOR
                         + text
-                        + SEPARATOR
+                        + END_SEPARATOR
+                        + "\nSummarize the text into three subheadings with three corresponding bullet points.",
+                    ),
+                ]
+
+            case "format":
+                messages = [
+                    Message(
+                        "user",
+                        BASE_PROMPT
+                        + "\nText: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR
+                        + "\n"
+                        + prompt,
+                    ),
+                ]
+
+            case "length" | "quality" | "structure" | "denseness":
+                messages = [
+                    Message(
+                        "user",
+                        "Summarize the following text into three subheadings with three corresponding bullet points.\nText: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR
                         + "\nThe bullet points and subheadings should be "
                         + prompt,
                     ),
@@ -302,10 +333,10 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points."
-                        + SEPARATOR
+                        "Summarize the following text into three subheadings with three corresponding bullet points.\nText: "
+                        + BEGIN_SEPARATOR
                         + text
-                        + SEPARATOR
+                        + END_SEPARATOR
                         + "\n"
                         + shorten_modifier,
                     )
@@ -315,26 +346,13 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points."
-                        + SEPARATOR
+                        "Summarize the following text into three subheadings with three corresponding bullet points.\nText: "
+                        + BEGIN_SEPARATOR
                         + text
-                        + SEPARATOR
+                        + END_SEPARATOR
                         + "\nThe bullet points and subheadings should be "
                         + prompt,
                     )
-                ]
-
-            case "repeat":
-                messages = [
-                    Message(
-                        "user",
-                        "Summarize the text into three subheadings with three corresponding bullet points.",
-                    ),
-                    Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
-                    Message(
-                        "user",
-                        "Summarize the text into three subheadings with three corresponding bullet points.",
-                    ),
                 ]
 
             # TODO: Update this
@@ -351,9 +369,11 @@ class Gpt:
                         "I want you to summarize a text for me. Here are some representative examples of how to summarize a text.",
                     ),
                 ]
-                examples = prompt.split(SEPARATOR)
+                examples = prompt.split(BEGIN_SEPARATOR)
                 for example in examples:
-                    messages.append(Message(SEPARATOR + example + SEPARATOR, "user"))
+                    messages.append(
+                        Message(BEGIN_SEPARATOR + example + BEGIN_SEPARATOR, "user")
+                    )
                 messages.append(
                     Message(
                         "assistant",
@@ -401,8 +421,8 @@ class Gpt:
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
         if not use_chat:
             prompt = "Summarize the following text into three subheadings with three corresponding bullet points."
-            prompt += "\n\nTopic:" + SEPARATOR + topic + SEPARATOR
-            prompt += "\n\nText:" + SEPARATOR + text + SEPARATOR
+            prompt += "\n\nTopic: " + BEGIN_SEPARATOR + topic + END_SEPARATOR
+            prompt += "\n\nText: " + BEGIN_SEPARATOR + text + END_SEPARATOR
             prompt += "\n\nSummary:"
 
             return self.completion(prompt), prompt
@@ -513,7 +533,7 @@ class Gpt:
         strings = [
             persona_context_setter,
             "Summarize the following text into three subheadings with three corresponding bullet points.",
-            "Text: ###\n" + text + "\n###",
+            "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR,
             "Summary:",
         ]
 
@@ -560,15 +580,15 @@ class Gpt:
         self, text: str, use_chat: bool = True
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
         prompt = "Summarize the following text into three subheadings with three corresponding bullet points.\n"
-        prompt += "Text: ###\n" + text + SEPARATOR
-        prompt += "Summary:"
+        prompt += "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR
+        prompt += "\nSummary:"
 
         if not use_chat:
             response = self.completion(prompt)
             summary = response.choices[0].text
-            prompt = "Here is a text and its summary. Please improve the summary.\n"
-            prompt += "Text: ###\n" + text + SEPARATOR
-            prompt += "Summary: ###\n" + summary + SEPARATOR
+            prompt = "Here is a text and its summary. Please improve the summary."
+            prompt += "\nText: " + BEGIN_SEPARATOR + text + END_SEPARATOR
+            prompt += "\nSummary: " + BEGIN_SEPARATOR + summary + END_SEPARATOR
             return self.completion(prompt), prompt
 
         else:
@@ -597,18 +617,27 @@ class Gpt:
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
         if not use_chat:
             prompt = "Find all important parts of the following text.\n"
-            prompt += "Text: ###\n" + text + SEPARATOR
-            prompt += "Important parts:"
-            important_parts_msg = self.completion(prompt).choices[0].text
+            prompt += "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR
 
+            important_parts_msg = self.completion(prompt).choices[0].text
             prompt = "Here is a text and its important parts. Please improve the important parts.\n"
-            prompt += "Text:" + SEPARATOR + text + SEPARATOR + "\n\n"
-            prompt += "Important parts:" + SEPARATOR + important_parts_msg + SEPARATOR
+            prompt += "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR
+            prompt += (
+                "\nImportant parts:"
+                + BEGIN_SEPARATOR
+                + important_parts_msg
+                + END_SEPARATOR
+            )
             important_parts_msg = self.completion(prompt).choices[0].text
 
-            prompt = "Here is a text and its important parts. Summarize the content into a three subheadings with three corresponding bullet points.\n"
-            prompt += "Text:" + SEPARATOR + text + SEPARATOR + "\n\n"
-            prompt += "Important parts:" + SEPARATOR + important_parts_msg + SEPARATOR
+            prompt = "Here is a text and its important parts. Summarize the content into a three subheadings with three corresponding bullet points."
+            prompt += "\nText: " + BEGIN_SEPARATOR + text + END_SEPARATOR
+            prompt += (
+                "Important parts: "
+                + BEGIN_SEPARATOR
+                + important_parts_msg
+                + END_SEPARATOR
+            )
             response = self.completion(prompt)
 
             return response, prompt
@@ -643,25 +672,25 @@ class Gpt:
 
     def template_completion(
         self,
-        template: str,
         text: str,
         reference_text: str = "",
         reference_summary: str = "",
         use_chat: bool = True,
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
-        template = "\nSUBHEADING\n- BULLET\n- BULLET\n- BULLET\nSUBHEADING\n- BULLET\n- BULLET\n- BULLET\nSUBHEADING\n- BULLET\n- BULLET\n- BULLET"
+        template = "Summary:\nSUBHEADING\n-BULLET\n-BULLET\n-BULLET\nSUBHEADING\n-BULLET\n-BULLET\n-BULLET\nSUBHEADING\n-BULLET\n-BULLET\n-BULLET"
         if not use_chat:
-            prompt = "I am going to provide you a template for your output. Everything in all caps is a placeholder. The prompts must result in output summaries that follow the template format. Template:"
-            prompt += SEPARATOR + template + SEPARATOR
-            prompt += "\n\nA sample interaction after the prompt was provided is shown below.\n"
+            prompt = "I am going to provide you a template for your output. Everything in all caps is a placeholder. The prompts must result in output summaries that follow the template format. Template: "
+            prompt += template
             prompt += (
-                SEPARATOR
+                "\nA sample interaction after the prompt was provided is shown below.\n"
+            )
+            prompt += (
+                BEGIN_SEPARATOR
                 + "User: Summarize the text into three subheadings with three corresponding bullet points."
             )
             prompt += "\nText: " + reference_text
-            prompt += "\nChatGPT: " + reference_summary + SEPARATOR
-            prompt += "\n\nPlease summarize the following text."
-            prompt += "\nText: " + text
+            prompt += "\nChatGPT: " + reference_summary + END_SEPARATOR
+            prompt += "\nPlease summarize the following text. Text: " + text
             return self.completion(prompt), prompt
 
         else:

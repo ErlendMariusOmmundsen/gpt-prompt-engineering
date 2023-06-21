@@ -1,8 +1,8 @@
 # Always use \n###\n as separator between priming examples
 from string import Template
 
-
-SEPARATOR = "\n###"
+BEGIN_SEPARATOR = "###\n"
+END_SEPARATOR = "\n###"
 PRIMING_SEPARATOR = "\n###\n"
 CSV_MSG_SEPARATOR = "\n----------\n"
 MAX_TOKENS_GPT3 = 4096
