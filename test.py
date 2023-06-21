@@ -41,19 +41,20 @@ def run_pipeline(
     transcript = transcript.replace("\n\n", " ")
     transcript = normalize("NFKD", transcript)
 
-    golden_summary = normalize("NFKD", gold_df.iloc[example_index]["summary"])
+    golden_summary = normalize("NFKD", row["summary"])
     golden_summary = golden_summary.replace("- ", "")
 
     topics = row["topic"].replace(",", ", ") + "."
 
-    examples[0].remove(transcript)
-    examples[1].remove(golden_summary)
+    examples[0].remove(row["transcript"])
+    examples[1].remove(row["summary"])
 
     print("Running", pipe_name, "on example", example_index)
     pipes.pipe(
         gpt=gpt,
         evaluator=evaluator,
         text=transcript,
+        title=row["title"],
         reference=golden_summary,
         topic=topics,
         examples=examples,
@@ -68,5 +69,5 @@ def run_pipeline(
 g = Gpt()
 e = Evaluator()
 
-for i in range(3):
-    run_pipeline(g, e, "in-context", example_index, True, True)
+for i in range(5):
+    run_pipeline(g, e, "repeat", example_index, True, True)

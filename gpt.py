@@ -108,7 +108,7 @@ class Gpt:
     def to_df_dict(
         self,
         prompt_template: Template,
-        response,
+        response: CompletionResponse | ChatResponse,
         prompt: str = "",
         examples: List[List[str]] = [[]],
         num_examples: int = 0,
@@ -264,7 +264,7 @@ class Gpt:
                         "user",
                         "A sample interaction after the prompt was provided is shown below.\n"
                         + SEPARATOR
-                        + "\nSummarize the text into three subheadings with three corresponding bullet points. Be concise."
+                        + "\nSummarize the text into three subheadings with three corresponding bullet points."
                         + "\nText: "
                         + reference_text
                         + "\nChatGPT: "
@@ -273,11 +273,7 @@ class Gpt:
                     ),
                     Message(
                         "user",
-                        "Summarize the following text:"
-                        + SEPARATOR
-                        + text
-                        + SEPARATOR
-                        + "Be concise.",
+                        "Summarize the following text:" + SEPARATOR + text + SEPARATOR,
                     ),
                 ]
 
@@ -332,12 +328,12 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.",
+                        "Summarize the text into three subheadings with three corresponding bullet points.",
                     ),
                     Message("user", "Text:" + SEPARATOR + text + SEPARATOR),
                     Message(
                         "user",
-                        "Summarize the text into three subheadings with three corresponding bullet points. Be concise.",
+                        "Summarize the text into three subheadings with three corresponding bullet points.",
                     ),
                 ]
 
@@ -376,7 +372,7 @@ class Gpt:
             messages.append(Message(role, message.content))
             role = "user" if role == "assistant" else "assistant"
 
-        final = "Now summarize the text into three subheadings with three corresponding bullet points. Be concise."
+        final = "Now summarize the text into three subheadings with three corresponding bullet points."
         messages.append(Message("user", final))
 
         response = self.chat_completion(messages)
@@ -404,7 +400,7 @@ class Gpt:
         self, text: str, topic: str, use_chat: bool = True
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
         if not use_chat:
-            prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise."
+            prompt = "Summarize the following text into three subheadings with three corresponding bullet points."
             prompt += "\n\nTopic:" + SEPARATOR + topic + SEPARATOR
             prompt += "\n\nText:" + SEPARATOR + text + SEPARATOR
             prompt += "\n\nSummary:"
@@ -516,7 +512,7 @@ class Gpt:
     ):
         strings = [
             persona_context_setter,
-            "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.",
+            "Summarize the following text into three subheadings with three corresponding bullet points.",
             "Text: ###\n" + text + "\n###",
             "Summary:",
         ]
@@ -563,7 +559,7 @@ class Gpt:
     def improve_completion(
         self, text: str, use_chat: bool = True
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
-        prompt = "Summarize the following text into three subheadings with three corresponding bullet points. Be concise.\n"
+        prompt = "Summarize the following text into three subheadings with three corresponding bullet points.\n"
         prompt += "Text: ###\n" + text + SEPARATOR
         prompt += "Summary:"
 
@@ -582,7 +578,7 @@ class Gpt:
             messages.append(
                 Message(
                     "user",
-                    "I am not satisfied with the summary. Write an improved version using three subheadings with three corresponding bullet points. Be concise.",
+                    "I am not satisfied with the summary. Write an improved version using three subheadings with three corresponding bullet points.",
                 )
             )
             response = self.chat_completion(messages)
@@ -660,7 +656,7 @@ class Gpt:
             prompt += "\n\nA sample interaction after the prompt was provided is shown below.\n"
             prompt += (
                 SEPARATOR
-                + "User: Summarize the text into three subheadings with three corresponding bullet points. Be concise."
+                + "User: Summarize the text into three subheadings with three corresponding bullet points."
             )
             prompt += "\nText: " + reference_text
             prompt += "\nChatGPT: " + reference_summary + SEPARATOR
@@ -692,7 +688,7 @@ class Gpt:
         info_dict = self.to_df_dict(TEMPLATE_TEMPLATE, response, prompt, text=text)
         return info_dict
 
-    def repeat_summarization(self, text: str, use_chat: bool = False) -> DfDict:
+    def repeat_summarization(self, text: str, use_chat: bool = True) -> DfDict:
         messages = self.create_chat_messages("", text, "repeat")
         response = self.chat_completion(messages)
         prompt = messages_to_string(messages)

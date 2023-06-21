@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 
@@ -52,7 +52,7 @@ class CompletionResponse:
 @dataclass
 class DfDict:
     prompt_template: str = ""
-    examples: List[List[str]] = [[]]
+    examples: List[List[str]] = field(default_factory=list)
     num_examples: int = 0
     text: str = ""
     title: str = ""

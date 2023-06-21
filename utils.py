@@ -7,13 +7,13 @@ import pandas as pd
 from dataclss import Message
 
 
-def get_examples():
+def get_examples() -> List[List[str]]:
     # use pandas to read in examples from data/manual_summaries.csv and return them as a list containing two lists of strings, one for each column
     df = pd.read_csv("data/manual_summaries.csv")
     return [df["transcript"].tolist(), df["summary"].tolist()]
 
 
-def msg_to_dicts(messages: List[Message]):
+def msg_to_dicts(messages: List[Message]) -> List[dict]:
     return [asdict(m) for m in messages]
 
 
@@ -64,7 +64,7 @@ def num_tokens_from_string(string: str, model: str) -> int:
     return num_tokens
 
 
-def num_tokens_from_examples(examples, model="gpt-4"):
+def num_tokens_from_examples(examples, model="gpt-4") -> int:
     num_tokens = 0
     for example_list in examples:
         for example in example_list:
@@ -73,7 +73,7 @@ def num_tokens_from_examples(examples, model="gpt-4"):
 
 
 # From https://github.com/openai/openai-cookbook/blob/main/examples/How_to_format_inputs_to_ChatGPT_models.ipynb
-def num_tokens_from_messages(messages, model="gpt-4"):
+def num_tokens_from_messages(messages, model="gpt-4") -> int:
     """Returns the number of tokens used by a list of messages."""
     try:
         encoding = tiktoken.encoding_for_model(model)
