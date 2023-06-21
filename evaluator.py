@@ -194,9 +194,17 @@ class Evaluator:
         period_split = text.split(".")
         newline_split = text.split("\n")
         split = period_split if len(period_split) == 12 else newline_split
+        three_by_three = 0
+        truncated_prediction = ""
 
-        if len(split) != 12:
-            return 0, 0, 0
+        if len(split) == 12:
+            three_by_three = 1
+        else:
+            try:
+                split = split[:12]
+                truncated_prediction = "\n".join(split)
+            except:
+                pass
 
         long_subheadings = 0
         subheadings = split[::4]
@@ -210,7 +218,7 @@ class Evaluator:
             if len(bullet) > BULLET_MAX_LENGTH:
                 long_bullets += 1
 
-        return 1, long_subheadings, long_bullets
+        return truncated_prediction, three_by_three, long_subheadings, long_bullets
 
     def bert_score(self, reference, candidate):
         # score inputs: list of candidate sentences, list of reference sentences
@@ -236,6 +244,15 @@ class Evaluator:
         return p, r, f1, mean
 
     def evaluate_dict(self, info_dict: DfDict, reference: str = ""):
+        (
+            truncated_prediction,
+            info_dict.three_by_three,
+            info_dict.long_subheadings,
+            info_dict.long_bullets,
+        ) = self.check_format(info_dict.prediction)
+        if info_dict.three_by_three == 0:
+            info_dict.prediction = truncated_prediction
+
         if reference != "":
             rogue_scores = self.rogue(reference, info_dict.prediction)
             info_dict.rogue_1 = rogue_scores["rouge1"].fmeasure
@@ -247,6 +264,7 @@ class Evaluator:
             info_dict.number_hallucinations = self.number_hallucinations(
                 reference, info_dict.prediction
             )
+
         (
             info_dict.contradiction_ratio,
             info_dict.neutral_contradiction_ratio,
@@ -256,10 +274,5 @@ class Evaluator:
         info_dict.avg_error_count_score, info_dict.errors = self.avg_error_count_score(
             info_dict.prediction
         )
-        (
-            info_dict.three_by_three,
-            info_dict.long_subheadings,
-            info_dict.long_bullets,
-        ) = self.check_format(info_dict.prediction)
 
         return info_dict
