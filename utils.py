@@ -20,17 +20,44 @@ def msg_to_dicts(messages: List[Message]) -> List[dict]:
 def messages_to_string(messages: List[Message]) -> str:
     result = ""
     for message in messages:
-        result += message.role + ": " + message.content + "\n\n"
+        result += message.role + ":\n" + message.content + "\n\n"
     return result
 
 
+def remove_prefix_words(string: str) -> str:
+    for word in [
+        "headings",
+        "heading",
+        "subheadings",
+        "subheading",
+        "sub-heading",
+        "bullet-points",
+        "bullet-point",
+        "bullets",
+        "bullet",
+        "summary",
+        "i.",
+        "i:",
+        "ii.",
+        "ii:",
+        "iii.",
+        "iii:",
+    ]:
+        if string.lower().startswith(word.lower()):
+            return string[len(word) :]
+    return string
+
+
 def remove_prefix_str(string: str) -> str:
-    string = string.strip("- .*:")
-    if string.startswith("Subheading"):
-        return string[string.find(":") + 2 :]
-    elif string[0].isdigit() and string[1] == ".":
-        return string[string.find(".") + 2 :]
-    else:
+    string = remove_prefix_words(string).replace("\n", "")
+    string = string.strip(" -.*:")
+    try:
+        if string[0].isdigit() and (string[1] == "." or string[1] == ":"):
+            string = string[string.find(".") + 2 :]
+            return string.strip(" -.*:")
+        else:
+            return string
+    except:
         return string
 
 
@@ -44,7 +71,7 @@ def remove_suffix_str(string: str) -> str:
 
 
 def remove_empty_lines(string: str) -> str:
-    return re.sub(r"\n\s*\n", "\n", string)
+    return re.sub(r"\s*\n\s*\n\s*", "\n", string)
 
 
 def clean_prediction(prediction: str) -> str:
@@ -53,7 +80,12 @@ def clean_prediction(prediction: str) -> str:
     for i in range(len(prediction_splits)):
         prediction_splits[i] = remove_prefix_str(prediction_splits[i])
         prediction_splits[i] = remove_suffix_str(prediction_splits[i])
-    prediction = "\n".join(prediction_splits)
+    clean_splits = []
+    for line in prediction_splits:
+        if len(line) > 2:
+            clean_splits.append(line)
+    prediction = "\n".join(clean_splits)
+    prediction = remove_empty_lines(prediction)
     return prediction
 
 
@@ -80,7 +112,7 @@ def num_tokens_from_messages(messages, model="gpt-4") -> int:
     except KeyError:
         print("Warning: model not found. Using cl100k_base encoding.")
         encoding = tiktoken.get_encoding("cl100k_base")
-    if model == "gpt-3.5-turbo":
+    if model == "gpt-3.5-turbo" or model == "gpt-3.5-turbo-16k":
         print(
             "Warning: gpt-3.5-turbo may change over time. Returning num tokens assuming gpt-3.5-turbo-0301."
         )
