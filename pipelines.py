@@ -29,7 +29,7 @@ def pipe(
     only_outputs=False,
 ):
     path = "results/"
-    path += "gpt4/" if use_chat else "gpt3/"
+    path += gpt.chat_model + "/" if use_chat else gpt.model + "/"
 
     name_to_function = {
         "baseline": gpt.baseline_summarization,
@@ -60,10 +60,17 @@ def pipe(
         info_dict = name_to_function[name](
             examples=examples, num_examples=num_examples, use_chat=use_chat
         )
+    elif name == "template":
+        info_dict = name_to_function[name](
+            text=text,
+            reference_text=examples[0][0],
+            reference_summary=examples[1][0],
+            use_chat=use_chat,
+        )
     else:
         info_dict = name_to_function[name](text=text, use_chat=use_chat)
 
-    info_dict.update({"title": title})
+    info_dict.title = title
 
     info_dict = evaluator.evaluate_dict(info_dict, reference)
     gpt.save_df(info_dict, path + name + ".csv", use_chat)
@@ -76,16 +83,6 @@ def induce_pipe(gpt: Gpt, examples: List[List[str]], num_examples: int, use_chat
     else:
         print("Saving to results/gpt4/instruction-induction.csv")
         gpt.save_df(info_dict, "results/gpt4/instruction-induction.csv", use_chat)
-
-
-modifies = ["format", "length", "quality", "structure", "denseness"]
-modifiers = [
-    FORMAT_MODIFIERS,
-    LENGTH_MODIFIERS,
-    QUALITY_MODIFIERS,
-    STRUCTURE_MODIFIERS,
-    DENSENESS_MODIFIERS,
-]
 
 
 def modifier_pipe(
@@ -101,7 +98,10 @@ def modifier_pipe(
         for _ in range(runs_per_modifier):
             info_dict = gpt.modifier_summarize(text, modifier, modifies)
             info_dict = evaluator.evaluate_dict(info_dict, reference)
-            gpt.save_df(info_dict, "results/gpt3.5" + modifies + ".csv")
+            gpt.save_df(
+                info_dict,
+                "results/modifiers/" + gpt.chat_model + "/" + modifies + ".csv",
+            )
 
         if modifies == "length":
             messages = gpt.create_chat_messages("", text, "shorten_as_possible")
