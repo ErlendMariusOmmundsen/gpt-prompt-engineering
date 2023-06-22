@@ -326,7 +326,8 @@ class Gpt:
                         + text
                         + END_SEPARATOR
                         + "\nThe bullet points and subheadings should be "
-                        + prompt,
+                        + prompt
+                        + ".",
                     ),
                 ]
 
@@ -341,19 +342,6 @@ class Gpt:
                         + END_SEPARATOR
                         + "\n"
                         + shorten_modifier,
-                    )
-                ]
-
-            case "quality":
-                messages = [
-                    Message(
-                        "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points.\nText: "
-                        + BEGIN_SEPARATOR
-                        + text
-                        + END_SEPARATOR
-                        + "\nThe bullet points and subheadings should be "
-                        + prompt,
                     )
                 ]
 
@@ -751,6 +739,11 @@ class Gpt:
     def modifier_summarize(self, text: str, modifier: str, modifies: str) -> DfDict:
         messages = self.create_chat_messages(modifier, text, modifies)
         response = self.chat_completion(messages)
+        messages.append(
+            Message(
+                response.choices[0].message.role, response.choices[0].message.content
+            )
+        )
         prompt = messages_to_string(messages)
 
         info_dict = self.to_df_dict(
