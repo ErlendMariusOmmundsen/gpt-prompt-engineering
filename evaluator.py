@@ -1,4 +1,5 @@
 import re
+
 from constants import BULLET_MAX_LENGTH, SUBHEADING_MAX_LENGTH
 import language_tool_python
 from nltk import word_tokenize, sent_tokenize
@@ -13,6 +14,9 @@ from tqdm import tqdm
 import torch
 import bert_score
 from dataclss import DfDict
+
+import inflect
+from word2number import w2n
 
 
 class Entailor:
@@ -144,6 +148,7 @@ class Evaluator:
         self.b_scorer = bert_score.BERTScorer(lang="en", rescale_with_baseline=True)
         self.slorer = SLORer()
         self.entailor = Entailor()
+        self.inflect = inflect.engine()
 
     def rogue(self, reference, candidate):
         """
@@ -179,14 +184,47 @@ class Evaluator:
             total_errors += num_errors
         return sum / len(sentences), total_errors
 
-    def number_hallucinations(self, reference, candidate):
-        ref_numbers = re.findall(r"\d+", reference)
-        cand_numbers = re.findall(r"\d+", candidate)
-
+    def number_hallucinations(self, text, candidate_summary):
         number_hallucinations = 0
+        regex = r"\d+([,.](\d+))?"
+        text_numbers_iter = re.finditer(regex, text)
+        cand_numbers_iter = re.finditer(regex, candidate_summary)
+        text_numbers = [match.group(0) for match in text_numbers_iter]
+        cand_numbers = [match.group(0) for match in cand_numbers_iter]
+
+        cleaned_text = re.sub(r"[^\w\s\-,\.]", "", text.lower()).split()
+        cleaned_cand = re.sub(r"[^\w\s\-,\.]", "", candidate_summary.lower()).split()
+
+        # Checks if ints and floats from candidate summary are in text
         for num in cand_numbers:
-            if num not in ref_numbers:
+            try:
+                ordinal = self.inflect.number_to_words(self.inflect.ordinal(num))
+                if ordinal in cleaned_text:
+                    continue
+            except:
+                pass
+            if (
+                num not in text_numbers
+                and num.replace(",", ".") not in text_numbers
+                and num.replace(".", ",") not in text_numbers
+                and self.inflect.number_to_words(num) not in cleaned_text
+            ):
                 number_hallucinations += 1
+
+        # Checks if numbers written as words from candidate summary are in text
+        for word in cleaned_cand:
+            try:
+                if word.replace(",", "").replace(".", "").isdigit():
+                    continue
+                number = w2n.word_to_num(word)
+                if (
+                    str(number) not in text_numbers
+                    and word not in cleaned_text
+                    and number not in cand_numbers
+                ):
+                    number_hallucinations += 1
+            except:
+                pass
 
         return number_hallucinations
 
@@ -194,9 +232,17 @@ class Evaluator:
         period_split = text.split(".")
         newline_split = text.split("\n")
         split = period_split if len(period_split) == 12 else newline_split
+        three_by_three = 0
+        truncated_prediction = ""
 
-        if len(split) != 12:
-            return 0, 0, 0
+        if len(split) == 12:
+            three_by_three = 1
+        else:
+            try:
+                split = split[:12]
+                truncated_prediction = "\n".join(split)
+            except:
+                pass
 
         long_subheadings = 0
         subheadings = split[::4]
@@ -210,7 +256,7 @@ class Evaluator:
             if len(bullet) > BULLET_MAX_LENGTH:
                 long_bullets += 1
 
-        return 1, long_subheadings, long_bullets
+        return truncated_prediction, three_by_three, long_subheadings, long_bullets
 
     def bert_score(self, reference, candidate):
         # score inputs: list of candidate sentences, list of reference sentences
@@ -236,6 +282,15 @@ class Evaluator:
         return p, r, f1, mean
 
     def evaluate_dict(self, info_dict: DfDict, reference: str = ""):
+        (
+            truncated_prediction,
+            info_dict.three_by_three,
+            info_dict.long_subheadings,
+            info_dict.long_bullets,
+        ) = self.check_format(info_dict.prediction)
+        if info_dict.three_by_three == 0:
+            info_dict.prediction = truncated_prediction
+
         if reference != "":
             rogue_scores = self.rogue(reference, info_dict.prediction)
             info_dict.rogue_1 = rogue_scores["rouge1"].fmeasure
@@ -245,8 +300,9 @@ class Evaluator:
             p, r, f1, mean = self.bert_score(reference, info_dict.prediction)
             info_dict.bert_score = float(mean)
             info_dict.number_hallucinations = self.number_hallucinations(
-                reference, info_dict.prediction
+                info_dict.text, info_dict.prediction
             )
+
         (
             info_dict.contradiction_ratio,
             info_dict.neutral_contradiction_ratio,
@@ -256,10 +312,5 @@ class Evaluator:
         info_dict.avg_error_count_score, info_dict.errors = self.avg_error_count_score(
             info_dict.prediction
         )
-        (
-            info_dict.three_by_three,
-            info_dict.long_subheadings,
-            info_dict.long_bullets,
-        ) = self.check_format(info_dict.prediction)
 
         return info_dict

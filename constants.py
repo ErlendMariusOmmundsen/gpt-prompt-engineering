@@ -1,10 +1,11 @@
 # Always use \n###\n as separator between priming examples
 from string import Template
 
-
-SEPARATOR = "\n###"
+BASE_PROMPT = "Summarize the text."
+BEGIN_SEPARATOR = "###\n"
+END_SEPARATOR = "\n###"
 PRIMING_SEPARATOR = "\n###\n"
-CSV_MSG_SEPARATOR = "\n----------\n"
+CSV_SEPARATOR = "\n\n----------\n\n"
 MAX_TOKENS_GPT3 = 4096
 MAX_TOKENS_GPT4 = 8192
 # MAX_TOKENS_GPT4 = 32768 When the GPT-4-32K model is released
@@ -51,6 +52,17 @@ QUALITY_MODIFIERS = [
     "well-put",
     "well-expressed",
     "well-stated",
+    "well-worded",
+    "well-formulated",
+    "well-presented",
+    "a pleasure to read",
+    "a joy to read",
+    "a delight to read",
+    "delightful",
+    "meaningful, persuasive, and delightful",
+    "masterfully written",
+    "masterpieces of the English language",
+    "understandable and enjoyable for everyone",
 ]
 
 STRUCTURE_MODIFIERS = [
@@ -60,14 +72,25 @@ STRUCTURE_MODIFIERS = [
     "well-ordered",
     "well-structured",
     "well-phrased",
-    "well-worded",
     "well-composed",
+    "coherent",
+    "flowing",
+    "put together well",
+    "well put together",
+    "put together so that it flows well",
+    "put together so that they are connected well",
+    "put together so that there is a good flow",
 ]
 
 FORMAT_MODIFIERS = [
+    "3 subheadings with 3 bullet points",
     "3 subheadings, each with 3 bullet points",
-    "three subheadings, each with three bullet points",
-    "3 x 3 headings and bullet points",
+    "Three subheadings, each with three bullet points",
+    "3 x 3 subheadings and bullet points",
+    "3 by 3 subheadings with bullet points",
+    "Three subheadings with three corresponding bullet points",
+    "Output must be three subheadings, each with three bullet points",
+    "Output format: three subheadings, each with three bullet points",
 ]
 
 # Without words that are potentially rude
@@ -78,13 +101,16 @@ LENGTH_MODIFIERS = [
     "abbreviated",
     "abridged",
     "curtailed",
+    "trimmed",
     "less than " + str(BULLET_MAX_LENGTH) + " characters long",
 ]
 
 # Words contained: marked by the use of few words to convey much information or meaning
 DENSENESS_MODIFIERS = [
     "compendious",
+    "comprehensive",
     "concise",
+    "compressed",
     "succinct",
     "pithy",
     "terse",
