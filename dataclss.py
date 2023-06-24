@@ -72,3 +72,7 @@ class DfDict:
     three_by_three: int = 0
     long_subheadings: int = 0
     long_bullets: int = 0
+    geval_fluency: float = 0
+    geval_relevance: float = 0
+    geval_coherence: float = 0
+    geval_consistency: float = 0

@@ -9,6 +9,10 @@ from constants import (
     BASE_PROMPT,
     BASELINE_TEMPLATE,
     END_SEPARATOR,
+    GEVAL_FLUENCY,
+    GEVAL_COHERENCE,
+    GEVAL_CONSISTENCY,
+    GEVAL_RELEVANCE,
     HEADINGS_FIRST_TEMPLATE,
     IMPORTANT_PARTS_TEMPLATE,
     IMPROVE_TEMPLATE,
@@ -16,7 +20,6 @@ from constants import (
     REPEAT_TEMPLATE,
     BEGIN_SEPARATOR,
     PRIMING_SEPARATOR,
-    CSV_MSG_SEPARATOR,
     MAX_TOKENS_GPT3,
     MAX_TOKENS_GPT4,
     IN_CONTEXT_TEMPLATE,
@@ -58,7 +61,7 @@ class Gpt:
         self.stream = False
         # Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens. If logprobs is
         #    5, the API will return a list of the 5 most likely tokens.
-        self.log_probs = None
+        self.logprobs = None
         # Up to 4 sequences where the API will stop generating further tokens.
         self.stop = None
 
@@ -84,7 +87,7 @@ class Gpt:
             max_tokens=MAX_TOKENS_GPT3 - num_tokens - 3,  # magic number?
             n=self.n,
             stream=self.stream,
-            logprobs=self.log_probs,
+            logprobs=self.logprobs,
             stop=self.stop,
         )  # type: ignore
 
@@ -753,3 +756,41 @@ class Gpt:
             text=text,
         )
         return info_dict
+
+    def geval(self, text: str, summary: str, metric: str):
+        self.logprobs = 5
+        self.n = 20
+        messages = []
+
+        match metric:
+            case "fluency":
+                prompt = GEVAL_FLUENCY.substitute(text=text, summary=summary)
+                messages.append(Message("user", prompt))
+            case "coherence":
+                prompt = GEVAL_CONSISTENCY.substitute(text=text, summary=summary)
+                messages.append(Message("user", prompt))
+            case "consistency":
+                prompt = GEVAL_COHERENCE.substitute(text=text, summary=summary)
+                messages.append(Message("user", prompt))
+            case "relevance":
+                prompt = GEVAL_RELEVANCE.substitute(text=text, summary=summary)
+                messages.append(Message("user", prompt))
+
+        response = self.chat_completion(messages)
+        prob_dist = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+
+        geval_score = 0
+
+        for choice in response.choices:
+            score = choice.message.content
+            prob_dist[int(score)] += 1
+
+        for score in prob_dist.keys():
+            occurrences = prob_dist[score]
+            score_probability = occurrences / self.n
+            geval_score += score * score_probability
+
+        self.logprobs = None
+        self.n = 1
+
+        return round(geval_score, 2)

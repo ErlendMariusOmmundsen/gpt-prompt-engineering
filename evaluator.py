@@ -1,6 +1,13 @@
 import re
 
-from constants import BULLET_MAX_LENGTH, SUBHEADING_MAX_LENGTH
+from constants import (
+    BULLET_MAX_LENGTH,
+    GEVAL_COHERENCE,
+    GEVAL_CONSISTENCY,
+    GEVAL_FLUENCY,
+    GEVAL_RELEVANCE,
+    SUBHEADING_MAX_LENGTH,
+)
 import language_tool_python
 from nltk import word_tokenize, sent_tokenize
 import matplotlib.pyplot as plt
@@ -14,6 +21,7 @@ from tqdm import tqdm
 import torch
 import bert_score
 from dataclss import DfDict
+from gpt import Gpt
 
 import inflect
 from word2number import w2n
@@ -281,7 +289,7 @@ class Evaluator:
 
         return p, r, f1, mean
 
-    def evaluate_dict(self, info_dict: DfDict, reference: str = ""):
+    def evaluate_dict(self, gpt: Gpt, info_dict: DfDict, reference: str = ""):
         (
             truncated_prediction,
             info_dict.three_by_three,
@@ -311,6 +319,19 @@ class Evaluator:
 
         info_dict.avg_error_count_score, info_dict.errors = self.avg_error_count_score(
             info_dict.prediction
+        )
+
+        info_dict.geval_fluency = gpt.geval(
+            info_dict.text, info_dict.prediction, "fluency"
+        )
+        info_dict.geval_fluency = gpt.geval(
+            info_dict.text, info_dict.prediction, "coherence"
+        )
+        info_dict.geval_fluency = gpt.geval(
+            info_dict.text, info_dict.prediction, "consistency"
+        )
+        info_dict.geval_fluency = gpt.geval(
+            info_dict.text, info_dict.prediction, "relevancy"
         )
 
         return info_dict

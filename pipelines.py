@@ -72,7 +72,7 @@ def pipe(
 
     info_dict.title = title
 
-    info_dict = evaluator.evaluate_dict(info_dict, reference)
+    info_dict = evaluator.evaluate_dict(gpt, info_dict, reference)
     gpt.save_df(info_dict, path + name + ".csv", use_chat)
 
 
