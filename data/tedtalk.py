@@ -1,5 +1,6 @@
 # Adapted from https://deepnote.com/@ramshankar-yadhunath/Scraping-TED-7d1a82e1-e6e1-4d16-8dae-d70e4ab21731
 
+from pprint import PrettyPrinter
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -15,12 +16,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 base_url = "https://www.ted.com/talks"
-topic_tags = [
-    "Climate Change",
-    "Technology",
-    "Design",
-    "Future",
-]
+topic_tags = ["Water"]
 
 
 def get_page_urls(page_num, topics=topic_tags, base_url=base_url):
@@ -31,7 +27,13 @@ def get_page_urls(page_num, topics=topic_tags, base_url=base_url):
     try:
         response = requests.get(
             base_url,
-            params={"language": "en", "page": page_num, "topics[]": topic_tags},
+            params={
+                "language": "en",
+                "page": page_num,
+                "topics[]": topic_tags,
+                "sort": "popular",
+                # "duration": "6-12",
+            },
             headers={"User-agent": "Scraping TED"},
             timeout=(5, 5),  # 5 secs to establish connection and 5 secs to get data
         )
@@ -213,16 +215,26 @@ def make_transcript_dataframe(url_list):
 urls = get_urls(base_url, 1, 1)
 urls = ["https://www.ted.com" + url for url in urls]
 
+
+pp = PrettyPrinter(indent=4)
+pretty_urls = ["[" + str(i) + "]:" + url for i, url in enumerate(urls)]
+
+print("URLs to scrape:")
+pp.pprint(pretty_urls)
+indeces = input("Enter the indices of the urls to scrape: ").split(",")
+
+wanted_urls = [urls[int(index)] for index in indeces]
+
 # saving the urls
-url_file = open("Talk_URLs.txt", "w")
-url_file.write("\n".join(urls))
+url_file = open("data/Talk_URLs.txt", "a")
+url_file.write("\n" + "\n".join(wanted_urls))
 url_file.close()
 
 
 # get urls from file
-urls = open("Talk_URLs.txt").read().splitlines()[:10]
+# urls = open("data/Talk_URLs.txt").read().splitlines()
 
-df = make_transcript_dataframe(urls)
+df = make_transcript_dataframe(wanted_urls)
 
 # store data as .csv
 df.to_csv(
