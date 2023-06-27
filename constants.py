@@ -132,7 +132,7 @@ DENSENESS_MODIFIERS = [
 
 
 GEVAL_FLUENCY = Template(
-    """You will be given one summary written for a news article.
+    """You will be given one summary written for a TED Talk transcript.
 
 Your task is to rate the summary on one metric.
 
@@ -161,7 +161,7 @@ Evaluation Form (scores ONLY):
 )
 
 GEVAL_RELEVANCE = Template(
-    """You will be given one summary written for a news article.
+    """You will be given one summary written for a TED Talk transcript.
 
 Your task is to rate the summary on one metric.
 
@@ -174,8 +174,8 @@ Relevance (1-5) - selection of important content from the source. The summary sh
 Evaluation Steps:
 
 1. Read the summary and the source document carefully.
-2. Compare the summary to the source document and identify the main points of the article.
-3. Assess how well the summary covers the main points of the article, and how much irrelevant or redundant information it contains.
+2. Compare the summary to the source document and identify the main points of the transcript.
+3. Assess how well the summary covers the main points of the transcript, and how much irrelevant or redundant information it contains.
 4. Assign a relevance score from 1 to 5.
 
 
@@ -199,7 +199,7 @@ Evaluation Form (scores ONLY):
 
 
 GEVAL_CONSISTENCY = Template(
-    """You will be given a news article. You will then be given one summary written for this article.
+    """You will be given a TED talk transcript. You will then be given one summary written for this transcript.
 
 Your task is to rate the summary on one metric.
 
@@ -212,8 +212,8 @@ Consistency (1-5) - the factual alignment between the summary and the summarized
 
 Evaluation Steps:
 
-1. Read the news article carefully and identify the main facts and details it presents.
-2. Read the summary and compare it to the article. Check if the summary contains any factual errors that are not supported by the article.
+1. Read the transcript carefully and identify the main facts and details it presents.
+2. Read the summary and compare it to the transcript. Check if the summary contains any factual errors that are not supported by the transcript.
 3. Assign a score for consistency based on the Evaluation Criteria.
 
 
@@ -237,7 +237,7 @@ Evaluation Form (scores ONLY):
 
 
 GEVAL_COHERENCE = Template(
-    """You will be given one summary written for a news article.
+    """You will be given one summary written for a TED talk transcript.
 
 Your task is to rate the summary on one metric.
 
@@ -249,8 +249,8 @@ Coherence (1-5) - the collective quality of all sentences. We align this dimensi
 
 Evaluation Steps:
 
-1. Read the news article carefully and identify the main topic and key points.
-2. Read the summary and compare it to the news article. Check if the summary covers the main topic and key points of the news article, and if it presents them in a clear and logical order.
+1. Read the transcript carefully and identify the main topic and key points.
+2. Read the summary and compare it to the transcript. Check if the summary covers the main topic and key points of the transcript, and if it presents them in a clear and logical order.
 3. Assign a score for coherence on a scale of 1 to 5, where 1 is the lowest and 5 is the highest based on the Evaluation Criteria.
 
 
