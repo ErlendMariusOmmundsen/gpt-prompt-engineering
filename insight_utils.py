@@ -2,6 +2,7 @@ from typing import List
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def print_prediction(df, index: int = None):
@@ -56,7 +57,6 @@ def bar_groups_chart(
     df = pd.concat(dataframes)
     data = {}
 
-    # for column in column_names:
     for i, df in enumerate(dataframes):
         values = []
         for calc in calculations:
@@ -85,4 +85,32 @@ def bar_groups_chart(
     ax.legend(loc="upper left", ncols=1)
     ax.set_ylim(y_start, y_end)
 
+    plt.show()
+
+
+def box_plot(dataframes: List[pd.DataFrame], dataframe_names: List[str], metric: str):
+    metric_values = [df[metric] for df in dataframes]
+
+    plt.figure(figsize=(10, 6))
+    sns.set(style="whitegrid", palette="pastel")
+
+    ax = sns.boxplot(
+        data=metric_values,
+        width=0.4,
+        fliersize=5,
+        flierprops={
+            "markerfacecolor": "lightgray",
+            "markeredgecolor": "black",
+            "marker": "o",
+        },
+    )
+
+    ax.set_xticklabels(dataframe_names, rotation=45, ha="right", fontsize=12)
+    ax.set_xlabel("Dataframe", fontsize=14)
+    ax.set_ylabel(metric, fontsize=14)
+    ax.set_title(metric + " Distribution", fontsize=18)
+
+    sns.despine()
+
+    plt.tight_layout()
     plt.show()
