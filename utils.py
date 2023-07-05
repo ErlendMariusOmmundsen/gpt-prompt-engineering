@@ -1,6 +1,7 @@
 from dataclasses import asdict
 import re
 from typing import List
+from unicodedata import normalize
 import tiktoken
 import pandas as pd
 
@@ -93,6 +94,20 @@ def clean_prediction(prediction: str) -> str:
     prediction = "\n".join(clean_splits)
     prediction = remove_empty_lines(prediction)
     return prediction
+
+
+def clean_summary(text: str) -> str:
+    text = text.replace("- ", "")
+    return text
+
+
+def clean_transcript(text: str) -> str:
+    text = normalize("NFKD", text)
+    text = text.replace("\n\n", "\n")
+    text = text.replace("  ", " ")
+    text = text.replace('"""', '"')
+    text = text.replace('""', '"')
+    return text
 
 
 def num_tokens_from_string(string: str, model: str) -> int:
