@@ -59,10 +59,10 @@ class DfDict:
     prompt: str = ""
     prediction: str = ""
     finish_reason: str = ""
-    bert_score: float = 0.0
-    rogue_1: float = 0.0
-    rogue_2: float = 0.0
-    rogue_L: float = 0.0
+    bert_score: List[float] = field(default_factory=list)
+    rogue_1: List[float] = field(default_factory=list)
+    rogue_2: List[float] = field(default_factory=list)
+    rogue_L: List[float] = field(default_factory=list)
     slor: float = 0.0
     avg_error_count_score: float = 0.0
     errors: int = 0

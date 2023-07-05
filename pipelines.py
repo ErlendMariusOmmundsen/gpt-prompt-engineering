@@ -20,7 +20,7 @@ def pipe(
     evaluator: Evaluator,
     text: str,
     title: str,
-    reference: str = "",
+    references: List[str] = [],
     topic="",
     examples: List[List[str]] = [[]],
     num_examples: int = 0,
@@ -72,7 +72,7 @@ def pipe(
 
     info_dict.title = title
 
-    info_dict = evaluator.evaluate_dict(gpt, info_dict, reference)
+    info_dict = evaluator.evaluate_dict(gpt, info_dict, references)
     gpt.save_df(info_dict, path + name + ".csv", use_chat)
 
 

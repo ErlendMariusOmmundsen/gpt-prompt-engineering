@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 from constants import (
     BULLET_MAX_LENGTH,
@@ -289,49 +290,51 @@ class Evaluator:
 
         return p, r, f1, mean
 
-    def evaluate_dict(self, gpt: Gpt, info_dict: DfDict, reference: str = ""):
+    def evaluate_dict(self, gpt: Gpt, df_dict: DfDict, references: List[str] = []):
         (
             truncated_prediction,
-            info_dict.three_by_three,
-            info_dict.long_subheadings,
-            info_dict.long_bullets,
-        ) = self.check_format(info_dict.prediction)
-        if info_dict.three_by_three == 0:
-            info_dict.prediction = truncated_prediction
+            df_dict.three_by_three,
+            df_dict.long_subheadings,
+            df_dict.long_bullets,
+        ) = self.check_format(df_dict.prediction)
+        if df_dict.three_by_three == 0:
+            df_dict.prediction = truncated_prediction
 
-        if reference != "":
-            rogue_scores = self.rogue(reference, info_dict.prediction)
-            info_dict.rogue_1 = rogue_scores["rouge1"].fmeasure
-            info_dict.rogue_2 = rogue_scores["rouge2"].fmeasure
-            info_dict.rogue_L = rogue_scores["rougeLsum"].fmeasure
-            print(info_dict.prediction)
-            p, r, f1, mean = self.bert_score(reference, info_dict.prediction)
-            info_dict.bert_score = float(mean)
-            info_dict.number_hallucinations = self.number_hallucinations(
-                info_dict.text, info_dict.prediction
-            )
+        if references:
+            r1, r2, rl, bs = [], [], [], []
+            for ref in references:
+                rogue_scores = self.rogue(ref, df_dict.prediction)
+                r1.append(rogue_scores["rouge1"].fmeasure)
+                r2.append(rogue_scores["rouge2"].fmeasure)
+                rl.append(rogue_scores["rougeLsum"].fmeasure)
+                p, r, f1, mean = self.bert_score(ref, df_dict.prediction)
+                bs.append(float(mean))
+
+            df_dict.rogue_1 = r1
+            df_dict.rogue_2 = r2
+            df_dict.rogue_L = rl
+            df_dict.bert_score = bs
+            print(df_dict.prediction)
+
+        df_dict.number_hallucinations = self.number_hallucinations(
+            df_dict.text, df_dict.prediction
+        )
 
         (
-            info_dict.contradiction_ratio,
-            info_dict.neutral_contradiction_ratio,
-        ) = self.entailor.classify_text(info_dict.text, info_dict.prediction)
-        info_dict.slor = self.slorer.slor(info_dict.prediction)
+            df_dict.contradiction_ratio,
+            df_dict.neutral_contradiction_ratio,
+        ) = self.entailor.classify_text(df_dict.text, df_dict.prediction)
+        df_dict.slor = self.slorer.slor(df_dict.prediction)
 
-        info_dict.avg_error_count_score, info_dict.errors = self.avg_error_count_score(
-            info_dict.prediction
-        )
-
-        info_dict.geval_fluency = gpt.geval(
-            info_dict.text, info_dict.prediction, "fluency"
-        )
-        info_dict.geval_fluency = gpt.geval(
-            info_dict.text, info_dict.prediction, "coherence"
-        )
-        info_dict.geval_fluency = gpt.geval(
-            info_dict.text, info_dict.prediction, "consistency"
-        )
-        info_dict.geval_fluency = gpt.geval(
-            info_dict.text, info_dict.prediction, "relevancy"
+        df_dict.avg_error_count_score, df_dict.errors = self.avg_error_count_score(
+            df_dict.prediction
         )
 
-        return info_dict
+        df_dict.geval_fluency = gpt.geval(df_dict.text, df_dict.prediction, "fluency")
+        df_dict.geval_fluency = gpt.geval(df_dict.text, df_dict.prediction, "coherence")
+        df_dict.geval_fluency = gpt.geval(
+            df_dict.text, df_dict.prediction, "consistency"
+        )
+        df_dict.geval_fluency = gpt.geval(df_dict.text, df_dict.prediction, "relevancy")
+
+        return df_dict
