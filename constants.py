@@ -43,6 +43,30 @@ HEADINGS_FIRST_TEMPLATE = Template(
 BULLET_MAX_LENGTH = 60
 SUBHEADING_MAX_LENGTH = 40
 
+PREFIXES = [
+    "headings",
+    "heading",
+    "subheadings",
+    "subheading",
+    "titles",
+    "title",
+    "subtitles",
+    "subtitle",
+    "sub-titles",
+    "sub-title",
+    "sub-heading",
+    "bullet-points",
+    "bullet-point",
+    "bullets",
+    "bullet",
+    "summary",
+    "i.",
+    "i:",
+    "ii.",
+    "ii:",
+    "iii.",
+    "iii:",
+]
 
 # MODIFIERS #
 QUALITY_MODIFIERS = [
