@@ -376,6 +376,15 @@ class Gpt:
 
         return messages
 
+
+    def baseline_summarization(self, text: str) -> DfDict:
+        current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
+        messages = [Message("user", current_strategy + text)]
+        response = self.chat_completion(messages)
+        return self.to_df_dict(
+            BASELINE_TEMPLATE, response, messages_to_string(messages), [[]], 0, text
+        )
+
     def follow_up_completion(self, text: str) -> Tuple[ChatResponse, str]:
         messages = self.create_chat_messages("", text, "follow_up_questions")
         role = "user"
@@ -395,14 +404,6 @@ class Gpt:
     def follow_up_summarization(self, text) -> DfDict:
         response, messages = self.follow_up_completion(text)
         return self.to_df_dict(FOLLOW_UP_TEMPLATE, response, messages, [[]], 0, text)
-
-    def baseline_summarization(self, text: str) -> DfDict:
-        current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
-        messages = [Message("user", current_strategy + text)]
-        response = self.chat_completion(messages)
-        return self.to_df_dict(
-            BASELINE_TEMPLATE, response, messages_to_string(messages), [[]], 0, text
-        )
 
     def zero_shot_summarization(self, text: str, prompt: str) -> DfDict:
         messages = self.create_chat_messages(prompt, text, "zero_shot")
