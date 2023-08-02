@@ -4,6 +4,7 @@ from typing import List
 from unicodedata import normalize
 import tiktoken
 import pandas as pd
+from constants import PREFIXES
 
 from dataclss import Message
 
@@ -26,30 +27,7 @@ def messages_to_string(messages: List[Message]) -> str:
 
 
 def remove_prefix_words(string: str) -> str:
-    for word in [
-        "headings",
-        "heading",
-        "subheadings",
-        "subheading",
-        "titles",
-        "title",
-        "subtitles",
-        "subtitle",
-        "sub-titles",
-        "sub-title",
-        "sub-heading",
-        "bullet-points",
-        "bullet-point",
-        "bullets",
-        "bullet",
-        "summary",
-        "i.",
-        "i:",
-        "ii.",
-        "ii:",
-        "iii.",
-        "iii:",
-    ]:
+    for word in PREFIXES:
         if string.lower().startswith(word.lower()):
             return string[len(word) :]
     return string
@@ -97,8 +75,17 @@ def clean_prediction(prediction: str) -> str:
 
 
 def clean_summary(text: str) -> str:
-    text = text.replace("- ", "")
-    return text
+    lines = text.split("\n")
+    out_lines = []
+    for line in lines:
+        if line.startswith("- "):
+            line = line[2:]
+        if not line.endswith("?"):
+            line = line + "."
+        out_lines.append(line)
+    out_text = " "
+    out_text = out_text.join(out_lines)
+    return out_text
 
 
 def clean_transcript(text: str) -> str:
