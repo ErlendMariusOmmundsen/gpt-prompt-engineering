@@ -271,14 +271,16 @@ class Evaluator:
         # score inputs: list of candidate sentences, list of reference sentences
         # score outputs: precision, recall, f1 tensors. Same number of elements as input
 
-        ref_sents = reference.split("\n")
+        ref_sents = re.split(r"\.\s|\?\s", reference)
+        ref_sents[-1] = ref_sents[-1].strip(".?")
         cand_sents = candidate.split("\n")
 
         p, r, f1, mean = 0.0, 0.0, 0.0, 0.0
 
         if len(ref_sents) != len(cand_sents):
+            print("Ref lenghts:", len(ref_sents), "\n Cand lengths:", len(cand_sents))
             try:
-                p, r, f1 = self.b_scorer.score(candidate, reference, verbose=True)
+                p, r, f1 = self.b_scorer.score([candidate], [reference], verbose=True)
                 mean = f1.mean()
             except:
                 print("BERT score failed")
