@@ -8,6 +8,7 @@ from string import Template
 from constants import (
     BASE_PROMPT,
     BASELINE_TEMPLATE,
+    BEST_FORMAT_MODIFIER,
     END_SEPARATOR,
     GEVAL_FLUENCY,
     GEVAL_COHERENCE,
@@ -16,6 +17,7 @@ from constants import (
     HEADINGS_FIRST_TEMPLATE,
     IMPORTANT_PARTS_TEMPLATE,
     IMPROVE_TEMPLATE,
+    PARAPHRASE_TEMPLATE,
     PERSONA_TEMPLATE,
     REPEAT_TEMPLATE,
     BEGIN_SEPARATOR,
@@ -27,6 +29,7 @@ from constants import (
     INDUCE_TEMPLATE,
     TEMPLATE_TEMPLATE,
     TOPIC_TEMPLATE,
+    TRANSLATION_TEMPLATE,
     ZERO_SHOT_TEMPLATE,
 )
 from dataclss import ChatResponse, CompletionResponse, DfDict, Message
@@ -388,6 +391,30 @@ class Gpt:
         return self.to_df_dict(
             BASELINE_TEMPLATE, response, messages_to_string(messages), [[]], 0, text
         )
+
+    def paraphrase(self, text: str) -> DfDict:
+        prompt = PARAPHRASE_TEMPLATE.substitute(text=text)
+        messages = [Message("user", prompt)]
+        response = self.chat_completion(messages)
+
+        return self.to_df_dict(PARAPHRASE_TEMPLATE, response, prompt, [[]], 0, text)
+
+    def translate(self, text: str, to_lang: str = "German") -> Tuple[ChatResponse, str]:
+        prefix = "Translate the following text into " + to_lang + ": "
+        prompt = prefix + text
+        prompt += "\nTranslation:"
+        messages = [Message("user", prompt)]
+        response = self.chat_completion(messages)
+
+        return response, prompt
+
+    def translation_paraphrase(self, text: str, to_lang: str = "German") -> DfDict:
+        response, prompt = self.translate(text, to_lang)
+        response2, prompt2 = self.translate(
+            response.choices[0].message.content, "English"
+        )
+
+        return self.to_df_dict(TRANSLATION_TEMPLATE, response2, prompt2, [[]], 0, text)
 
     def follow_up_completion(self, text: str) -> Tuple[ChatResponse, str]:
         messages = self.create_chat_messages("", text, "follow_up_questions")
