@@ -51,7 +51,7 @@ class Gpt:
         self.prompt = ""
         self.suffix = ""
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random
-        self.temperature = 1
+        self.temperature = 0.3
         # An alternative to sampling with temperature, called nucleus sampling, where the model considers the
         #    results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
         self.top_p = 1
