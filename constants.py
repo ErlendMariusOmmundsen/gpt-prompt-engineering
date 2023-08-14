@@ -38,6 +38,12 @@ TEMPLATE_TEMPLATE = Template(
 HEADINGS_FIRST_TEMPLATE = Template(
     "Summarize the text into three subheadings. Text: ${text}. Add three bullet points to each subheading."
 )
+TRANSLATION_TEMPLATE = Template(
+    "Translate the following text into ${lang}: ${text} Translation:"
+)
+PARAPHRASE_TEMPLATE = Template(
+    "Paraphrase the following text: ${text} Paraphrased text:"
+)
 
 # MAX LENGTHS #
 BULLET_MAX_LENGTH = 60
@@ -48,6 +54,8 @@ PREFIXES = [
     "heading",
     "subheadings",
     "subheading",
+    "section",
+    "sections",
     "titles",
     "title",
     "subtitles",
@@ -55,11 +63,13 @@ PREFIXES = [
     "sub-titles",
     "sub-title",
     "sub-heading",
+    "sub-headings",
     "bullet-points",
     "bullet-point",
     "bullets",
     "bullet",
     "summary",
+    "summaries",
     "i.",
     "i:",
     "ii.",
@@ -109,13 +119,40 @@ STRUCTURE_MODIFIERS = [
 FORMAT_MODIFIERS = [
     "3 subheadings with 3 bullet points",
     "3 subheadings, each with 3 bullet points",
-    "Three subheadings, each with three bullet points",
     "3 x 3 subheadings and bullet points",
     "3 by 3 subheadings with bullet points",
+    "3 subtitles with 3 bullet points",
+    "3 times 3 subtitles with bullet points",
     "Three subheadings with three corresponding bullet points",
     "Output must be three subheadings, each with three bullet points",
     "Output format: three subheadings, each with three bullet points",
+    "Output format: three subtitles, each with three bullet points",
+    "Output format: three sub-points, each with three bullet points",
+    "Three subheadings, each with three bullet points",
+    "Three subsections containing three bullet points each",
+    "Three subheadings each accompanied by three bullet points",
+    "Three subtitles, each with three bullet points",
+    "Three main headings consisting of three bullet points rewritten as follows",
+    "Three main sections, each containing three key points",
+    "Three categories with three points each",
+    "Three sections headers, with each containing three bullet points",
+    "Three sections, each containing three points that are listed using bullet points",
+    "Three divisions with a set of three items",
+    "Three sections, each containing a list of three points",
+    "Organize the summary into three subheadings with bullet points",
+    "Three sets of three headings with bullet points",
+    "Three titles, each containing three bullet points",
+    "Output style: three subheadings, each containing three bullet points",
+    "Format for output: three headings, each containing three bullet points",
+    "Format of output: three headings with three points listed under each heading",
+    "Format of output: three headings with three items listed under each heading",
 ]
+
+
+BEST_FORMAT_MODIFIER = "Three subtitles, each with three bullet points"
+BEST_FORMAT_MODIFIER2 = (
+    "Output must be three subheadings, each with three bullet points"
+)
 
 # Without words that are potentially rude
 LENGTH_MODIFIERS = [
@@ -176,7 +213,7 @@ Example:
 
 Summary:
 
-$summary
+${summary}
 
 
 Evaluation Form (scores ONLY):
@@ -208,11 +245,11 @@ Example:
 
 Source Text:
 
-$text
+${text}
 
 Summary:
 
-$summary
+${summary}
 
 
 Evaluation Form (scores ONLY):
@@ -246,11 +283,11 @@ Example:
 
 Source Text: 
 
-$text
+${text}
 
 Summary: 
 
-$summary
+${summary}
 
 
 Evaluation Form (scores ONLY):
@@ -283,11 +320,11 @@ Example:
 
 Source Text:
 
-$text
+${text}
 
 Summary:
 
-$summary
+${summary}
 
 
 Evaluation Form (scores ONLY):
