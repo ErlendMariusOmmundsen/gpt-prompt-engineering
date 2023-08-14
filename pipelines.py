@@ -68,7 +68,7 @@ def pipe(
             use_chat=use_chat,
         )
     else:
-        info_dict = name_to_function[name](text=text, use_chat=use_chat)
+        info_dict = name_to_function[name](text=text)
 
     info_dict.title = title
 
