@@ -99,16 +99,20 @@ class Gpt:
             raise ValueError(
                 f"Too many tokens in prompt: {num_tokens} > {MAX_TOKENS_GPT4}"
             )
-        return openai.ChatCompletion.create(
-            model=self.chat_model,
-            messages=msg_dicts,
-            temperature=self.temperature,
-            top_p=self.top_p,
-            max_tokens=MAX_TOKENS_GPT4 - num_tokens - 3,
-            n=self.n,
-            stream=self.stream,
-            stop=self.stop,
-        )  # type: ignore
+        while True:
+            try:
+                return openai.ChatCompletion.create(
+                    model=self.chat_model,
+                    messages=msg_dicts,
+                    temperature=self.temperature,
+                    top_p=self.top_p,
+                    max_tokens=MAX_TOKENS_GPT4 - num_tokens - 3,
+                    n=self.n,
+                    stream=self.stream,
+                    stop=self.stop,
+                )  # type: ignore
+            except:
+                continue
 
     def to_df_dict(
         self,
