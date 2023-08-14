@@ -292,51 +292,81 @@ class Evaluator:
 
         return p, r, f1, mean
 
-    def evaluate_dict(self, gpt: Gpt, df_dict: DfDict, references: List[str] = []):
-        (
-            truncated_prediction,
-            df_dict.three_by_three,
-            df_dict.long_subheadings,
-            df_dict.long_bullets,
-        ) = self.check_format(df_dict.prediction)
-        if df_dict.three_by_three == 0:
-            df_dict.prediction = truncated_prediction
+    def evaluate_dict(
+        self,
+        gpt: Gpt,
+        df_dict: DfDict,
+        references: List[str] = [],
+        evaluate: List[str] = [
+            "format",
+            "rouge",
+            "bertscore",
+            "number_hallucination",
+            "entailment",
+            "slor",
+            "errors",
+            "geval",
+        ],
+    ):
+        if "format" in evaluate:
+            (
+                truncated_prediction,
+                df_dict.three_by_three,
+                df_dict.long_subheadings,
+                df_dict.long_bullets,
+            ) = self.check_format(df_dict.prediction)
+            if df_dict.three_by_three == 0:
+                df_dict.prediction = truncated_prediction
 
-        if references:
+        if references and "rouge" in evaluate:
             r1, r2, rl, bs = [], [], [], []
             for ref in references:
                 rogue_scores = self.rogue(ref, df_dict.prediction)
                 r1.append(rogue_scores["rouge1"].fmeasure)
                 r2.append(rogue_scores["rouge2"].fmeasure)
                 rl.append(rogue_scores["rougeLsum"].fmeasure)
-                p, r, f1, mean = self.bert_score(ref, df_dict.prediction)
-                bs.append(float(mean))
+                if "bertscore" in evaluate:
+                    p, r, f1, mean = self.bert_score(ref, df_dict.prediction)
+                    bs.append(float(mean))
 
             df_dict.rogue_1 = r1
             df_dict.rogue_2 = r2
             df_dict.rogue_L = rl
             df_dict.bert_score = bs
-            print(df_dict.prediction)
+            # print(df_dict.prediction)
 
-        df_dict.number_hallucinations = self.number_hallucinations(
-            df_dict.text, df_dict.prediction
-        )
+        if "number_hallucination" in evaluate:
+            df_dict.number_hallucinations = self.number_hallucinations(
+                df_dict.text, df_dict.prediction
+            )
 
-        (
-            df_dict.contradiction_ratio,
-            df_dict.neutral_contradiction_ratio,
-        ) = self.entailor.classify_text(df_dict.text, df_dict.prediction)
-        df_dict.slor = self.slorer.slor(df_dict.prediction)
+        if "entailment" in evaluate:
+            (
+                df_dict.contradiction_ratio,
+                df_dict.neutral_contradiction_ratio,
+            ) = self.entailor.classify_text(df_dict.text, df_dict.prediction)
 
-        df_dict.avg_error_count_score, df_dict.errors = self.avg_error_count_score(
-            df_dict.prediction
-        )
+        if "slor" in evaluate:
+            # df_dict.slor = self.slorer.slor(df_dict.prediction)
+            df_dict.slor = 0
 
-        df_dict.geval_fluency = gpt.geval(df_dict.text, df_dict.prediction, "fluency")
-        df_dict.geval_fluency = gpt.geval(df_dict.text, df_dict.prediction, "coherence")
-        df_dict.geval_fluency = gpt.geval(
-            df_dict.text, df_dict.prediction, "consistency"
-        )
-        df_dict.geval_fluency = gpt.geval(df_dict.text, df_dict.prediction, "relevancy")
+        if "errors" in evaluate:
+            df_dict.avg_error_count_score, df_dict.errors = self.avg_error_count_score(
+                df_dict.prediction
+            )
+
+        if "geval" in evaluate:
+            df_dict.geval_fluency = gpt.geval(
+                df_dict.text, df_dict.prediction, "fluency"
+            )
+            df_dict.geval_coherence = gpt.geval(
+                df_dict.text, df_dict.prediction, "coherence"
+            )
+            df_dict.geval_consistency = gpt.geval(
+                df_dict.text, df_dict.prediction, "consistency"
+            )
+            df_dict.geval_relevance = gpt.geval(
+                df_dict.text, df_dict.prediction, "relevance"
+            )
 
         return df_dict
