@@ -254,8 +254,7 @@ ${summary}
 
 Evaluation Form (scores ONLY):
 
-- Relevance:
-    """
+- Relevance:"""
 )
 
 
@@ -292,8 +291,7 @@ ${summary}
 
 Evaluation Form (scores ONLY):
 
-- Consistency:
-    """
+- Consistency:"""
 )
 
 
@@ -329,6 +327,5 @@ ${summary}
 
 Evaluation Form (scores ONLY):
 
-- Coherence:
-    """
+- Coherence:"""
 )
