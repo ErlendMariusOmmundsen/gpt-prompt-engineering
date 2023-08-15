@@ -1,5 +1,6 @@
 import re
 from typing import List
+import pandas as pd
 
 from constants import (
     BULLET_MAX_LENGTH,
@@ -9,8 +10,10 @@ from constants import (
     GEVAL_RELEVANCE,
     SUBHEADING_MAX_LENGTH,
 )
+from utils import clean_summary, from_dict_to_dataclass, get_examples
 import language_tool_python
 from nltk import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 from rouge_score import rouge_scorer, scoring
 from transformers import (
@@ -172,7 +175,9 @@ class Evaluator:
         Returns:
           A dict mapping rouge types to Score tuples.
         """
-        scores = self.scorer.score(reference, candidate)
+        processed_ref = self.rouge_preprocess(reference)
+        processed_cand = self.rouge_preprocess(candidate)
+        scores = self.scorer.score(processed_ref, processed_cand)
         return scores
 
     def error_count_score(self, sent):
@@ -267,6 +272,19 @@ class Evaluator:
 
         return truncated_prediction, three_by_three, long_subheadings, long_bullets
 
+    def rouge_preprocess(self, text):
+        stops = set(stopwords.words("english"))
+        sents = sent_tokenize(text.lower())
+        out_sents = []
+        for sent in sents:
+            # Remove period and commas
+            tokens = word_tokenize(sent.replace(",", ""))
+            tokens.pop()
+            out_sents.append(
+                " ".join([token for token in tokens if token not in stops])
+            )
+        return "\n".join([sent for sent in out_sents])
+
     def bert_score(self, reference, candidate):
         # score inputs: list of candidate sentences, list of reference sentences
         # score outputs: precision, recall, f1 tensors. Same number of elements as input
@@ -318,22 +336,24 @@ class Evaluator:
             if df_dict.three_by_three == 0:
                 df_dict.prediction = truncated_prediction
 
-        if references and "rouge" in evaluate:
+        if references and ("rouge" in evaluate or "bertscore" in evaluate):
             r1, r2, rl, bs = [], [], [], []
             for ref in references:
-                rogue_scores = self.rogue(ref, df_dict.prediction)
-                r1.append(rogue_scores["rouge1"].fmeasure)
-                r2.append(rogue_scores["rouge2"].fmeasure)
-                rl.append(rogue_scores["rougeLsum"].fmeasure)
+                if "rouge" in evaluate:
+                    rogue_scores = self.rogue(ref, df_dict.prediction)
+                    r1.append(rogue_scores["rouge1"].fmeasure)
+                    r2.append(rogue_scores["rouge2"].fmeasure)
+                    rl.append(rogue_scores["rougeLsum"].fmeasure)
                 if "bertscore" in evaluate:
                     p, r, f1, mean = self.bert_score(ref, df_dict.prediction)
                     bs.append(float(mean))
 
-            df_dict.rogue_1 = r1
-            df_dict.rogue_2 = r2
-            df_dict.rogue_L = rl
-            df_dict.bert_score = bs
-            # print(df_dict.prediction)
+            if "rouge" in evaluate:
+                df_dict.rogue_1 = r1
+                df_dict.rogue_2 = r2
+                df_dict.rogue_L = rl
+            if "bertscore" in evaluate:
+                df_dict.bert_score = bs
 
         if "number_hallucination" in evaluate:
             df_dict.number_hallucinations = self.number_hallucinations(
@@ -370,3 +390,30 @@ class Evaluator:
             )
 
         return df_dict
+
+    def evaluate_df(
+        self,
+        df: pd.DataFrame,
+        gpt: Gpt,
+        gold_df: pd.DataFrame,
+        path: str,
+        evaluate: List[str],
+    ):
+        ex = get_examples()
+        transcripts, summ1, summ2, summ3, summ4 = ex[0], ex[1], ex[2], ex[3], ex[4]
+        for i, row in df.iterrows():
+            df_dict = from_dict_to_dataclass(DfDict, row.to_dict())
+            ref_i = gold_df[gold_df["title"] == df_dict.title].index[0]
+            references = [
+                clean_summary(summ1[ref_i]),
+                clean_summary(summ2[ref_i]),
+                clean_summary(summ3[ref_i]),
+                clean_summary(summ4[ref_i]),
+            ]
+            reevaluated_dict = self.evaluate_dict(
+                gpt,
+                df_dict,
+                references,
+                evaluate,
+            )
+            gpt.save_df(reevaluated_dict, path)

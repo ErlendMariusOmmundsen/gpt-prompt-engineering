@@ -4,19 +4,34 @@ from typing import List
 from unicodedata import normalize
 import tiktoken
 import pandas as pd
+import inspect
 from constants import PREFIXES
 
 from dataclss import Message
 
 
 def get_examples() -> List[List[str]]:
-    # use pandas to read in examples from data/manual_summaries.csv and return them as a list containing two lists of strings, one for each column
-    df = pd.read_csv("data/manual_summaries.csv")
-    return [df["transcript"].tolist(), df["summary"].tolist()]
+    df = pd.read_csv("data/manual_summaries2.csv", sep=";")
+    return [
+        df["transcript"].tolist(),
+        df["summary"].tolist(),
+        df["summary2"].tolist(),
+        df["summary3"].tolist(),
+        df["summary4"].tolist(),
+    ]
 
 
 def msg_to_dicts(messages: List[Message]) -> List[dict]:
     return [asdict(m) for m in messages]
+
+
+def from_dict_to_dataclass(cls, data):
+    return cls(
+        **{
+            key: (data[key] if val.default == val.empty else data.get(key, val.default))
+            for key, val in inspect.signature(cls).parameters.items()
+        }
+    )
 
 
 def messages_to_string(messages: List[Message]) -> str:
@@ -75,13 +90,13 @@ def clean_prediction(prediction: str) -> str:
 
 
 def clean_summary(text: str) -> str:
-    lines = text.split("\n")
+    lines = text.split("\r\n")
     out_lines = []
     for line in lines:
         if line.startswith("- "):
             line = line[2:]
         if not line.endswith("?"):
-            line = line + "."
+            line += "."
         out_lines.append(line)
     out_text = " "
     out_text = out_text.join(out_lines)
