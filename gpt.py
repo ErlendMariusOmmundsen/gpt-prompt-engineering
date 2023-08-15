@@ -790,8 +790,13 @@ class Gpt:
         return info_dict
 
     def geval(self, text: str, summary: str, metric: str):
+        previous_temperature = self.temperature
+        previous_logprobs = self.logprobs
+        previous_n = self.n
+
         self.logprobs = 5
         self.n = 20
+        self.temperature = 0.0
         messages = []
 
         match metric:
@@ -822,7 +827,8 @@ class Gpt:
             score_probability = occurrences / self.n
             geval_score += score * score_probability
 
-        self.logprobs = None
-        self.n = 1
+        self.logprobs = previous_logprobs
+        self.n = previous_n
+        self.temperature = previous_temperature
 
         return round(geval_score, 2)
