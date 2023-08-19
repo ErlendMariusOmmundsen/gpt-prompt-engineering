@@ -162,7 +162,6 @@ LENGTH_MODIFIERS = [
     "abbreviated",
     "abridged",
     "curtailed",
-    "trimmed",
     "less than " + str(BULLET_MAX_LENGTH) + " characters long",
 ]
 
@@ -178,17 +177,21 @@ DENSENESS_MODIFIERS = [
     "epigrammatic",
     "telegraphic",
     "condensed",
-    "crisp",
     "aphoristic",
     "compact",
-    "monosyllabic",
     "laconic",
-    "sententious",
-    "elliptical",
-    "elliptic",
     "apothegmatic",
+]
+
+RELEVANCE_MODIFIERS = [
+    "relevant",
+    "pertinent",
+    "important",
+    "meaningful",
     "significant",
-    "well-turned",
+    "insightful",
+    "substantial",
+    "to the point",
 ]
 
 
