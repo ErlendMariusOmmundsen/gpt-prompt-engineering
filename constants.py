@@ -10,8 +10,21 @@ MAX_TOKENS_GPT3 = 4096
 MAX_TOKENS_GPT4 = 8192
 # MAX_TOKENS_GPT4 = 32768 When the GPT-4-32K model is released
 
+LANGUAGETOOL_CATEGORIES = [
+    "TYPOGRAPHY",
+    "TYPOS",
+    "PUNCTUATION",
+    "CASING",
+    "CONFUSED_WORDS",
+    "COMPOUNDING",
+    "GRAMMAR",
+    "MISC",
+    "SEMANTICS",
+    "MISC",
+]
 
 # TEMPLATES #
+BASE_PROMPT_TEMPLATE = Template("Summarize the text. Text: ${text}.")
 BASELINE_TEMPLATE = Template(
     "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n ${text}"
 )
@@ -22,6 +35,13 @@ IMPROVE_TEMPLATE = Template(
 IMPORTANT_PARTS_TEMPLATE = Template(
     "Find important parts of the text. Text: ${text}. Improve them.\n Summarize the text. Important parts: ${important_parts} Text: ${text}"
 )
+STEP_BY_STEP_TEMPLATE = Template(
+    "Identify and analyze the text's structure and meaning. Text: ${text}. Let's think step by step."
+)
+DESCRIPTION_TEMPLATE = Template(
+    "Here is a text and its description. Summarize the text. Text: ${text} \n Description: ${description}"
+)
+
 IN_CONTEXT_TEMPLATE = Template("Input: ${text} \nOutput:")
 INDUCE_TEMPLATE = Template(
     "${Context_setter} *sep* ${example_pairs} *sep* The instruction was:"
@@ -97,6 +117,19 @@ QUALITY_MODIFIERS = [
     "masterfully written",
     "masterpieces of the English language",
     "understandable and enjoyable for everyone",
+    "well-crafted",
+    "skillfully and effectively written",
+    "accurately articulated",
+    "a joy to peruse",
+    "enjoyable to read",
+    "an absolute pleasure to read",
+    "an enjoyable reading experience",
+    "expertly crafted",
+    "expertly written",
+    "outstanding works of English literature",
+    "literary works of great importance in the English language",
+    "easily comprehensible and enjoyable for individuals of all backgrounds",
+    "adorable, delightful, enchanting, charming",
 ]
 
 STRUCTURE_MODIFIERS = [
@@ -114,6 +147,12 @@ STRUCTURE_MODIFIERS = [
     "put together so that it flows well",
     "put together so that they are connected well",
     "put together so that there is a good flow",
+    "compiled so that it flows well",
+    "assembled so that they are well connected to each other",
+    "organized in a neat and systematic manner",
+    "neatly organized",
+    "arranged in a way that allows for a smooth and cohesive progression",
+    "arranged in a manner that ensures a strong connection between the different components",
 ]
 
 FORMAT_MODIFIERS = [
@@ -163,6 +202,7 @@ LENGTH_MODIFIERS = [
     "abridged",
     "curtailed",
     "less than " + str(BULLET_MAX_LENGTH) + " characters long",
+    "shortened as possible",
 ]
 
 # Words contained: marked by the use of few words to convey much information or meaning
@@ -192,6 +232,12 @@ RELEVANCE_MODIFIERS = [
     "insightful",
     "substantial",
     "to the point",
+    "cover all main points",
+    "cover all key points",
+    "address all main subjects",
+    "include all essential elements",
+    "include all main points",
+    "include all key points",
 ]
 
 
