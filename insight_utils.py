@@ -1,3 +1,4 @@
+import json
 from typing import List
 import pandas as pd
 import numpy as np
@@ -37,14 +38,11 @@ def line_plot_column(
     plt.show()
 
 
-calculations = ["mean", "median", "max", "min", "std"]
-
-
 def bar_groups_chart(
     dataframes: List[pd.DataFrame],
     dataframe_names: List[str],
     metric: str,
-    calculations: List[str] = calculations,
+    calculations: List[str] = ["mean", "median", "max", "min", "std"],
     row_range_start: int = 0,
     row_range_end: int = -1,
     y_start: int = 0,
@@ -88,10 +86,20 @@ def bar_groups_chart(
     plt.show()
 
 
-def box_plot(dataframes: List[pd.DataFrame], dataframe_names: List[str], metric: str):
+def box_plot(
+    dataframes: List[pd.DataFrame],
+    dataframe_names: List[str],
+    metric: str,
+    width: int = 10,
+    height: int = 6,
+):
+    if metric in ["rogue_1", "rogue_2", "rogue_L", "bert_score"]:
+        for df in dataframes:
+            df[metric] = df[metric].apply(lambda x: np.mean(json.loads(x)))
+
     metric_values = [df[metric] for df in dataframes]
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(width, height))
     sns.set(style="whitegrid", palette="pastel")
 
     ax = sns.boxplot(
