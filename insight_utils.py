@@ -122,3 +122,52 @@ def box_plot(
 
     plt.tight_layout()
     plt.show()
+
+
+def grouped_box_plot(
+    dataframes: List[pd.DataFrame],
+    patterns: List[str],
+    metric: str,
+    width: int = 10,
+    height: int = 6,
+):
+    dfs = dataframes.copy()
+    if metric in ["rogue_1", "rogue_2", "rogue_L", "bert_score"]:
+        for df in dfs:
+            df[metric] = df[metric].apply(lambda x: np.mean(json.loads(x)))
+
+    for i in range(len(dfs)):
+        dfs[i]["with_modifiers"] = "yes" if i % 2 != 0 else "no"
+        # dfs[i] = dfs[i][dfs[i]["three_by_three"] == 1]
+
+    for i in range(len(dfs)):
+        dfs[i]["pattern"] = patterns[i // 2]
+
+    df = pd.concat(dfs)
+
+    plt.figure(figsize=(width, height))
+    sns.set(style="whitegrid", palette="pastel")
+
+    ax = sns.boxplot(
+        x="pattern",
+        y=metric,
+        hue="with_modifiers",
+        data=df,
+        width=0.4,
+        fliersize=5,
+        flierprops={
+            "markerfacecolor": "lightgray",
+            "markeredgecolor": "black",
+            "marker": "o",
+        },
+    )
+
+    # ax.set_xticklabels(dataframe_names, rotation=45, ha="right", fontsize=12)
+    # ax.set_xlabel("Dataframe", fontsize=14)
+    # ax.set_ylabel(metric, fontsize=14)
+    # ax.set_title(metric + " Distribution", fontsize=18)
+
+    sns.despine()
+
+    plt.tight_layout()
+    plt.show()
