@@ -12,6 +12,25 @@ from dataclss import Message
 
 def get_examples() -> List[List[str]]:
     df = pd.read_csv("data/manual_summaries2.csv", sep=";")
+
+    df["transcript"] = df["transcript"].apply(lambda x: clean_transcript(x))
+    df["summary"] = df["summary"].apply(lambda x: clean_summary(x))
+    df["summary2"] = df["summary2"].apply(lambda x: clean_summary(x))
+    df["summary3"] = df["summary3"].apply(lambda x: clean_summary(x))
+    df["summary4"] = df["summary4"].apply(lambda x: clean_summary(x))
+
+    return [
+        df["transcript"].tolist(),
+        df["summary"].tolist(),
+        df["summary2"].tolist(),
+        df["summary3"].tolist(),
+        df["summary4"].tolist(),
+    ]
+
+
+def get_uncleaned_examples() -> List[List[str]]:
+    df = pd.read_csv("data/manual_summaries2.csv", sep=";")
+
     return [
         df["transcript"].tolist(),
         df["summary"].tolist(),
@@ -74,9 +93,22 @@ def remove_empty_lines(string: str) -> str:
     return re.sub(r"\s*\n\s*\n\s*", "\n", string)
 
 
+def is_line_note(line: str) -> bool:
+    low = line.lower()
+    return (
+        low.startswith("note:")
+        or low.startswith("notes:")
+        or low.startswith("overall summary:")
+        or low.startswith("summary:")
+        or low.startswith("overall:")
+    )
+
+
 def clean_prediction(prediction: str) -> str:
     prediction = remove_empty_lines(prediction)
     prediction_splits = prediction.split("\n")
+    if is_line_note(prediction_splits[-1]):
+        prediction_splits.pop()
     for i in range(len(prediction_splits)):
         prediction_splits[i] = remove_prefix_str(prediction_splits[i])
         prediction_splits[i] = remove_suffix_str(prediction_splits[i])
@@ -91,6 +123,7 @@ def clean_prediction(prediction: str) -> str:
 
 def clean_summary(text: str) -> str:
     lines = text.split("\r\n")
+    lines = text.split("\n") if len(lines) != 12 else lines
     out_lines = []
     for line in lines:
         if line.startswith("- "):

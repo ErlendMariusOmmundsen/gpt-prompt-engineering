@@ -7,7 +7,7 @@ END_SEPARATOR = "\n###"
 PRIMING_SEPARATOR = "\n###\n"
 CSV_SEPARATOR = "\n\n----------\n\n"
 MAX_TOKENS_GPT3 = 4096
-MAX_TOKENS_GPT4 = 8192
+MAX_TOKENS_GPT4 = 16384
 # MAX_TOKENS_GPT4 = 32768 When the GPT-4-32K model is released
 
 LANGUAGETOOL_CATEGORIES = [
@@ -90,6 +90,12 @@ PREFIXES = [
     "bullet",
     "summary",
     "summaries",
+    "theme",
+    "themes",
+    "topic",
+    "topics",
+    "themes/topics",
+    "theme/topic",
     "i.",
     "i:",
     "ii.",
@@ -192,6 +198,32 @@ BEST_FORMAT_MODIFIER = "Three subtitles, each with three bullet points"
 BEST_FORMAT_MODIFIER2 = (
     "Output must be three subheadings, each with three bullet points"
 )
+BEST_QUALITY_MODIFIER = "skillfully and effectively written"
+BEST_LENGTH_MODIFIER = (
+    "The bullets must be less than "
+    + str(BULLET_MAX_LENGTH)
+    + " characters long and subheadings less than "
+    + str(SUBHEADING_MAX_LENGTH)
+    + " characters long"
+)
+BEST_DENSENESS_MODIFIER = "telegraphic"
+BEST_COHERENCE_MODIFIER = "put together well"
+BEST_RELEVANCE_MODIFIER = "cover all key points"
+
+LITERARY_MODIFIERS_STRING = (
+    "The subheadings and bullet points must be "
+    + BEST_QUALITY_MODIFIER
+    + ", "
+    + BEST_DENSENESS_MODIFIER
+    + ", "
+    + BEST_COHERENCE_MODIFIER
+    + ", and "
+    + BEST_RELEVANCE_MODIFIER
+    + ". "
+    + BEST_LENGTH_MODIFIER
+    + "."
+)
+
 
 # Without words that are potentially rude
 LENGTH_MODIFIERS = [
