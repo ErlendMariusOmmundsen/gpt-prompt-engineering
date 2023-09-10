@@ -1,0 +1,171 @@
+prompt_template,examples,num_examples,text,title,prompt,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,errors,contradiction_ratio,neutral_contradiction_ratio,number_hallucinations,three_by_three,long_subheadings,long_bullets,geval_fluency,geval_relevance,geval_coherence,geval_consistency,config
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,articulate,,"Translate the following text into English: artikulieren
+Translation:",to articulate,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,articulate,,"Translate the following text into English: verständlich, klar ausdrücken
+Translation:",express clearly and comprehensibly,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,articulate,,"Translate the following text into English: ausdrücken
+Translation:",express,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,articulate,,"Translate the following text into English: artikulieren
+Translation:",articulate,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,articulate,,"Translate the following text into English: deutlich äußern
+Translation:",express clearly,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,eloquent,,"Translate the following text into English: eloquent = wortgewandt, beredt
+Translation:","eloquent = articulate, fluent, expressive, persuasive, well-spoken",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,eloquent,,"Translate the following text into English: elegant
+Translation:",elegant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,eloquent,,"Translate the following text into English: ausdrucksstark
+Translation:",expressive or full of expression,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,eloquent,,"Translate the following text into English: eloquent: wortgewandt
+Translation:",eloquent: articulate or fluent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,eloquent,,"Translate the following text into English: elegant
+Translation:",elegant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-written,,"Translate the following text into English: gut geschrieben
+Translation:",well written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-written,,"Translate the following text into English: gut geschrieben
+Translation:",well written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-written,,"Translate the following text into English: gut geschrieben
+Translation:",well written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-written,,"Translate the following text into English: gut geschrieben
+Translation:",well written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-written,,"Translate the following text into English: gut geschrieben
+Translation:",well written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-put,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-put,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-put,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-put,,"Translate the following text into English: gut ausgedrückt
+Translation:",well put,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-put,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-expressed,,"Translate the following text into English: gut ausgedrückt
+Translation:",well expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-expressed,,"Translate the following text into English: gut ausgedrückt
+Translation:",well put/well expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-expressed,,"Translate the following text into English: gut ausgedrückt
+Translation:",well expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-expressed,,"Translate the following text into English: gut ausgedrückt
+Translation:",well expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-expressed,,"Translate the following text into English: gut ausgedrückt
+Translation:",well expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-stated,,"Translate the following text into English: gut formuliert/ausgedrückt
+Translation:",well formulated/expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-stated,,"Translate the following text into English: gut ausgedrücken
+Translation:",well-expressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-stated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-stated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-stated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-worded,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-worded,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-worded,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-worded,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-worded,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-formulated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-formulated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-formulated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-formulated,,"Translate the following text into English: gut formuliert
+Translation:",well worded,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-formulated,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-presented,,"Translate the following text into English: gut präsentiert
+Translation:",well presented,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-presented,,"Translate the following text into English: gut präsentiert
+Translation:",well presented,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-presented,,"Translate the following text into English: gut präsentiert
+Translation:",well presented,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-presented,,"Translate the following text into English: gut präsentiert
+Translation:",well presented,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-presented,,"Translate the following text into English: gut präsentiert
+Translation:",well presented,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a pleasure to read,,"Translate the following text into English: ein Vergnügen zu lesen
+Translation:",a pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a pleasure to read,,"Translate the following text into English: ein Vergnügen zu lesen
+Translation:",a pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a pleasure to read,,"Translate the following text into English: ein Vergnügen zu lesen
+Translation:",a pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a pleasure to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a pleasure to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a joy to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a joy to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a joy to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a joy to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a joy to read,,"Translate the following text into English: Eine Freude zu lesen
+Translation:",A joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a delight to read,,"Translate the following text into English: eine Freude zu lesen
+Translation:",a joy to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a delight to read,,"Translate the following text into English: ein Genuss zu lesen
+Translation:",a pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a delight to read,,"Translate the following text into English: Ein Genuss zu lesen.
+Translation:",A pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a delight to read,,"Translate the following text into English: Ein Genuss zu lesen.
+Translation:",A pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,a delight to read,,"Translate the following text into English: ein Vergnügen zu lesen
+Translation:",a pleasure to read,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,delightful,,"Translate the following text into English: entzückend
+Translation:",adorable,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,delightful,,"Translate the following text into English: entzückend, erfreulich, hinreißend, bezaubernd
+Translation:","adorable, delightful, enchanting, charming",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,delightful,,"Translate the following text into English: entzückend
+Translation:","lovely, delightful, adorable",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,delightful,,"Translate the following text into English: entzückend
+Translation:",delightful or charming,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,delightful,,"Translate the following text into English: wunderschön/entzückend
+Translation:",beautiful/adorable,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"meaningful, persuasive, and delightful",,"Translate the following text into English: sinnvoll, überzeugend und erfreulich
+Translation:","meaningful, convincing, and enjoyable",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"meaningful, persuasive, and delightful",,"Translate the following text into English: bedeutungsvoll, überzeugend und bezaubernd
+Translation:","meaningful, convincing, and enchanting",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"meaningful, persuasive, and delightful",,"Translate the following text into English: sinnvoll, überzeugend und erfreulich
+Translation:","meaningful, convincing and enjoyable",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"meaningful, persuasive, and delightful",,"Translate the following text into English: sinnvoll, überzeugend und erfreulich
+Translation:","meaningful, convincing, and enjoyable",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"meaningful, persuasive, and delightful",,"Translate the following text into English: bedeutungsvoll, überzeugend und entzückend
+Translation:","meaningful, convincing and delightful",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterfully written,,"Translate the following text into English: Meisterhaft geschrieben
+Translation:",Masterfully written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterfully written,,"Translate the following text into English: meisterhaft geschrieben
+Translation:",written masterfully,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterfully written,,"Translate the following text into English: meisterhaft geschrieben
+Translation:",masterfully written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterfully written,,"Translate the following text into English: meisterhaft geschrieben
+Translation:",Masterfully written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterfully written,,"Translate the following text into English: meisterhaft geschrieben
+Translation:",masterfully written,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterpieces of the English language,,"Translate the following text into English: Meisterwerke der englischen Sprache
+Translation:",Masterpieces of the English language,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterpieces of the English language,,"Translate the following text into English: Meisterwerke der englischen Sprache
+Translation:",Masterpieces of the English language,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterpieces of the English language,,"Translate the following text into English: Meisterwerke der englischen Sprache
+Translation:",Masterpieces of the English language,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterpieces of the English language,,"Translate the following text into English: Meisterwerke der englischen Sprache
+Translation:",Masterpieces of the English language,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,masterpieces of the English language,,"Translate the following text into English: Meisterwerke der englischen Sprache
+Translation:",Masterpieces of the English language,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,understandable and enjoyable for everyone,,"Translate the following text into English: verständlich und angenehm für alle
+Translation:",understandable and enjoyable for everyone,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,understandable and enjoyable for everyone,,"Translate the following text into English: verständlich und unterhaltsam für alle
+Translation:",understandable and entertaining for all,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,understandable and enjoyable for everyone,,"Translate the following text into English: verständlich und angenehm für jeden
+Translation:",Understandable and pleasant for everyone,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,understandable and enjoyable for everyone,,"Translate the following text into English: verständlich und angenehm für jeden
+Translation:",understandable and pleasant for everyone,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,understandable and enjoyable for everyone,,"Translate the following text into English: verständlich und unterhaltsam für alle.
+Translation:",understandable and entertaining for everyone,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"

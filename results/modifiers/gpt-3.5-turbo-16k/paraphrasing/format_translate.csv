@@ -1,0 +1,363 @@
+prompt_template,examples,num_examples,text,title,prompt,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,errors,contradiction_ratio,neutral_contradiction_ratio,number_hallucinations,three_by_three,long_subheadings,long_bullets,geval_fluency,geval_relevance,geval_coherence,geval_consistency,config
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 subheadings with 3 bullet points,,"Translate the following text into English: 3 Untertitel mit 3 Aufzählungspunkten
+Translation:",3 subtitles with 3 bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 subheadings with 3 bullet points,,"Translate the following text into English: Übersetzung:
+
+3 Untertitel mit 3 Aufzählungspunkten
+Translation:",3 subtitles with 3 bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 subheadings with 3 bullet points,,"Translate the following text into English: Übersetzung:
+
+3 Untertitel mit 3 Aufzählungspunkten
+
+1. Untertitel:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+
+2. Untertitel:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+
+3. Untertitel:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+Translation:","Translation
+3 subtitles with 3 bullet points
+First point
+Second point
+Third point
+First point
+Second point
+Third point
+First point
+Second point
+Third point",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 subheadings with 3 bullet points,,"Translate the following text into English: Übersetzung:
+
+3 Unterüberschriften mit 3 Aufzählungspunkten
+Translation:",3 subheadings with 3 bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 subheadings with 3 bullet points,,"Translate the following text into English: Übersetzung:
+
+3 Überschriften mit 3 Aufzählungspunkten
+Translation:","Translation
+3 headings with 3 bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"3 subheadings, each with 3 bullet points",,"Translate the following text into English: 3 Unterkategorien, je mit 3 Aufzählungspunkten
+Translation:","3 subcategories, each with 3 bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"3 subheadings, each with 3 bullet points",,"Translate the following text into English: Übersetzung:
+
+3 Untertitel, jeweils mit 3 Stichpunkten
+
+1. Erster Untertitel:
+   - Punkt 1
+   - Punkt 2
+   - Punkt 3
+
+2. Zweiter Untertitel:
+   - Punkt 1
+   - Punkt 2
+   - Punkt 3
+
+3. Dritter Untertitel:
+   - Punkt 1
+   - Punkt 2
+   - Punkt 3
+Translation:","Translation
+First subtitle
+Point 1
+Point 2
+Point 3
+Second subtitle
+Point 1
+Point 2
+Point 3
+Third subtitle
+Point 1
+Point 2
+Point 3",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"3 subheadings, each with 3 bullet points",,"Translate the following text into English: 3 Unterkategorien, mit jeweils 3 Aufzählungspunkten
+Translation:","3 Subcategories, each with 3 bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"3 subheadings, each with 3 bullet points",,"Translate the following text into English: 3 Unterkategorien, jeweils mit 3 Stichpunkten
+Translation:","3 subcategories, each with 3 bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"3 subheadings, each with 3 bullet points",,"Translate the following text into English: Übersetzung:
+
+3 Untertitel, jeweils mit 3 Aufzählungspunkten
+
+1. Erster Untertitel:
+- Punkt 1
+- Punkt 2
+- Punkt 3
+
+2. Zweiter Untertitel:
+- Punkt 1
+- Punkt 2
+- Punkt 3
+
+3. Dritter Untertitel:
+- Punkt 1
+- Punkt 2
+- Punkt 3
+Translation:","Translation
+Point 1
+Point 2
+Point 3
+Point 1
+Point 2
+Point 3
+Point 1
+Point 2
+Point 3",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Three subheadings, each with three bullet points",,"Translate the following text into English: Drei Untertitel, jede mit drei Aufzählungspunkten.
+Translation:","Three subtitles, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Three subheadings, each with three bullet points",,"Translate the following text into English: Drei Untertitel, jeweils mit drei Aufzählungspunkten
+Translation:","Three subtitles, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Three subheadings, each with three bullet points",,"Translate the following text into English: Drei Untertitel, jeweils mit drei Aufzählungspunkten.
+Translation:","Three subtitles, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Three subheadings, each with three bullet points",,"Translate the following text into English: Drei Untertitel, jeweils mit drei Aufzählungspunkten
+Translation:","Three subtitles, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Three subheadings, each with three bullet points",,"Translate the following text into English: Drei Unterüberschriften, jeweils mit drei Punkten
+Übertragung:
+Translation:","Three subheadings, each with three dots
+Transmission",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 x 3 subheadings and bullet points,,"Translate the following text into English: Übersetzung:
+
+3 x 3 Untertitel und Aufzählungspunkte.
+Translation:",3 x 3 subtitles and bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 x 3 subheadings and bullet points,,"Translate the following text into English: 3 x 3 Untertitel und Aufzählungspunkte
+Translation:",3 x 3 subtitles and bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 x 3 subheadings and bullet points,,"Translate the following text into English: Übersetzung:
+3 x 3 Untertitel und Aufzählungspunkte
+
+1) Einkaufsliste:
+   - Milch
+   - Eier
+   - Brot
+
+2) To-do-Liste:
+   - Wäsche waschen
+   - Gartenarbeit erledigen
+   - Rechnungen bezahlen
+
+3) Reiseziele:
+   - Paris, Frankreich
+   - Rom, Italien
+   - Barcelona, Spanien
+Translation:","Translation
+3 x 3 Subtitles and bullet points
+1) Shopping list
+Milk
+Eggs
+Bread
+2) To-do list
+Do laundry
+Do gardening
+Pay bills
+3) Travel destinations
+Paris, France
+Rome, Italy
+Barcelona, Spain",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 x 3 subheadings and bullet points,,"Translate the following text into English: Übersetzung:
+
+3 x 3 Untertitel und Aufzählungspunkte.
+Translation:",3 x 3 subtitles and bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 x 3 subheadings and bullet points,,"Translate the following text into English: 3 x 3 Zwischenüberschriften und Aufzählungspunkte
+Translation:",3 x 3 Subheadings and Bullet Points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 by 3 subheadings with bullet points,,"Translate the following text into English: 3 von 3 Untertiteln mit Aufzählungspunkten
+Translation:",3 out of 3 subtitles with bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 by 3 subheadings with bullet points,,"Translate the following text into English: 3 mal 3 Untertitel mit Stichpunkten
+Translation:",3 times 3 subtitles with bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 by 3 subheadings with bullet points,,"Translate the following text into English: 3 mal 3 Untertitel mit Aufzählungspunkten
+Translation:",3 times 3 subtitles with bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 by 3 subheadings with bullet points,,"Translate the following text into English: 3 × 3 Unterüberschriften mit Aufzählungspunkten
+Translation:",3 x 3 Sub-headings with bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,3 by 3 subheadings with bullet points,,"Translate the following text into English: 3 Mal 3 Untertitel mit Aufzählungspunkten
+Translation:",3 times 3 subtitles with bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,Three subheadings with three corresponding bullet points,,"Translate the following text into English: Drei Untertitel mit drei entsprechenden Aufzählungspunkten
+Translation:",Three subtitles with three corresponding bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,Three subheadings with three corresponding bullet points,,"Translate the following text into English: Drei Untertitel mit drei entsprechenden Aufzählungspunkten
+Translation:",Three subtitles with three corresponding bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,Three subheadings with three corresponding bullet points,,"Translate the following text into English: Drei Untertitel mit drei entsprechenden Aufzählungspunkten
+Translation:",Three subtitles with three corresponding bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,Three subheadings with three corresponding bullet points,,"Translate the following text into English: Drei Untertitel mit drei entsprechenden Aufzählungspunkten
+Translation:",Three subtitles with three corresponding bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,Three subheadings with three corresponding bullet points,,"Translate the following text into English: Drei Unterüberschriften mit drei entsprechenden Aufzählungspunkten
+Translation:",Three subheadings with three corresponding bullet points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output must be three subheadings, each with three bullet points",,"Translate the following text into English: Übersetzung:
+
+Subheading 1:
+- Kultur
+  - Musik, Literatur und Film
+  - Traditionen und Bräuche
+  - Kunst und Architektur
+
+Subheading 2:
+- Essen und Trinken
+  - Regionale Spezialitäten
+  - Bier und Wein
+  - Kaffee und Kuchen
+
+Subheading 3:
+- Natur und Landschaft
+  - Berge und Seen
+  - Nationalparks und Naturschutzgebiete
+  - Wälder und Wanderwege
+Translation:","Translation
+Culture
+Music, literature, and film
+Traditions and customs
+Art and architecture
+Food and drink
+Regional specialties
+Beer and wine
+Coffee and cake
+Nature and landscape
+Mountains and lakes
+National parks and nature reserves
+Forests and hiking trails",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output must be three subheadings, each with three bullet points",,"Translate the following text into English: Übersetzung:
+
+Subheading 1:
+- Einführung
+- Hauptteil
+- Fazit
+
+Subheading 2:
+- Vorteile der Übersetzung
+- Möglichkeiten der Anwendung
+- Bedeutung in der globalen Kommunikation
+
+Subheading 3:
+- Herausforderungen bei der Übersetzung
+- Unterschiede zwischen den Sprachen
+- Rolle von Kultur und Kontext
+Translation:","Translation
+Introduction
+Main Body
+Conclusion
+Benefits of Translation
+Applications and Uses
+Importance in Global Communication
+Challenges in Translation
+Differences Between Languages
+Role of Culture and Context",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output must be three subheadings, each with three bullet points",,"Translate the following text into English: Übersetzung:
+
+1. Introduction
+- Einführung
+- Vorstellung
+- Einleitung
+
+2. Main Points
+- Hauptpunkte
+- Kernpunkte
+- Zentrale Aspekte
+
+3. Conclusion
+- Schlussfolgerung
+- Fazit
+- Zusammenfassung
+Translation:","Introduction
+Introduction
+Presentation
+Introduction
+Main Points
+Main points
+Core points
+Key aspects
+Conclusion
+Conclusion
+Conclusion
+Summary",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output must be three subheadings, each with three bullet points",,"Translate the following text into English: Übersetzung:
+
+Unterüberschrift 1:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+
+Unterüberschrift 2:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+
+Unterüberschrift 3:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+Translation:","First point
+Second point
+Third point
+First point
+Second point
+Third point
+First point
+Second point
+Third point",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output must be three subheadings, each with three bullet points",,"Translate the following text into English: Übersetzung:
+
+Subheading 1: Vorteile von regelmäßiger körperlicher Aktivität
+- Verbesserte körperliche Fitness
+- Reduziertes Risiko von Herz-Kreislauf-Erkrankungen
+- Stärkung des Immunsystems
+
+Subheading 2: Tipps für eine gesunde Ernährung
+- Ausgewogene Mahlzeiten mit allen Nährstoffen
+- Reichlich Obst und Gemüse
+- Weniger verarbeitete Lebensmittel und Zucker
+
+Subheading 3: Gewohnheiten für einen gesunden Lebensstil
+- Ausreichend Schlaf und Ruhephasen
+- Stressmanagement-Techniken wie Meditation oder Yoga
+- Regelmäßige Kontrolluntersuchungen beim Arzt
+Translation:","Translation
+Benefits of regular physical activity
+Improved physical fitness
+Reduced risk of cardiovascular diseases
+Strengthening of the immune system
+Tips for a healthy diet
+Balanced meals with all nutrients
+Plenty of fruits and vegetables
+Less processed foods and sugar
+Habits for a healthy lifestyle
+Sufficient sleep and rest periods
+Stress management techniques such as meditation or yoga
+Regular check-ups with a doctor",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output format: three subheadings, each with three bullet points",,"Translate the following text into English: Ausgabeformat: drei Untertitel, jeweils mit drei Aufzählungspunkten
+Translation:","Output format: three subtitles, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output format: three subheadings, each with three bullet points",,"Translate the following text into English: Ausgabeformat: drei Untertitel, jeweils mit drei Aufzählungspunkten
+Translation:","Output format: three subtitles, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output format: three subheadings, each with three bullet points",,"Translate the following text into English: Ausgabeformat: drei Untertitel, jeweils mit drei Aufzählungspunkten.
+
+Untertitel 1:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+
+Untertitel 2:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+
+Untertitel 3:
+- Erster Punkt
+- Zweiter Punkt
+- Dritter Punkt
+Translation:","Output format: three subtitles, each with three bullet points
+First point
+Second point
+Third point
+First point
+Second point
+Third point
+First point
+Second point
+Third point",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output format: three subheadings, each with three bullet points",,"Translate the following text into English: Ausgabeformat: drei Unterpunkte, jeweils mit drei Aufzählungspunkten.
+Translation:","Output format: three sub-points, each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,"Output format: three subheadings, each with three bullet points",,"Translate the following text into English: Ausgabeformat:
+- Drei Untertitel
+- Jeweils drei Aufzählungspunkte
+Translation:","Output format
+Three subtitles
+Each with three bullet points",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"

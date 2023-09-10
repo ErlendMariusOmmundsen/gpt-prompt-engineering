@@ -1,0 +1,141 @@
+prompt_template,examples,num_examples,text,title,prompt,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,errors,contradiction_ratio,neutral_contradiction_ratio,number_hallucinations,three_by_three,long_subheadings,long_bullets,geval_fluency,geval_relevance,geval_coherence,geval_consistency,config
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-constructed,,"Translate the following text into English: gut konstruiert
+Translation:",well constructed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-constructed,,"Translate the following text into English: gut konstruiert
+Translation:",well constructed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-constructed,,"Translate the following text into English: gut konstruiert
+Translation:",well constructed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-constructed,,"Translate the following text into English: gut konstruiert
+Translation:",well constructed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-constructed,,"Translate the following text into English: gut konstruiert
+Translation:",well constructed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-organized,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-organized,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-organized,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-organized,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-organized,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-arranged,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-arranged,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-arranged,,"Translate the following text into English: gut angeordnet
+Translation:",well arranged,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-arranged,,"Translate the following text into English: gut organisiert
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-arranged,,"Translate the following text into English: gut organisiert
+Translation:",well-organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-ordered,,"Translate the following text into English: gut geordnet
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-ordered,,"Translate the following text into English: gut geordnet
+Translation:",well-organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-ordered,,"Translate the following text into English: gut geordnet
+Translation:",well organized,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-ordered,,"Translate the following text into English: gut geordnet
+Translation:",well ordered,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-ordered,,"Translate the following text into English: gut geordnet or ordentlich
+Translation:",well organized or orderly,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-structured,,"Translate the following text into English: gut strukturiert
+Translation:",well-structured,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-structured,,"Translate the following text into English: gut strukturiert
+Translation:",well-structured,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-structured,,"Translate the following text into English: gut strukturiert
+Translation:",well structured,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-structured,,"Translate the following text into English: gut strukturiert
+Translation:",well-structured,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-structured,,"Translate the following text into English: gut strukturiert
+Translation:",well-structured,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-phrased,,"Translate the following text into English: gut formuliert
+Translation:",well worded,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-phrased,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-phrased,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-phrased,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-phrased,,"Translate the following text into English: gut formuliert
+Translation:",well formulated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-composed,,"Translate the following text into English: gut komponiert
+Translation:",well composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-composed,,"Translate the following text into English: gut komponiert
+Translation:",well composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-composed,,"Translate the following text into English: gut komponiert
+Translation:",well composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-composed,,"Translate the following text into English: gut komponiert
+Translation:",well composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-composed,,"Translate the following text into English: gut komponiert
+Translation:",well composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,coherent,,"Translate the following text into English: kohärent
+Translation:",coherent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,coherent,,"Translate the following text into English: kohärent
+Translation:",coherent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,coherent,,"Translate the following text into English: kohärent
+Translation:",coherent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,coherent,,"Translate the following text into English: kohärent
+Translation:",coherent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,coherent,,"Translate the following text into English: kohärent
+Translation:",coherent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,flowing,,"Translate the following text into English: fließend
+Translation:",fluent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,flowing,,"Translate the following text into English: fließend
+Translation:",fluent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,flowing,,"Translate the following text into English: fließend
+Translation:",fluent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,flowing,,"Translate the following text into English: fließend
+Translation:",fluent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,flowing,,"Translate the following text into English: fließend
+Translation:",fluent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together well,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together well,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together well,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together well,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together well,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well put together,,"Translate the following text into English: gut zusammengestellt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well put together,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well put together,,"Translate the following text into English: gut zusammengesetzt
+Translation:",well-composed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well put together,,"Translate the following text into English: gut zusammengestellt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well put together,,"Translate the following text into English: gut zusammengestellt
+Translation:",well put together,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that it flows well,,"Translate the following text into English: Zusammenstellen, damit es gut fließt.
+Translation:",Compile it so that it flows well,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that it flows well,,"Translate the following text into English: Übersetzung: So zusammengestellt, dass es gut fließt.
+Translation:",Translation: Assembled in a way that it flows well,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that it flows well,,"Translate the following text into English: Zusammenstellen, damit es gut fließt.
+Translation:","Compile, so that it flows well",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that it flows well,,"Translate the following text into English: Zusammensetzung, so dass es gut fließt
+Translation:","Composition, so that it flows well",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that it flows well,,"Translate the following text into English: Zusammenstellen, so dass es gut fließt.
+Translation:",Compile so that it flows well,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that they are connected well,,"Translate the following text into English: Zusammenbauen, so dass sie gut miteinander verbunden sind.
+Translation:",Assemble them so that they are well connected to each other,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that they are connected well,,"Translate the following text into English: zusammenstellen, sodass sie gut miteinander verbunden sind
+Translation:",assemble so that they are well connected with each other,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that they are connected well,,"Translate the following text into English: Zusammenstellen, sodass sie gut miteinander verbunden sind.
+Translation:",Assemble them so that they are well connected to each other,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that they are connected well,,"Translate the following text into English: Zusammenbauen, so dass sie gut miteinander verbunden sind.
+Translation:",Assemble so that they are well connected with each other,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that they are connected well,,"Translate the following text into English: Zusammenstellen, sodass sie gut miteinander verbunden sind
+Translation:",Assemble them so that they are well connected to each other,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that there is a good flow,,"Translate the following text into English: Zusammensetzen, so dass ein guter Fluss entsteht.
+Translation:",Assemble in a way that a smooth flow is created,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that there is a good flow,,"Translate the following text into English: Zusammenstellen, so dass ein guter Fluss entsteht.
+Translation:","Compile/assemble, so that a good flow is created",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that there is a good flow,,"Translate the following text into English: Zusammenstellen, so dass ein guter Fluss entsteht.
+Translation:",To compile so that a good flow emerges,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that there is a good flow,,"Translate the following text into English: Zusammenstellen, damit ein guter Fluss entsteht.
+Translation:","Assembling, so that a good flow arises",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,put together so that there is a good flow,,"Translate the following text into English: Zusammenstellen, damit ein guter Fluss entsteht.
+Translation:",Assemble to create a good flow,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"

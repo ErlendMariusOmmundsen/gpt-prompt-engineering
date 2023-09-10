@@ -1,0 +1,213 @@
+prompt_template,examples,num_examples,text,title,prompt,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,errors,contradiction_ratio,neutral_contradiction_ratio,number_hallucinations,three_by_three,long_subheadings,long_bullets,geval_fluency,geval_relevance,geval_coherence,geval_consistency,config
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compendious,,"Translate the following text into English: zusammenfassend
+Translation:",in summary,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compendious,,"Translate the following text into English: zusammenfassend
+Translation:",in conclusion,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compendious,,"Translate the following text into English: kompendiös
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compendious,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compendious,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,comprehensive,,"Translate the following text into English: umfassend
+Translation:",comprehensive,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,comprehensive,,"Translate the following text into English: umfassend
+Translation:","comprehensive, extensive, thorough",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,comprehensive,,"Translate the following text into English: umfassend
+Translation:",comprehensive or extensive,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,comprehensive,,"Translate the following text into English: umfassend
+Translation:",comprehensive or extensive,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,comprehensive,,"Translate the following text into English: umfassend
+Translation:",comprehensive,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,concise,,"Translate the following text into English: Übersetzung: knapp
+Translation:",scanty,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,concise,,"Translate the following text into English: Übersetzung: Präzise
+Translation:",Translation: Precise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,concise,,"Translate the following text into English: Übersetzung: prägnant/(kompakt)
+Translation:",concise/compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,concise,,"Translate the following text into English: Übersetzung: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,concise,,"Translate the following text into English: Übersetzung: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compressed,,"Translate the following text into English: Komprimiert
+Translation:",Compressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compressed,,"Translate the following text into English: Translation: komprimiert
+Translation:",compressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compressed,,"Translate the following text into English: Komprimiert
+Translation:",Compressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compressed,,"Translate the following text into English: Komprimierung
+Translation:",Compression,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compressed,,"Translate the following text into English: Komprimierung
+Translation:",Compression,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,succinct,,"Translate the following text into English: prägnant or knapp
+Translation:",concise or brief,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,succinct,,"Translate the following text into English: prägnant or kurz und bündig
+Translation:",concise or short and to the point,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,succinct,,"Translate the following text into English: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,succinct,,"Translate the following text into English: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,succinct,,"Translate the following text into English: prägnant or kurz und bündig
+Translation:",concise or short and to the point,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pithy,,"Translate the following text into English: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pithy,,"Translate the following text into English: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pithy,,"Translate the following text into English: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pithy,,"Translate the following text into English: prägnant
+Translation:",concise,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pithy,,"Translate the following text into English: prägnant
+Translation:",concise or succinct,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,terse,,"Translate the following text into English: knapp
+Translation:",knapp = barely/narrowly/scarcely,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,terse,,"Translate the following text into English: knapp
+Translation:",barely,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,terse,,"Translate the following text into English: kurz, knapp
+Translation:","brief, concise",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,terse,,"Translate the following text into English: knapp, kurz, prägnant
+Translation:","scarce, short, concise",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,terse,,"Translate the following text into English: knapp
+Translation:",scarce or barely or hardly,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,epigrammatic,,"Translate the following text into English: epigrammatisch
+Translation:",epigrammatic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,epigrammatic,,"Translate the following text into English: epigrammatisch
+Translation:",epigrammatic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,epigrammatic,,"Translate the following text into English: epigrammatisch
+Translation:",epigrammatic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,epigrammatic,,"Translate the following text into English: epigrammatisch
+Translation:","epigrammatisch
+Epigrammatic",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,epigrammatic,,"Translate the following text into English: epigrammatisch
+Translation:",epigrammatically,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,telegraphic,,"Translate the following text into English: telegrafisch
+Translation:",telegrafically,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,telegraphic,,"Translate the following text into English: telegraphisch
+Translation:",telegraphic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,telegraphic,,"Translate the following text into English: telegrafisch
+Translation:",telegraphic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,telegraphic,,"Translate the following text into English: telegrafisch
+Translation:",telegraphic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,telegraphic,,"Translate the following text into English: telegrafisch
+Translation:",telegram,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,condensed,,"Translate the following text into English: Übersetzung: konzentriert
+Translation:",concentrated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,condensed,,"Translate the following text into English: Zusammenfassung
+Translation:",,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,condensed,,"Translate the following text into English: Übersetzung: komprimiert
+Translation:",Translation: compressed,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,condensed,,"Translate the following text into English: Zusammenfassung
+Translation:",,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,condensed,,"Translate the following text into English: Übersetzung: zusammengefasst
+Translation:",,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,crisp,,"Translate the following text into English: knusprig
+Translation:",crispy,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,crisp,,"Translate the following text into English: knusprig
+Translation:",crispy,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,crisp,,"Translate the following text into English: knusprig
+Translation:",crispy,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,crisp,,"Translate the following text into English: knackig or kross
+Translation:",crisp or crunchy,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,crisp,,"Translate the following text into English: knusprig
+Translation:",crunchy,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,aphoristic,,"Translate the following text into English: aphoristisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,aphoristic,,"Translate the following text into English: aforistisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,aphoristic,,"Translate the following text into English: aphoristisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,aphoristic,,"Translate the following text into English: aphoristisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,aphoristic,,"Translate the following text into English: aphoristisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compact,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compact,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compact,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compact,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,compact,,"Translate the following text into English: kompakt
+Translation:",compact,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,monosyllabic,,"Translate the following text into English: einsilbig
+Translation:",monosyllabic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,monosyllabic,,"Translate the following text into English: einsilbig
+Translation:",monosyllabic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,monosyllabic,,"Translate the following text into English: einsilbig
+Translation:",monosyllabic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,monosyllabic,,"Translate the following text into English: einsilbig
+Translation:",monosyllabic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,monosyllabic,,"Translate the following text into English: einsilbig
+Translation:",monosyllabic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,laconic,,"Translate the following text into English: Lakonisch
+Translation:",Laconic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,laconic,,"Translate the following text into English: prägnant/kompakt/knapp
+Translation:",concise/compact/brief,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,laconic,,"Translate the following text into English: lakonisch
+Translation:",laconic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,laconic,,"Translate the following text into English: lakonisch
+Translation:",laconic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,laconic,,"Translate the following text into English: prägnant, lakonisch
+Translation:","concise, laconic",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,sententious,,"Translate the following text into English: sententiös
+Translation:","sententiös
+Translation: sententious",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,sententious,,"Translate the following text into English: sententiös
+Translation:",sententious,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,sententious,,"Translate the following text into English: affenhaltend
+Translation:",monkey-holding,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,sententious,,"Translate the following text into English: sententiös
+Translation:",sententious,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,sententious,,"Translate the following text into English: geschwätzig
+Translation:",chatty,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptical,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptical,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptical,,"Translate the following text into English: elliptisch
+Translation:",elliptisch -> elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptical,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptical,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptic,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptic,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptic,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptic,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,elliptic,,"Translate the following text into English: elliptisch
+Translation:",elliptical,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,apothegmatic,,"Translate the following text into English: apothegmatisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,apothegmatic,,"Translate the following text into English: apothegmatisch
+Translation:",apothegmatic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,apothegmatic,,"Translate the following text into English: apothegmatisch
+Translation:",apothegmatic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,apothegmatic,,"Translate the following text into English: apothegmatisch
+Translation:",apothegmatic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,apothegmatic,,"Translate the following text into English: apothegmatisch
+Translation:",aphoristic,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend or signifikant
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend or signifikant
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend/ signifikant/ erheblich
+Translation:",significant/ significant/ considerable,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend or signifikant
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-turned,,"Translate the following text into English: gut gewandt
+Translation:","adept, skillful",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-turned,,"Translate the following text into English: gut gefertigt
+Translation:",well made,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-turned,,"Translate the following text into English: wohlgeformt or elegant
+Translation:",well-formed or elegant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-turned,,"Translate the following text into English: gut geformt or elegant
+Translation:",well-formed or elegant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,well-turned,,"Translate the following text into English: gut gewendet
+Translation:",well turned/ good turn,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0,0,0,0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1, 'top_p': 1, 'n': 1, 'stop': None}"

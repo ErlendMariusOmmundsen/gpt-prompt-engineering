@@ -1,0 +1,134 @@
+prompt_template,examples,num_examples,text,title,prompt,prediction,finish_reason,bert_score,rogue_1,rogue_2,rogue_L,slor,avg_error_count_score,errors,contradiction_ratio,neutral_contradiction_ratio,number_hallucinations,three_by_three,long_subheadings,long_bullets,geval_fluency,geval_relevance,geval_coherence,geval_consistency,config
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,relevant,,"Translate the following text into English: relevant
+Translation:",pertinent or applicable,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,relevant,,"Translate the following text into English: relevant
+Translation:",pertinent or related,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,relevant,,"Translate the following text into English: relevant
+Translation:",pertinent,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,relevant,,"Translate the following text into English: relevant
+Translation:",pertinent or applicable,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,relevant,,"Translate the following text into English: relevant
+Translation:",pertinent or related,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pertinent,,"Translate the following text into English: relevant
+Translation:",pertinent or applicable,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pertinent,,"Translate the following text into English: relevant
+Translation:",pertinent or related,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pertinent,,"Translate the following text into English: relevante
+Translation:",relevant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pertinent,,"Translate the following text into English: relevant
+Translation:",pertinent or significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,pertinent,,"Translate the following text into English: entsprechend- relevant, angebracht, passend, relevant
+Translation:","accordingly- relevant, appropriate, fitting, relevant",stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,important,,"Translate the following text into English: wichtig
+Translation:",important,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,important,,"Translate the following text into English: wichtig
+Translation:",important,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,important,,"Translate the following text into English: wichtig
+Translation:",important,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,important,,"Translate the following text into English: wichtig
+Translation:",important,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,important,,"Translate the following text into English: wichtig
+Translation:",important,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,meaningful,,"Translate the following text into English: bedeutungsvoll
+Translation:",meaningful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,meaningful,,"Translate the following text into English: bedeutungsvoll or sinnvoll
+Translation:",meaningful or significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,meaningful,,"Translate the following text into English: bedeutungsvoll/ sinnvoll
+Translation:",meaningful/ meaningful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,meaningful,,"Translate the following text into English: bedeutungsvoll
+Translation:",meaningful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,meaningful,,"Translate the following text into English: bedeutungsvoll
+Translation:",meaningful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend/ signifikant
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,significant,,"Translate the following text into English: bedeutend
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,insightful,,"Translate the following text into English: einsichtsvoll
+Translation:",insightful or perceptive,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,insightful,,"Translate the following text into English: erkenntnisreich
+Translation:",enlightening,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,insightful,,"Translate the following text into English: erkenntnisreich
+Translation:",insightful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,insightful,,"Translate the following text into English: erkenntnisreich
+Translation:",insightful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,insightful,,"Translate the following text into English: einsichtsvoll
+Translation:",insightful,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,substantial,,"Translate the following text into English: substanziell
+Translation:",substantial,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,substantial,,"Translate the following text into English: erheblich
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,substantial,,"Translate the following text into English: wesentlich
+Translation:",essential,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,substantial,,"Translate the following text into English: substantiell
+Translation:",substantial,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,substantial,,"Translate the following text into English: bedeutend
+Translation:",significant,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,to the point,,"Translate the following text into English: Auf den Punkt.
+Translation:",To the point,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,to the point,,"Translate the following text into English: Auf den Punkt gebracht
+Translation:",To put it in a nutshell,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,to the point,,"Translate the following text into English: auf den Punkt
+Translation:",to the point,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,to the point,,"Translate the following text into English: Zum Punkt
+Translation:",To the point,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,to the point,,"Translate the following text into English: auf den Punkt
+Translation:",to the point,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all main points,,"Translate the following text into English: alle Hauptpunkte abdecken
+Translation:",cover all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all main points,,"Translate the following text into English: Übersetzung: abdecken aller Hauptpunkte
+Translation:",Translation: Covering all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all main points,,"Translate the following text into English: Decke alle Hauptpunkte ab
+Translation:",Cover all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all main points,,"Translate the following text into English: Alle Hauptpunkte abdecken
+Translation:",Cover all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all main points,,"Translate the following text into English: Decke alle Hauptpunkte ab
+Translation:",Cover all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all key points,,"Translate the following text into English: alle wichtigen Punkte abdecken
+Translation:",cover all important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all key points,,"Translate the following text into English: alle wichtigen Punkte abdecken.
+Translation:",cover all the important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all key points,,"Translate the following text into English: alle wichtigen Punkte abdecken
+Translation:",cover all important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all key points,,"Translate the following text into English: Behandle alle wichtigen Punkte.
+Translation:",Handle all important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,cover all key points,,"Translate the following text into English: alle wichtigen Punkte abdecken
+Translation:",cover all the important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all main points,,"Translate the following text into English: Übersetzung:
+
+Bitte übersetzen Sie den folgenden Text ins Deutsche und berücksichtigen Sie alle Hauptpunkte.
+Translation:",Please translate the following text into German and consider all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all main points,,"Translate the following text into English: Übersetzung: Bitte alle Hauptpunkte beinhalten.
+Translation:",Translation: Please include all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all main points,,"Translate the following text into English: Übersetzung:
+
+Bitte enthalten Sie alle Hauptpunkte
+Translation:",Please include all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all main points,,"Translate the following text into English: Übersetzung:
+
+Enthält alle Hauptpunkte
+Translation:",Contains all main points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all main points,,"Translate the following text into English: Übersetzung: 
+Bitte geben Sie den genauen Text an, den Sie übersetzt haben möchten.
+Translation:",Please provide the exact text you would like to have translated,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all key points,,"Translate the following text into English: Übersetzung:
+
+Bitte übersetzen Sie den folgenden Text ins Deutsche und beziehen Sie alle Schlüsselpunkte mit ein.
+Translation:",Please translate the following text into German and include all key points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all key points,,"Translate the following text into English: Übersetzung:
+
+Bitte alle wichtigen Punkte einschließen.
+Translation:",Please include all important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all key points,,"Translate the following text into English: Übersetzung:
+
+Bitte enthalten Sie alle Schlüsselpunkte.
+Translation:",Please include all key points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all key points,,"Translate the following text into English: Übersetzung: Beziehe alle wichtigen Punkte ein
+Translation:",Translation: Include all relevant points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
+Translate the following text into ${lang}: ${text} Translation:,[[]],0,include all key points,,"Translate the following text into English: Übersetzung: Bitte fügen Sie alle wichtigen Punkte ein.
+Translation:",Translation: Please insert all important points,stop,[],[],[],[],0.0,0.0,0,0.0,0.0,0,0,0,0,0.0,0.0,0.0,0.0,"{'model': 'gpt-3.5-turbo-16k', 'suffix': '', 'temperature': 1.0, 'top_p': 1, 'n': 1, 'stop': None}"
