@@ -796,7 +796,7 @@ class Gpt:
 
         self.logprobs = 5
         self.n = 20
-        self.temperature = 0.0
+        self.temperature = 1.0
         messages = []
 
         match metric:
@@ -819,8 +819,22 @@ class Gpt:
         geval_score = 0
 
         for choice in response.choices:
-            score = choice.message.content
-            prob_dist[int(score)] += 1
+            msg = choice.message.content
+            score = 0
+            try:
+                first_word = msg.split()[0]
+                score = int(float(first_word))
+            except:
+                try:
+                    last_word = msg.split()[-1]
+                    score = int(float(last_word))
+                except:
+                    self.n -= 1
+                    continue
+
+            score = 5 if score > 5 else score
+            score = 1 if score < 1 else score
+            prob_dist[score] += 1
 
         for score in prob_dist.keys():
             occurrences = prob_dist[score]
