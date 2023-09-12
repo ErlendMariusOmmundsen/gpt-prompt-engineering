@@ -7,8 +7,10 @@ import pandas as pd
 from string import Template
 from constants import (
     BASE_PROMPT,
+    BASE_PROMPT_TEMPLATE,
     BASELINE_TEMPLATE,
     BEST_FORMAT_MODIFIER,
+    DESCRIPTION_TEMPLATE,
     END_SEPARATOR,
     GEVAL_FLUENCY,
     GEVAL_COHERENCE,
@@ -17,6 +19,7 @@ from constants import (
     HEADINGS_FIRST_TEMPLATE,
     IMPORTANT_PARTS_TEMPLATE,
     IMPROVE_TEMPLATE,
+    LITERARY_MODIFIERS_STRING,
     PARAPHRASE_TEMPLATE,
     PERSONA_TEMPLATE,
     REPEAT_TEMPLATE,
@@ -27,6 +30,7 @@ from constants import (
     IN_CONTEXT_TEMPLATE,
     FOLLOW_UP_TEMPLATE,
     INDUCE_TEMPLATE,
+    STEP_BY_STEP_TEMPLATE,
     TEMPLATE_TEMPLATE,
     TOPIC_TEMPLATE,
     TRANSLATION_TEMPLATE,
@@ -139,7 +143,6 @@ class Gpt:
             )
         else:
             message = response.choices[0].message
-            print("\tMessage:", message)
             msg_text = clean_prediction(message.content)
             return DfDict(
                 prompt_template.template,
@@ -178,20 +181,33 @@ class Gpt:
     ) -> List[Message]:
         messages = []
         match approach:
+            case "base_prompt":
+                messages = [
+                    Message(
+                        "user",
+                        "Summarize the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
+                    )
+                ]
+
             case "in_context":
                 messages = []
-                examples = prompt.split(PRIMING_SEPARATOR)
-                for example in examples:
-                    messages.append(Message("user", example))
-                messages.append(Message("user", "Input:" + text))
+                # examples = prompt.split(PRIMING_SEPARATOR)
+                # for example in examples:
+                #     messages.append(Message("user", example))
+                messages.append(Message("user", prompt + text))
 
             case "follow_up_questions":
                 messages = [
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points.",
+                        "Summarize the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     ),
-                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                     Message(
                         "assistant",
                         "Before summarizing, I will ask two questions about the text.",
@@ -203,53 +219,66 @@ class Gpt:
                     Message("system", prompt),
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points.",
+                        "Summarize the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     ),
-                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "improve":
                 messages = [
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points.",
+                        "Summarize the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     ),
-                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "topic":
                 messages = [
                     Message(
                         "user",
-                        "I want you to summarize a text into three subheadings with three corresponding bullet points. "
-                        + "The text is on the following topic(s): "
-                        + prompt,
+                        "Summarize the text. The text is on the following topic(s): "
+                        + prompt
+                        + "\nText: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
                     ),
-                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
                 ]
 
             case "important_parts":
                 messages = [
-                    Message("user", "Find all important parts of the following text."),
-                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
+                    Message(
+                        "user",
+                        "Find all important parts of the following text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
+                    ),
                 ]
 
             case "summarize_important_parts":
                 messages = [
                     Message(
                         "user",
-                        "Here is a text and its important parts. Summarize the text into three subheadings with three corresponding bullet points.",
-                    ),
-                    Message("user", "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR),
-                    Message(
-                        "user",
-                        "Important parts: " + BEGIN_SEPARATOR + prompt + END_SEPARATOR,
+                        "Here is a text and its important parts. Summarize the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR
+                        + "\nImportant parts: "
+                        + BEGIN_SEPARATOR
+                        + prompt
+                        + END_SEPARATOR,
                     ),
                 ]
 
             case "induce":
                 messages = [
-                    Message("user", prompt),
+                    Message("user", prompt + text),
                 ]
 
             case "template":
@@ -282,7 +311,7 @@ class Gpt:
                     ),
                     Message(
                         "user",
-                        "Summarize the text: Text: "
+                        "Summarize the text. Text: "
                         + BEGIN_SEPARATOR
                         + text
                         + END_SEPARATOR,
@@ -304,13 +333,64 @@ class Gpt:
                 messages = [
                     Message(
                         "user",
-                        "Summarize the text into three subheadings with three corresponding bullet points."
-                        + "\nText: "
+                        "Summarize the text. "
+                        + LITERARY_MODIFIERS_STRING
+                        + BEST_FORMAT_MODIFIER
+                        + ". Text: "
                         + BEGIN_SEPARATOR
                         + text
                         + END_SEPARATOR
-                        + "\nSummarize the text into three subheadings with three corresponding bullet points.",
+                        + "\nSummarize the text.",
                     ),
+                ]
+
+            case "description":
+                messages = [
+                    Message(
+                        "user",
+                        "Here is a text and its description. Summarize the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR
+                        + "\nDescription: "
+                        + BEGIN_SEPARATOR
+                        + prompt
+                        + END_SEPARATOR,
+                    )
+                ]
+
+            case "step_by_step":
+                messages = [
+                    Message(
+                        "user",
+                        "Identify and analyze the text's structure and meaning. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR
+                        + "Let's think step by step.",
+                    )
+                ]
+
+            case "analyze_main_themes":
+                messages = [
+                    Message(
+                        "user",
+                        "Analyze the text and identify three main themes or topics discussed in the text. For each theme, provide three supporting points from the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
+                    )
+                ]
+
+            case "main_points":
+                messages = [
+                    Message(
+                        "user",
+                        "Write an output summarizing the main points of the text. Text: "
+                        + BEGIN_SEPARATOR
+                        + text
+                        + END_SEPARATOR,
+                    )
                 ]
 
             case "format":
@@ -323,30 +403,31 @@ class Gpt:
                         + text
                         + END_SEPARATOR
                         + "\n"
-                        + prompt,
+                        + prompt
+                        + ".",
                     ),
                 ]
 
-            case "length" | "quality" | "structure" | "denseness":
+            case "length" | "quality" | "structure" | "denseness" | "relevance":
                 messages = [
                     Message(
                         "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points.\nText: "
+                        "Summarize the text. Text: "
                         + BEGIN_SEPARATOR
                         + text
                         + END_SEPARATOR
-                        + "\nThe bullet points and subheadings should be "
+                        + "\nThe bullet points and subheadings must be "
                         + prompt
                         + ".",
                     ),
                 ]
 
             case "shorten_as_possible":
-                shorten_modifier = "Shorten the answer as possible."
+                shorten_modifier = "Shorten the answer as possible. "
                 messages = [
                     Message(
                         "user",
-                        "Summarize the following text into three subheadings with three corresponding bullet points.\nText: "
+                        "Summarize the text. Text: "
                         + BEGIN_SEPARATOR
                         + text
                         + END_SEPARATOR
@@ -381,15 +462,36 @@ class Gpt:
                     )
                 )
 
-        return messages
+        if not approach in [
+            # "template",
+            # "template_with_examples",
+            "follow_up_questions",
+            "important_parts",
+            "headings_first",
+            "format",
+            "step_by_step",
+            "induce",
+        ]:
+            messages[-1].content += "\n" + LITERARY_MODIFIERS_STRING
+            messages[-1].content += "\n" + BEST_FORMAT_MODIFIER + "."
 
+        return messages
 
     def baseline_summarization(self, text: str) -> DfDict:
         current_strategy = "suggest three insightful, concise subheadings which summarize this text, suggest three bullet points for each subheading:\n"
         messages = [Message("user", current_strategy + text)]
         response = self.chat_completion(messages)
+        messages.append(Message("assistant", response.choices[0].message.content))
         return self.to_df_dict(
             BASELINE_TEMPLATE, response, messages_to_string(messages), [[]], 0, text
+        )
+
+    def base_prompt_summarization(self, text: str) -> DfDict:
+        messages = self.create_chat_messages("", text, "base_prompt")
+        response = self.chat_completion(messages)
+        messages.append(Message("assistant", response.choices[0].message.content))
+        return self.to_df_dict(
+            BASE_PROMPT_TEMPLATE, response, messages_to_string(messages), [[]], 0, text
         )
 
     def paraphrase(self, text: str) -> DfDict:
@@ -409,7 +511,7 @@ class Gpt:
         return response, prompt
 
     def translation_paraphrase(self, text: str, to_lang: str = "German") -> DfDict:
-        response, prompt = self.translate(text, to_lang)
+        response, _ = self.translate(text, to_lang)
         response2, prompt2 = self.translate(
             response.choices[0].message.content, "English"
         )
@@ -418,14 +520,20 @@ class Gpt:
 
     def follow_up_completion(self, text: str) -> Tuple[ChatResponse, str]:
         messages = self.create_chat_messages("", text, "follow_up_questions")
-        role = "user"
-        for _ in range(3):
+        role = "assistant"
+        for _ in range(2):
             response = self.chat_completion(messages)
             message = response.choices[0].message
             messages.append(Message(role, message.content))
             role = "user" if role == "assistant" else "assistant"
 
-        final = "Now summarize the text into three subheadings with three corresponding bullet points."
+        final = (
+            "Now summarize the text. "
+            + LITERARY_MODIFIERS_STRING
+            + " "
+            + BEST_FORMAT_MODIFIER
+            + "."
+        )
         messages.append(Message("user", final))
 
         response = self.chat_completion(messages)
@@ -436,10 +544,13 @@ class Gpt:
         response, messages = self.follow_up_completion(text)
         return self.to_df_dict(FOLLOW_UP_TEMPLATE, response, messages, [[]], 0, text)
 
-    def zero_shot_summarization(self, text: str, prompt: str) -> DfDict:
-        messages = self.create_chat_messages(prompt, text, "zero_shot")
-        chat_response = self.chat_completion(messages)
-        return self.to_df_dict(ZERO_SHOT_TEMPLATE, messages, prompt, [[]], 0, text)
+    def zero_shot_summarization(self, text: str, approach: str) -> DfDict:
+        messages = self.create_chat_messages("", text=text, approach=approach)
+        response = self.chat_completion(messages)
+        messages.append(Message("assistant", response.choices[0].message.content))
+        return self.to_df_dict(
+            ZERO_SHOT_TEMPLATE, response, messages_to_string(messages), [[]], 0, text
+        )
 
     def topic_completion(
         self, text: str, topic: str, use_chat: bool = True
@@ -453,12 +564,15 @@ class Gpt:
             return self.completion(prompt), prompt
         else:
             messages = self.create_chat_messages(topic, text, "topic")
-            return self.chat_completion(messages), messages_to_string(messages)
+            response = self.chat_completion(messages)
+            messages.append(Message("assistant", response.choices[0].message.content))
+            return response, messages_to_string(messages)
 
     def topic_summarization(
         self, text: str, topic: str, use_chat: bool = True
     ) -> DfDict:
-        response, prompt = self.topic_completion(text, topic, use_chat)
+        topic_str = topic.replace(",", ", ") + "."
+        response, prompt = self.topic_completion(text, topic_str, use_chat)
         return self.to_df_dict(TOPIC_TEMPLATE, response, prompt, [[]], 0, text)
 
     def in_context_completion(
@@ -469,20 +583,28 @@ class Gpt:
         only_outputs: bool,
         use_chat: bool,
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
-        prompt = ""
+        prompt = (
+            "Summarize the text. "
+            + BEST_FORMAT_MODIFIER
+            + ". "
+            + LITERARY_MODIFIERS_STRING
+            + "\nFollowing are some good summary examples.\n"
+            + PRIMING_SEPARATOR
+        )
         for i, o in zip(inputs, outputs):
             if only_outputs:
-                prompt += "Input: [Text]" + "\nOutput: " + o + PRIMING_SEPARATOR
+                prompt += "Text: [Text]" + "\nSummary: " + o + PRIMING_SEPARATOR
             else:
-                prompt += "Input: " + i + "\nOutput: " + o + PRIMING_SEPARATOR
-        prompt += "Input: " + text + "\n" + "Output:"
+                prompt += "Text: " + i + "\nSummary: " + o + PRIMING_SEPARATOR
+        prompt += "Text: " + text + "\n" + "Summary:"
 
         response = {}
         if not use_chat:
             response = self.completion(prompt)
         else:
-            messages = self.create_chat_messages(prompt, text, "in_context")
+            messages = [Message("user", prompt)]
             response = self.chat_completion(messages)
+            messages.append(Message("assistant", response.choices[0].message.content))
             prompt = messages_to_string(messages)
 
         return response, prompt
@@ -512,44 +634,50 @@ class Gpt:
         )
 
     def induce_completion(
-        self, inputs: List[str], outputs: List[str], use_chat=False
+        self,
+        inputs: List[str],
+        outputs: List[str],
+        only_outputs=False,
+        use_chat=False,
     ) -> Tuple[ChatResponse | CompletionResponse, str]:
-        context = "I gave a friend an instruction and some inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
-        # context = "I gave a friend an instruction and some texts. The friend read the instruction and wrote an output for every one of the texts. Here are the outputs.\n"
+        context = (
+            "I gave a friend an instruction and some inputs. The friend read the instruction and wrote an output for every one of the inputs. Here are the input-output pairs.\n"
+            if not only_outputs
+            else "I gave a friend an instruction and some texts. The friend read the instruction and wrote an output for every one of the texts. Here are the outputs.\n"
+        )
+        prompt_examples = PRIMING_SEPARATOR
+        for i, o in zip(inputs, outputs):
+            prompt_examples += (
+                "Input: " + i + "\nOutput: " + o + PRIMING_SEPARATOR
+                if not only_outputs
+                else "Input: [Text]\nOutput: " + o + PRIMING_SEPARATOR
+            )
+
         if not use_chat:
-            prompt = ""
-            prompt_examples = ""
-            for i, o in zip(inputs, outputs):
-                prompt_examples += "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR
-                # prompt_examples += "Output:" + o + PRIMING_SEPARATOR
-
             before_pred = "The instruction was:"
-            prompt += context + prompt_examples + before_pred
-
+            prompt = context + prompt_examples + before_pred
             return self.completion(prompt), prompt
 
         else:
-            messages = self.create_chat_messages(context, "", "induce")
-            # for i, o in zip(inputs, outputs):
-            #     messages.append(
-            #         # Message("user", "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR)
-            #         Message("user", "Output:" + o + PRIMING_SEPARATOR)
-            #     )
-
-            prompt_examples = ""
-            for i, o in zip(inputs, outputs):
-                prompt_examples += "Input:" + i + "\nOutput:" + o + PRIMING_SEPARATOR
-                # prompt_examples += "Output:" + o + PRIMING_SEPARATOR
-            messages.append(Message("user", prompt_examples))
-
+            messages = self.create_chat_messages(context, prompt_examples, "induce")
             messages.append(Message("user", "The instruction was:"))
-
-            return self.chat_completion(messages), messages_to_string(messages)
+            response = self.chat_completion(messages)
+            messages.append(Message("assistant", response.choices[0].message.content))
+            return response, messages_to_string(messages)
 
     def induce_instruction(
-        self, examples: List[List[str]], num_examples: int, use_chat=False
+        self,
+        examples: List[List[str]],
+        num_examples: int,
+        only_outputs: bool = False,
+        use_chat: bool = False,
     ) -> DfDict:
-        res, prompt = self.induce_completion(examples[0], examples[1], use_chat)
+        res, prompt = self.induce_completion(
+            examples[0][:num_examples],
+            examples[1][:num_examples],
+            only_outputs,
+            use_chat,
+        )
         return self.to_df_dict(INDUCE_TEMPLATE, res, prompt, examples, num_examples)
 
     def persona_completion(
@@ -557,7 +685,7 @@ class Gpt:
     ):
         strings = [
             persona_context_setter,
-            "Summarize the following text into three subheadings with three corresponding bullet points.",
+            "Summarize the text.",
             "Text: " + BEGIN_SEPARATOR + text + END_SEPARATOR,
             "Summary:",
         ]
@@ -574,8 +702,12 @@ class Gpt:
                 persona_context_setter, text, "persona"
             )
             response = self.chat_completion(messages)
-            messages[-1].content = "This is the text I want you to summarize: *text*"
-            messages.append(response.choices[0].message)
+            messages.append(
+                Message(
+                    response.choices[0].message.role,
+                    response.choices[0].message.content,
+                )
+            )
 
             return response, messages_to_string(messages)
 
@@ -623,7 +755,11 @@ class Gpt:
             messages.append(
                 Message(
                     "user",
-                    "I am not satisfied with the summary. Write an improved version using three subheadings with three corresponding bullet points.",
+                    "I am not satisfied with the summary. Write an improved version. "
+                    + LITERARY_MODIFIERS_STRING
+                    + " "
+                    + BEST_FORMAT_MODIFIER
+                    + ".",
                 )
             )
             response = self.chat_completion(messages)
@@ -671,29 +807,78 @@ class Gpt:
             messages = self.create_chat_messages("", text, "important_parts")
             response = self.chat_completion(messages).choices[0].message
             messages.append(Message(response.role, response.content))
-            messages.append(
-                Message(
-                    "user",
-                    "I am not satisfied with the important parts. Please improve them.",
-                )
-            )
-            important_parts_msg = self.chat_completion(messages).choices[0].message
+            # messages.append(
+            #     Message(
+            #         "user",
+            #         "I am not satisfied with the important parts. Please improve them.",
+            #     )
+            # )
+            # important_parts_msg = self.chat_completion(messages).choices[0].message
 
             final_messages = self.create_chat_messages(
-                important_parts_msg.content, text, "summarize_important_parts"
+                response.content, text, "summarize_important_parts"
             )
 
             response = self.chat_completion(final_messages)
+            final_messages.append(
+                Message("assistant", response.choices[0].message.content)
+            )
             return response, messages_to_string(messages + final_messages)
 
-    def important_parts_summarization(
-        self, text: str, use_chat: bool = False
-    ) -> DfDict:
+    def important_parts_summarization(self, text: str, use_chat: bool = True) -> DfDict:
         response, prompt = self.important_parts_completion(text, use_chat)
         info_dict = self.to_df_dict(
             IMPORTANT_PARTS_TEMPLATE, response, prompt, text=text
         )
         return info_dict
+
+    def step_by_step_summarization(self, text: str, use_chat: bool = True) -> DfDict:
+        messages = self.create_chat_messages("", text, "step_by_step")
+        response = self.chat_completion(messages)
+        messages.append(
+            Message(
+                response.choices[0].message.role, response.choices[0].message.content
+            )
+        )
+
+        messages.append(
+            Message(
+                "user",
+                "Summarize the text. "
+                + LITERARY_MODIFIERS_STRING
+                + " "
+                + BEST_FORMAT_MODIFIER
+                + ".",
+            )
+        )
+        final_response = self.chat_completion(messages)
+        messages.append(
+            Message(
+                final_response.choices[0].message.role,
+                final_response.choices[0].message.content,
+            )
+        )
+
+        return self.to_df_dict(
+            STEP_BY_STEP_TEMPLATE,
+            final_response,
+            messages_to_string(messages),
+            text=text,
+        )
+
+    def description_summarization(
+        self, text: str, description: str, use_chat: bool = True
+    ) -> DfDict:
+        messages = self.create_chat_messages(description, text, "description")
+        response = self.chat_completion(messages)
+        messages.append(
+            Message(
+                response.choices[0].message.role, response.choices[0].message.content
+            )
+        )
+        return self.to_df_dict(
+            DESCRIPTION_TEMPLATE, response, messages_to_string(messages), text=text
+        )
 
     def template_completion(
         self,
@@ -702,7 +887,7 @@ class Gpt:
         reference_summary: str = "",
         use_chat: bool = True,
     ) -> Tuple[CompletionResponse | ChatResponse, str]:
-        template = "Summary:\nSUBHEADING\n-BULLET\n-BULLET\n-BULLET\nSUBHEADING\n-BULLET\n-BULLET\n-BULLET\nSUBHEADING\n-BULLET\n-BULLET\n-BULLET"
+        template = "SUBHEADING\n- BULLET\n- BULLET\n- BULLET\nSUBHEADING\n- BULLET\n- BULLET\n- BULLET\nSUBHEADING\n- BULLET\n- BULLET\n- BULLET"
         if not use_chat:
             prompt = "I am going to provide you a template for your output. Everything in all caps is a placeholder. The prompts must result in output summaries that follow the template format. Template: "
             prompt += template
@@ -715,18 +900,30 @@ class Gpt:
             )
             prompt += "\nText: " + reference_text
             prompt += "\nChatGPT: " + reference_summary + END_SEPARATOR
-            prompt += "\nPlease summarize the following text. Text: " + text
+            prompt += "\nSummarize text. Text: " + text
             return self.completion(prompt), prompt
 
         else:
             if reference_text:
                 messages = self.create_chat_messages(
-                    template, text, "template", reference_text, reference_summary
+                    template,
+                    text,
+                    "template_with_examples",
+                    reference_text,
+                    reference_summary,
                 )
-                return self.chat_completion(messages), messages_to_string(messages)
+                response = self.chat_completion(messages)
+                messages.append(
+                    Message("assistant", response.choices[0].message.content)
+                )
+                return response, messages_to_string(messages)
             else:
                 messages = self.create_chat_messages(template, text, "template")
-                return self.chat_completion(messages), messages_to_string(messages)
+                response = self.chat_completion(messages)
+                messages.append(
+                    Message("assistant", response.choices[0].message.content)
+                )
+                return response, messages_to_string(messages)
 
     def template_summarization(
         self,
@@ -735,15 +932,17 @@ class Gpt:
         reference_summary: str = "",
         use_chat: bool = True,
     ) -> DfDict:
-        response, prompt = self.template_completion(
-            text, reference_text, reference_summary, use_chat
-        )
+        # response, prompt = self.template_completion(
+        #     text, reference_text, reference_summary, use_chat
+        # )
+        response, prompt = self.template_completion(text, "", "", use_chat)
         info_dict = self.to_df_dict(TEMPLATE_TEMPLATE, response, prompt, text=text)
         return info_dict
 
     def repeat_summarization(self, text: str, use_chat: bool = True) -> DfDict:
         messages = self.create_chat_messages("", text, "repeat")
         response = self.chat_completion(messages)
+        messages.append(Message("assistant", response.choices[0].message.content))
         prompt = messages_to_string(messages)
 
         info_dict = self.to_df_dict(
@@ -759,8 +958,19 @@ class Gpt:
         response_content = self.chat_completion(messages).choices[0].message
         messages.append(Message(response_content.role, response_content.content))
 
-        messages.append(Message("user", "Add three bullet points to each subheading."))
+        messages.append(
+            Message(
+                "user",
+                "Add three bullet points to each subheading. "
+                + LITERARY_MODIFIERS_STRING,
+            )
+        )
         response = self.chat_completion(messages)
+        messages.append(
+            Message(
+                response.choices[0].message.role, response.choices[0].message.content
+            )
+        )
         prompt = messages_to_string(messages)
 
         info_dict = self.to_df_dict(
