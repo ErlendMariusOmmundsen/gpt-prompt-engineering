@@ -5,6 +5,35 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+["oq", "gr", "nr", "rc", "fo", "sc", "su", "si"]
+
+
+def metric_to_readable(metric: str) -> str:
+    d = {
+        "rouge_1": "ROUGE-1",
+        "rouge_2": "ROUGE-2",
+        "rouge_L": "ROUGE-L",
+        "bert_score": "BERTScore",
+        "long_bullets": "Long Bullets",
+        "long_subheadings": "Long Subheadings",
+        "contradiction_ratio": "Contradiction Ratio",
+        "errors": "Errors",
+        "three_by_three": "Three-By-Three",
+        "geval_fluency": "G-Eval Fluency",
+        "geval_relevance": "G-Eval Relevance",
+        "geval_coherence": "G-Eval Coherence",
+        "geval_consistency": "G-Eval Consistency",
+        "oq": "OQ",
+        "gr": "GR",
+        "nr": "NR",
+        "rc": "RC",
+        "fo": "FO",
+        "sc": "SC",
+        "su": "SU",
+        "si": "SI",
+    }
+    return d[metric]
+
 
 def print_prediction(df, index: int = None):
     if index:
@@ -77,8 +106,8 @@ def bar_groups_chart(
         multiplier += 1
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
-    ax.set_ylabel(metric)
-    ax.set_title(f"{metric.capitalize()} Aggregate Comparison")
+    ax.set_ylabel(metric_to_readable(metric))
+    ax.set_title(f"{metric_to_readable(metric)} Aggregate Comparison")
     ax.set_xticks(x + width, calculations)
     ax.legend(loc="upper left", ncols=1)
     ax.set_ylim(y_start, y_end)
@@ -94,9 +123,10 @@ def box_plot(
     height: int = 6,
     outlier_size: int = 5,
 ):
-    if metric in ["rouge_1", "rouge_2", "rouge_L", "bert_score"]:
-        for df in dataframes:
+    for df in dataframes:
+        if metric in ["rouge_1", "rouge_2", "rouge_L", "bert_score"]:
             df[metric] = df[metric].apply(lambda x: np.mean(json.loads(x)))
+        # df = df[df["three_by_three"] == 1]
 
     metric_values = [df[metric] for df in dataframes]
 
@@ -116,7 +146,7 @@ def box_plot(
 
     ax.set_xticklabels(dataframe_names, rotation=45, ha="right", fontsize=12)
     # ax.set_xlabel("Dataframe", fontsize=14)
-    ax.set_ylabel(metric, fontsize=14)
+    ax.set_ylabel(metric_to_readable(metric), fontsize=14)
     # ax.set_title(metric + " Distribution", fontsize=18)
 
     sns.despine()
@@ -165,7 +195,7 @@ def grouped_box_plot(
 
     ax.set_xticklabels(patterns, rotation=45, ha="right", fontsize=12)
     ax.set_xlabel("", fontsize=14)
-    ax.set_ylabel(metric, fontsize=14)
+    ax.set_ylabel(metric_to_readable(metric), fontsize=14)
     # ax.set_title(metric + " Distribution", fontsize=18)
 
     sns.despine()
