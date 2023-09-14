@@ -94,7 +94,7 @@ def box_plot(
     height: int = 6,
     outlier_size: int = 5,
 ):
-    if metric in ["rogue_1", "rogue_2", "rogue_L", "bert_score"]:
+    if metric in ["rouge_1", "rouge_2", "rouge_L", "bert_score"]:
         for df in dataframes:
             df[metric] = df[metric].apply(lambda x: np.mean(json.loads(x)))
 
@@ -133,7 +133,7 @@ def grouped_box_plot(
     height: int = 6,
 ):
     dfs = dataframes.copy()
-    if metric in ["rogue_1", "rogue_2", "rogue_L", "bert_score"]:
+    if metric in ["rouge_1", "rouge_2", "rouge_L", "bert_score"]:
         for df in dfs:
             df[metric] = df[metric].apply(lambda x: np.mean(json.loads(x)))
 

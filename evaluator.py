@@ -162,7 +162,7 @@ class Evaluator:
         self.entailor = Entailor()
         self.inflect = inflect.engine()
 
-    def rogue(self, reference, candidate):
+    def rouge(self, reference, candidate):
         """
         Args:
           rouge_types: A list of rouge types to calculate.
@@ -340,18 +340,18 @@ class Evaluator:
             r1, r2, rl, bs = [], [], [], []
             for ref in references:
                 if "rouge" in evaluate:
-                    rogue_scores = self.rogue(ref, df_dict.prediction)
-                    r1.append(rogue_scores["rouge1"].fmeasure)
-                    r2.append(rogue_scores["rouge2"].fmeasure)
-                    rl.append(rogue_scores["rougeLsum"].fmeasure)
+                    rouge_scores = self.rouge(ref, df_dict.prediction)
+                    r1.append(rouge_scores["rouge1"].fmeasure)
+                    r2.append(rouge_scores["rouge2"].fmeasure)
+                    rl.append(rouge_scores["rougeLsum"].fmeasure)
                 if "bertscore" in evaluate:
                     p, r, f1, mean = self.bert_score(ref, df_dict.prediction)
                     bs.append(float(mean))
 
             if "rouge" in evaluate:
-                df_dict.rogue_1 = r1
-                df_dict.rogue_2 = r2
-                df_dict.rogue_L = rl
+                df_dict.rouge_1 = r1
+                df_dict.rouge_2 = r2
+                df_dict.rouge_L = rl
             if "bertscore" in evaluate:
                 df_dict.bert_score = bs
 

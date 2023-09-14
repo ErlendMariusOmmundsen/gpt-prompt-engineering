@@ -12,7 +12,7 @@ All results from experiments are stored in CSV files that contain columns for:
 - Prompt
 - Prediction
 - Finish reason
-- Evaluation scores for bert_score, rogue_1, rogue_2, rogue_L, slor, avg_error_count_score, errors, contradiction_ratio, neutral_contradiction_ratio, number_hallucinations, three_by_three,long_subheadings, long_bullets, geval_fluency, geval_relevance, geval_coherence, geval_consistency
+- Evaluation scores for bert_score, rouge_1, rouge_2, rouge_L, slor, avg_error_count_score, errors, contradiction_ratio, neutral_contradiction_ratio, number_hallucinations, three_by_three,long_subheadings, long_bullets, geval_fluency, geval_relevance, geval_coherence, geval_consistency
 - API Config
 
 
