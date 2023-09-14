@@ -164,6 +164,8 @@ class Gpt:
         return df
 
     def save_df(self, info_dict: DfDict, path: str, use_chat_model: bool = True):
+        if path == "":
+            raise ValueError("Path cannot be empty")
         df = self.dict_to_df(info_dict, use_chat_model)
         if not os.path.isfile(path):
             df.to_csv(path, index=False)

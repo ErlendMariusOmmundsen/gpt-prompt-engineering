@@ -92,6 +92,7 @@ def box_plot(
     metric: str,
     width: int = 10,
     height: int = 6,
+    outlier_size: int = 5,
 ):
     if metric in ["rogue_1", "rogue_2", "rogue_L", "bert_score"]:
         for df in dataframes:
@@ -105,7 +106,7 @@ def box_plot(
     ax = sns.boxplot(
         data=metric_values,
         width=0.4,
-        fliersize=5,
+        fliersize=outlier_size,
         flierprops={
             "markerfacecolor": "lightgray",
             "markeredgecolor": "black",
@@ -114,9 +115,9 @@ def box_plot(
     )
 
     ax.set_xticklabels(dataframe_names, rotation=45, ha="right", fontsize=12)
-    ax.set_xlabel("Dataframe", fontsize=14)
+    # ax.set_xlabel("Dataframe", fontsize=14)
     ax.set_ylabel(metric, fontsize=14)
-    ax.set_title(metric + " Distribution", fontsize=18)
+    # ax.set_title(metric + " Distribution", fontsize=18)
 
     sns.despine()
 
@@ -162,9 +163,9 @@ def grouped_box_plot(
         },
     )
 
-    # ax.set_xticklabels(dataframe_names, rotation=45, ha="right", fontsize=12)
-    # ax.set_xlabel("Dataframe", fontsize=14)
-    # ax.set_ylabel(metric, fontsize=14)
+    ax.set_xticklabels(patterns, rotation=45, ha="right", fontsize=12)
+    ax.set_xlabel("", fontsize=14)
+    ax.set_ylabel(metric, fontsize=14)
     # ax.set_title(metric + " Distribution", fontsize=18)
 
     sns.despine()

@@ -62,7 +62,7 @@ TRANSLATION_TEMPLATE = Template(
     "Translate the following text into ${lang}: ${text} Translation:"
 )
 PARAPHRASE_TEMPLATE = Template(
-    "Paraphrase the following text: ${text} Paraphrased text:"
+    "Paraphrase the following text: ${text}. Paraphrased text:"
 )
 
 # MAX LENGTHS #
