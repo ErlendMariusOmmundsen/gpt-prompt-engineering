@@ -17,7 +17,7 @@ All results from experiments are stored in CSV files that contain columns for:
 
 
 ## How to run
-All scripts used to generate results are in `/scripts`. Edit the scripts to match your needs.
+All scripts used to generate results are in `/scripts` or `./`. The scripts were edited when experimenting.
 
 Prerequisites:
 - A .ENV file with the following contents:
@@ -27,4 +27,4 @@ Prerequisites:
     OPENAI_ORG_KEY=*key*
     HUGGINGFACE_KEY=*key*
 - Python 3.10 or newer
-- A GPU is required to run evaluation with bert_score enabled
+- A GPU for evaluation with bert_score enabled
