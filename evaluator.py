@@ -4,14 +4,17 @@ import pandas as pd
 
 from constants import (
     BULLET_MAX_LENGTH,
+    DENSENESS_MODIFIERS,
     GEVAL_COHERENCE,
     GEVAL_CONSISTENCY,
     GEVAL_FLUENCY,
     GEVAL_RELEVANCE,
+    LANGUAGETOOL_CATEGORIES,
     SUBHEADING_MAX_LENGTH,
 )
 from utils import clean_summary, from_dict_to_dataclass, get_examples
 import language_tool_python
+from pylanguagetool import api
 from nltk import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
@@ -26,6 +29,7 @@ import torch
 import bert_score
 from dataclss import DfDict
 from gpt import Gpt
+from transformers import pipeline
 
 import inflect
 from word2number import w2n
@@ -95,14 +99,14 @@ class SLORer:
 
     # Changed from perplexity calculation: https://huggingface.co/docs/transformers/perplexity
 
-    def sentProb(self, sent):
+    def sentProb1(self, sent):
         encodings = self.tokenizer(sent, return_tensors="pt")
         max_length = 2048
         stride = 512
 
         seq_len = encodings.input_ids.size(1)
 
-        nlls = []
+        sentprobs = []
         prev_end_loc = 0
         sentProb = 0
         for begin_loc in tqdm(range(0, seq_len, stride), leave=False):
@@ -115,10 +119,14 @@ class SLORer:
             target_ids[:, :-trg_len] = -100
 
             with torch.no_grad():
-                outputs = self.model(input_ids)
+                outputs = self.model(input_ids, labels=target_ids)
                 # https://stackoverflow.com/a/64796860/15557377
-                action_logits = outputs.logits
                 probs = torch.softmax(outputs.logits, dim=-1)
+                print(probs)
+
+                sentprobs.append(probs[0])
+                # print(probs[0])
+
                 for tensor in probs[0]:
                     prob = torch.max(tensor)
                     sentProb += prob
@@ -126,9 +134,42 @@ class SLORer:
                 # Sum of all actions will equal the length of input as all distributions for each word prediction sum to 1
                 # == print(len(torch.softmax(outputs.logits, dim = -1)[0])))
                 # print(torch.softmax(outputs.logits, dim = -1))
+            prev_end_loc = end_loc
+            if end_loc == seq_len:
+                break
+
+        final = torch.stack(sentprobs).mean()
+
         sentLen = len(sent)
-        sentProb = sentProb / sentLen
+        sentProb = sentProb / seq_len
         return sentProb
+
+    def sentProb(self, sent):
+        sent_tokens = AutoTokenizer.from_pretrained("bert-base-uncased").tokenize(
+            sent.lower()
+        )
+        print(sent_tokens)
+        sent_probs = []
+        fill_masker = pipeline("fill-mask", model="bert-base-uncased")
+
+        mask = "[MASK]"
+        probabilities = [
+            fill_masker(mask, targets=sent_tokens[0], top_k=1).pop()["score"]
+        ]
+        current_sent = ""
+        for i in range(1, len(sent_tokens)):
+            current_sent += sent_tokens[i - 1] + " " + mask
+            print(fill_masker(current_sent, targets=sent_tokens[i], top_k=1))
+            probabilities.append(
+                fill_masker(current_sent, targets=sent_tokens[i], top_k=1).pop()[
+                    "score"
+                ]
+            )
+            current_sent.replace(mask, sent_tokens[i])
+            print(current_sent)
+            print(probabilities)
+
+        return sum(probabilities) / len(probabilities)
 
     def sent_slor(self, sent):
         sentP = self.sentProb(sent)
@@ -157,6 +198,7 @@ class Evaluator:
         self.langtool = language_tool_python.LanguageToolPublicAPI(
             "en-US"
         )  # use a remote server (automatically set up), language English
+        # self.langtool = api
         self.b_scorer = bert_score.BERTScorer(lang="en", rescale_with_baseline=True)
         self.slorer = SLORer()
         self.entailor = Entailor()
@@ -181,11 +223,18 @@ class Evaluator:
         return scores
 
     def error_count_score(self, sent):
-        check = self.langtool.check(sent)
-        if len(check) > 0:
-            print(check)
+        check = 0
+        while True:
+            try:
+                check = self.langtool.check(sent)
+                break
+            except:
+                pass
+        numErrors = 0
+        for match in check:
+            if match.category in LANGUAGETOOL_CATEGORIES:
+                numErrors += 1
         numTokens = len(word_tokenize(sent))
-        numErrors = len(check)
         return 1 - float(numErrors) / float(numTokens), numErrors
 
     def avg_error_count_score(self, text):
@@ -316,27 +365,31 @@ class Evaluator:
         df_dict: DfDict,
         references: List[str] = [],
         evaluate: List[str] = [
-            "format",
             "rouge",
-            "bertscore",
+            "bert_score",
             "number_hallucination",
             "entailment",
             "slor",
             "errors",
-            "geval",
+            "geval_fluency",
+            "geval_coherence",
+            "geval_consistency",
+            "geval_relevance",
         ],
     ):
-        if "format" in evaluate:
-            (
-                truncated_prediction,
-                df_dict.three_by_three,
-                df_dict.long_subheadings,
-                df_dict.long_bullets,
-            ) = self.check_format(df_dict.prediction)
-            if df_dict.three_by_three == 0:
-                df_dict.prediction = truncated_prediction
+        (
+            truncated_prediction,
+            df_dict.three_by_three,
+            df_dict.long_subheadings,
+            df_dict.long_bullets,
+        ) = self.check_format(df_dict.prediction)
+        if df_dict.three_by_three == 0:
+            df_dict.prediction = truncated_prediction
 
-        if references and ("rouge" in evaluate or "bertscore" in evaluate):
+        # if df_dict.three_by_three == 0:
+        #     return df_dict
+
+        if references and ("rouge" in evaluate or "bert_score" in evaluate):
             r1, r2, rl, bs = [], [], [], []
             for ref in references:
                 if "rouge" in evaluate:
@@ -375,16 +428,19 @@ class Evaluator:
                 df_dict.prediction
             )
 
-        if "geval" in evaluate:
+        if "geval_fluency" in evaluate:
             df_dict.geval_fluency = gpt.geval(
                 df_dict.text, df_dict.prediction, "fluency"
             )
+        if "geval_coherence" in evaluate:
             df_dict.geval_coherence = gpt.geval(
                 df_dict.text, df_dict.prediction, "coherence"
             )
+        if "geval_consistency" in evaluate:
             df_dict.geval_consistency = gpt.geval(
                 df_dict.text, df_dict.prediction, "consistency"
             )
+        if "geval_relevance" in evaluate:
             df_dict.geval_relevance = gpt.geval(
                 df_dict.text, df_dict.prediction, "relevance"
             )
@@ -402,14 +458,18 @@ class Evaluator:
         ex = get_examples()
         transcripts, summ1, summ2, summ3, summ4 = ex[0], ex[1], ex[2], ex[3], ex[4]
         for i, row in df.iterrows():
+            if int(i) < 210:
+                continue
+            print(i)
             df_dict = from_dict_to_dataclass(DfDict, row.to_dict())
-            ref_i = gold_df[gold_df["title"] == df_dict.title].index[0]
-            references = [
-                clean_summary(summ1[ref_i]),
-                clean_summary(summ2[ref_i]),
-                clean_summary(summ3[ref_i]),
-                clean_summary(summ4[ref_i]),
-            ]
+            # ref_i = gold_df[gold_df["title"] == df_dict.title].index[0]
+            # references = [
+            #     summ1[ref_i],
+            #     summ2[ref_i],
+            #     summ3[ref_i],
+            #     summ4[ref_i],
+            # ]
+            references = []
             reevaluated_dict = self.evaluate_dict(
                 gpt,
                 df_dict,

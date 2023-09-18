@@ -1,4 +1,14 @@
+from typing import List, Tuple
 from unicodedata import normalize
+
+from constants import (
+    CSV_SEPARATOR,
+    DENSENESS_MODIFIERS,
+    STRUCTURE_MODIFIERS,
+    QUALITY_MODIFIERS,
+    LENGTH_MODIFIERS,
+    FORMAT_MODIFIERS,
+)
 import pandas as pd
 from gpt import Gpt
 from evaluator import Evaluator
@@ -24,8 +34,44 @@ Thank you so much.
 
 examples = get_examples()
 gold_df = pd.read_csv("data/manual_summaries.csv")
-example_index = 0
-num_examples = 9
+target_index = 0
+num_examples = 1
+
+modifies = ["format", "length", "quality", "structure", "denseness"]
+modifiers = [
+    FORMAT_MODIFIERS,
+    LENGTH_MODIFIERS,
+    QUALITY_MODIFIERS,
+    STRUCTURE_MODIFIERS,
+    DENSENESS_MODIFIERS,
+]
+
+
+def get_row_data(
+    df: pd.DataFrame, target_index: int
+) -> Tuple[pd.Series, str, List[str], str]:
+    row = df.iloc[target_index]
+    transcript = row["transcript"]
+    transcript = transcript.replace("\n\n", " ")
+    transcript = normalize("NFKD", transcript)
+
+    summaries = row["summary"].split(CSV_SEPARATOR)
+    cleaned_summaries = []
+
+    for summ in summaries:
+        golden_summary = normalize("NFKD", summ)
+        golden_summary = golden_summary.replace("- ", "")
+        cleaned_summaries.append(golden_summary)
+
+    topics = row["topic"].replace(",", ", ") + "."
+
+    try:
+        examples[0].remove(row["transcript"])
+        examples[1].remove(row["summary"])
+    except:
+        pass
+
+    return row, transcript, cleaned_summaries, topics
 
 
 def run_pipeline(
@@ -36,18 +82,7 @@ def run_pipeline(
     only_outputs=False,
     use_chat=True,
 ):
-    row = gold_df.iloc[example_index]
-    transcript = row["transcript"]
-    transcript = transcript.replace("\n\n", " ")
-    transcript = normalize("NFKD", transcript)
-
-    golden_summary = normalize("NFKD", row["summary"])
-    golden_summary = golden_summary.replace("- ", "")
-
-    topics = row["topic"].replace(",", ", ") + "."
-
-    examples[0].remove(row["transcript"])
-    examples[1].remove(row["summary"])
+    row, transcript, golden_summaries, topics = get_row_data(gold_df, target_index)
 
     print("Running", pipe_name, "on example", example_index)
     pipes.pipe(
@@ -55,7 +90,7 @@ def run_pipeline(
         evaluator=evaluator,
         text=transcript,
         title=row["title"],
-        reference=golden_summary,
+        reference=golden_summaries[0],
         topic=topics,
         examples=examples,
         num_examples=num_examples,
@@ -69,5 +104,21 @@ def run_pipeline(
 g = Gpt()
 e = Evaluator()
 
-for i in range(5):
-    run_pipeline(g, e, "repeat", example_index, True, True)
+row, transcript, golden_summaries, topics = get_row_data(gold_df, target_index)
+for i in range(len(golden_summaries)):
+    # run_pipeline(g, e, "repeat", example_index, True, True)
+    # run_pipeline(g, e, "headings_first", example_index, True, True)
+    # run_pipeline(g, e, "template", example_index, True, True)
+    pipes.modifier_pipe(
+        g, e, transcript, FORMAT_MODIFIERS, "format", 10, golden_summaries[i]
+    )
+    # pipes.modifier_pipe(g, e, transcript, LENGTH_MODIFIERS, "length", 5, golden_summary)
+    # pipes.modifier_pipe(
+    #     g, e, transcript, QUALITY_MODIFIERS, "quality", 5, golden_summary
+    # )
+    # pipes.modifier_pipe(
+    #     g, e, transcript, DENSENESS_MODIFIERS, "denseness", 5, golden_summary
+    # )
+    # pipes.modifier_pipe(
+    #     g, e, transcript, STRUCTURE_MODIFIERS, "structure", 5, golden_summary
+    # )
