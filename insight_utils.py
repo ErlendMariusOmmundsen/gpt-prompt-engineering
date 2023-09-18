@@ -17,6 +17,7 @@ def metric_to_readable(metric: str) -> str:
         "long_bullets": "Long Bullets",
         "long_subheadings": "Long Subheadings",
         "contradiction_ratio": "Contradiction Ratio",
+        "number_hallucinations": "Numeric Hallucinations",
         "errors": "Errors",
         "three_by_three": "Three-By-Three",
         "geval_fluency": "G-Eval Fluency",
@@ -137,6 +138,7 @@ def box_plot(
         data=metric_values,
         width=0.4,
         fliersize=outlier_size,
+        medianprops=dict(color="red", alpha=1),
         flierprops={
             "markerfacecolor": "lightgray",
             "markeredgecolor": "black",
@@ -186,6 +188,7 @@ def grouped_box_plot(
         data=df,
         width=0.4,
         fliersize=5,
+        medianprops=dict(color="red", alpha=1),
         flierprops={
             "markerfacecolor": "lightgray",
             "markeredgecolor": "black",
