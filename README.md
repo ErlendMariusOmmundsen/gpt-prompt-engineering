@@ -17,7 +17,7 @@ All results from experiments are stored in CSV files that contain columns for:
 
 
 ## How to run
-All scripts used to generate results are in `/scripts` or `./`. The scripts were edited when experimenting.
+All scripts and notebooks used to generate and inspect results are in `/scripts` or `./`. The scripts were edited when experimenting.
 
 Prerequisites:
 - A .ENV file with the following contents:
