@@ -2,6 +2,9 @@
 Repo for testing prompts for abstractive text summarization on OpenAI models and evaluating output summary quality. The base
 classes GPT in `gpt.py` and Evaluator in `evaluator.py` can be used to create new pipelines for new prompts. 
 
+## TED Talk Transcript Summarization Dataset
+The dataset CSV file is called `manual_summaries2.csv` and can be found in `/data`. 
+
 ## Results 
 All results from experiments are stored in CSV files that contain columns for:
 - Template used
