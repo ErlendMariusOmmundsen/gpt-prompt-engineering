@@ -29,5 +29,5 @@ Prerequisites:
     OPENAI_API_KEY=*key*
     OPENAI_ORG_KEY=*key*
     HUGGINGFACE_KEY=*key*
-- Python 3.10 or newer
+- Python 3.10 or newer with the required packages in `./requirements.txt` installed
 - A GPU for evaluation with bert_score enabled
