@@ -3,7 +3,6 @@
 from pprint import PrettyPrinter
 import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
 import time
 import json
 import pandas as pd
