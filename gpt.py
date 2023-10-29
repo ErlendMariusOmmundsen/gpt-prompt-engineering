@@ -1,5 +1,6 @@
 from dataclasses import fields
 import os
+import pprint
 from typing import List, Tuple
 import openai
 import configparser
@@ -1058,3 +1059,19 @@ class Gpt:
         self.temperature = previous_temperature
 
         return round(geval_score, 2)
+
+    def list_all_models(self):
+        model_list = openai.Model.list()["data"]
+        model_ids = [x["id"] for x in model_list]
+        model_ids.sort()
+        pprint.pprint(model_ids)
+        if "gpt-4-32k" in model_ids:
+            print("##################################################")
+            print("##################################################")
+            print("##################################################")
+            print("\ngpt-4-32k IS PUBLISHED\n")
+            print("##################################################")
+            print("##################################################")
+            print("##################################################")
+        else:
+            print("\n\ngpt-4-32k is not out yet :(")
