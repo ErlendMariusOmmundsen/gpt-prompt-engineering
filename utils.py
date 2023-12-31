@@ -13,11 +13,11 @@ from dataclss import Message
 def get_examples() -> List[List[str]]:
     df = pd.read_csv("data/manual_summaries2.csv", sep=";")
 
-    df["transcript"] = df["transcript"].apply(lambda x: clean_transcript(x))
-    df["summary"] = df["summary"].apply(lambda x: clean_summary(x))
-    df["summary2"] = df["summary2"].apply(lambda x: clean_summary(x))
-    df["summary3"] = df["summary3"].apply(lambda x: clean_summary(x))
-    df["summary4"] = df["summary4"].apply(lambda x: clean_summary(x))
+    df["transcript"] = df["transcript"].apply(clean_summary)
+    df["summary"] = df["summary"].apply(clean_summary)
+    df["summary2"] = df["summary2"].apply(clean_summary)
+    df["summary3"] = df["summary3"].apply(clean_summary)
+    df["summary4"] = df["summary4"].apply(clean_summary)
 
     return [
         df["transcript"].tolist(),
